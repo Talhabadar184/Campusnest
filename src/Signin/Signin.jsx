@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom"; // Import useNavigate & Link
 import InputField from "../components/Inputfield"; // Importing InputField Component
 import logo from "../assets/Signin/logo.png"; // Importing logo
-import Button from "../components/Button";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ userId: "", password: "" });
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,6 +14,9 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("User ID:", formData.userId, "Password:", formData.password);
+
+    // Navigate to Home Page after successful sign-in
+    navigate("/home");
   };
 
   return (
@@ -21,7 +25,7 @@ const SignIn = () => {
       <img src={logo} alt="CampusNest Logo" className="w-28 mb-4" />
 
       {/* Sign In Form */}
-      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col ">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col">
         <h2 className="text-blue-800 text-xl font-semibold mb-6">SIGN IN</h2>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
@@ -45,7 +49,11 @@ const SignIn = () => {
               placeholder="Enter your Password"
             />
 
-            <button className=" w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px]">
+            {/* Sign In Button */}
+            <button
+              type="submit"
+              className="w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px]"
+            >
               SIGN IN
             </button>
           </div>
@@ -53,16 +61,16 @@ const SignIn = () => {
 
         {/* Forgot Password & Signup Links */}
         <div className="text-center mt-4">
-          <a href="#" className="text-blue-600 text-sm hover:underline">
+          <Link to="/ForgotPassword" className="text-blue-600 text-sm hover:underline">
             Forgot Password?
-          </a>
+          </Link>
         </div>
+
         <p className="text-gray-700 text-sm mt-2 text-center">
           Don't have an account?{" "}
-          <a href="#" className="text-blue-600 font-medium hover:underline">
-            Signup
-          </a>{" "}
-          today!
+          <Link to="/signup" className="text-blue-600 text-sm hover:underline">
+            Sign up today!
+          </Link>
         </p>
       </div>
     </div>

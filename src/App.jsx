@@ -4,8 +4,10 @@ import Signin from "./Signin/Signin";
 import ResetPassword from "./Signin/ResetPassword";
 import Register from "./signup/Register";
 import ForgotPassword from "./Forgotpassword/ForgotPassword";
-import ForgotPassword1 from "./Forgotpassword/ForgotPassword1";
+import VerifyCode from "./Forgotpassword/VerifyCode";
+import Home from "./Home/Home";
 import { BrowserRouter, Route, Routes as RouterRoutes, Navigate } from "react-router-dom";
+import Listing from "./Listing/Listing";
 
 function AppRoutes() {
   return (
@@ -17,8 +19,10 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/Signin" element={<Signin />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/verify-code" element={<ForgotPassword1 />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/Verifycode" element={<VerifyCode />} />
+        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/Listing" element={<Listing />} />
       </RouterRoutes>
     </BrowserRouter>
   );

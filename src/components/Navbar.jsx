@@ -26,7 +26,7 @@ function Navbar() {
 
       {/* Center (Search Bar + Hamburger) */}
       <div
-        className={`flex items-center bg-gray-100 rounded-full transition-all duration-300 px-2 py-1 ${
+        className={`flex items-center justify-center bg-gray-100 rounded-full transition-all duration-300 px-2 py-1 ${
           showSearch ? "w-2/3 md:w-1/3" : "w-[2.5rem] md:w-1/3"
         }`}
       >
@@ -34,7 +34,7 @@ function Navbar() {
         <img
           src={hamburger}
           alt="Hamburger Menu"
-          className="h-4 md:h-3 cursor-pointer"
+          className="h-4 md:h-3 m-1 cursor-pointer"
         />
 
         {/* Search Bar  */}

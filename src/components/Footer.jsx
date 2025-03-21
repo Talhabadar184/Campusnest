@@ -8,20 +8,20 @@ import youtube from "../assets/Footer/youtube.png";
 
 const Footer = () => {
   return (
-    
-    <footer className="bg-blue-800 text-white py-4 mt-auto">
-      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-6">
-        
-        {/* Left Section (Logo + Copyright) */}
-        <div className="flex flex-col items-start">
+    <footer className="bg-blue-800 text-white py-6 mt-auto">
+       <div className="flex gap-7">
+        <div >
+        {/* Left Section: Logo & Copyright */}
+        <div className="flex flex-col items-start ml-7">
           <img src={logo} alt="CampusNest Logo" className="h-12 mb-2" />
           <p className="text-xs">Copyright CompanyNext 2023. All Rights Reserved.</p>
         </div>
+        </div>
 
-        {/* Right Section (Navigation Links + Social Icons) - Centered */}
-        <div className="flex flex-col items-center">
+        {/* Centered Section: Navigation Links & Social Media */}
+        <div className="flex flex-col justify-center ml-36 items-center text-center">
           {/* Navigation Links */}
-          <nav className="text-sm mb-3">
+          <nav className="text-sm flex flex-wrap justify-center mb-3">
             <a href="#" className="mx-2 hover:underline">
               About Us
             </a>{" "}
@@ -39,17 +39,17 @@ const Footer = () => {
             </a>
           </nav>
 
-          {/* Social Icons */}
-          <div className="flex gap-3">
-            <img src={linke} alt="LinkedIn" className="h-4 cursor-pointer hover:opacity-75" />
-            <img src={insta} alt="Instagram" className="h-4 cursor-pointer hover:opacity-75" />
-            <img src={youtube} alt="YouTube" className="h-4 cursor-pointer hover:opacity-75" />
-            <img src={fb} alt="Facebook" className="h-4 cursor-pointer hover:opacity-75" />
-            <img src={twitter} alt="Twitter" className="h-4 cursor-pointer hover:opacity-75" />
+          {/* Social Media Icons */}
+          <div className="flex gap-4">
+            <img src={linke} alt="LinkedIn" className="h-5 cursor-pointer hover:opacity-75" />
+            <img src={insta} alt="Instagram" className="h-5 cursor-pointer hover:opacity-75" />
+            <img src={youtube} alt="YouTube" className="h-5 cursor-pointer hover:opacity-75" />
+            <img src={fb} alt="Facebook" className="h-5 cursor-pointer hover:opacity-75" />
+            <img src={twitter} alt="Twitter" className="h-5 cursor-pointer hover:opacity-75" />
           </div>
         </div>
 
-      </div>
+        </div>
     </footer>
   );
 };

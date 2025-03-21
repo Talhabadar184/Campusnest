@@ -4,7 +4,6 @@ import Button from "../components/Button";
 import Inputfield from "../components/Inputfield";
 import Selectfield from "../components/Selectfield";
 import signuplogo from "../assets/Signup/signuplogo.png";
-import Footer from "../components/Footer"; // Import the footer
 
 function Signup() {
   let navigate = useNavigate();
@@ -29,7 +28,7 @@ function Signup() {
     localStorage.setItem("userName", fullName);
     localStorage.setItem("signupData", JSON.stringify(formData));
   
-    navigate("/signup/register");
+    navigate("/register");
   };
 
   return (

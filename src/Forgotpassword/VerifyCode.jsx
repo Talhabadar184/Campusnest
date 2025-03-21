@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import InputField from "../components/Inputfield"; // Importing InputField Component
 import logo from "../assets/Signin/logo.png"; // Importing logo
-import Button from "../components/Button";
 
-const ForgotPassword1 = () => {
+const VerifyCode = () => {
   const [code, setCode] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleChange = (e) => {
     setCode(e.target.value);
@@ -13,6 +14,9 @@ const ForgotPassword1 = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Entered Code:", code);
+
+    // Navigate to ResetPassword page after submission
+    navigate("/ResetPassword");
   };
 
   return (
@@ -21,7 +25,7 @@ const ForgotPassword1 = () => {
       <img src={logo} alt="CampusNest Logo" className="w-28 mb-4" />
 
       {/* Forgot Password Form */}
-      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col ">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col">
         <h2 className="text-blue-800 text-xl font-semibold mb-2">FORGOT PASSWORD</h2>
         <p className="text-gray-700 text-sm text-center mb-4">
           A 6-digit verification code has been sent to your email address.
@@ -41,7 +45,10 @@ const ForgotPassword1 = () => {
             />
             
             {/* Submit Button */}
-            <button className=" w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px] ">
+            <button
+              type="submit"
+              className="w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px]"
+            >
               SUBMIT
             </button>
           </div>
@@ -51,4 +58,4 @@ const ForgotPassword1 = () => {
   );
 };
 
-export default ForgotPassword1;
+export default VerifyCode;
