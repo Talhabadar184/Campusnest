@@ -47,9 +47,10 @@ function HomeNavbar() {
 
       {/* Right Side - Buttons */}
 <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
-<button className="bg-blue-600 text-white px-3 py-2 sm:px-5 sm:py-2 rounded-md sm:rounded-lg text-sm sm:text-base font-medium hover:cursor-pointer hover:bg-blue-700 transition-all w-auto">
+ 
+<Link to={"/Listing"} className="bg-blue-600 text-white px-3 py-2 sm:px-5 sm:py-2 rounded-md sm:rounded-lg text-sm sm:text-base font-medium hover:cursor-pointer hover:bg-blue-700 transition-all w-auto">
   List your Hostel
-</button>
+</Link>
 
   <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
     <Link to="/Signup" className="text-blue-600 text-base font-semibold hover:underline">

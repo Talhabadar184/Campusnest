@@ -97,7 +97,7 @@ const Testimonials = () => {
         ))}
       </Swiper>
 
-      {/* Custom Navigation Buttons for Testimonials */}
+      {/*  Navigation Buttons for Testimonials */}
       <div className="w-full flex justify-center md:justify-end p-4">
         <button
           onClick={handlePrevTestimonials}

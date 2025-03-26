@@ -92,14 +92,14 @@ function Home() {
       <div className="bg-gray-100">
       <HomeNavbar />
         {/* Heading Section */}
-        <div className="flex flex-col items-center justify-center min-h-[90vh] max-w-[95vw] rounded-2xl mx-auto bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 mt-6">
+        <div className="flex flex-col lg:flex-row items-center items-center justify-center min-h-[90vh] lg:max-w-[95vw] rounded-2xl mx-auto bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 mt-6">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-center">
             Find Your Ideal Hostel in Lahore
           </h1>
           <p className="text-sm md:text-base text-center mb-6 px-4 md:px-20">
             Explore, Compare, and Secure the Best Accommodation Near Your
             University with 360° Tours and Easy Booking
-          </p>
+          </p> 
 
           {/* Search Filters */}
           <div className="flex flex-wrap justify-center gap-4 bg-white p-4 rounded-lg shadow-lg">

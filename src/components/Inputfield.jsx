@@ -7,7 +7,7 @@ const Inputfield = forwardRef(({ label, placeholder, type = "text", name, value,
         <div className="w-full">
             <label className="block text-sm font-medium text-gray-700">{label}</label>
             <input
-                ref={ref} // Attach the ref
+                ref={ref} 
                 type={type}
                 name={name}
                 value={value}

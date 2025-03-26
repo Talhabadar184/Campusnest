@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import InputField from "../components/Inputfield"; // Importing InputField Component
-import logo from "../assets/Signin/logo.png"; // Importing logo
+import InputField from "../components/Inputfield"; 
+import logo from "../assets/Signin/logo.png"; 
 import Button from "../components/Button";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SignIn1 = () => {
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
-
+const navigate=useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -20,6 +21,7 @@ const SignIn1 = () => {
     } else {
       console.log("Passwords do not match");
     }
+    navigate("/Home")
   };
 
   return (

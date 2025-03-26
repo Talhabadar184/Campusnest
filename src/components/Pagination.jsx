@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
+import Comparison from "../components/Comparison";
 
-const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
+const Pagination = ({ 
+  totalPages, 
+  currentPage, 
+  setCurrentPage, 
+  hostels, 
+  selectedHostels, 
+  setSelectedHostels 
+}) => {
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
 
-  // Generate page numbers dynamically
   const renderPageNumbers = () => {
     const pages = [];
     if (totalPages <= 5) {
@@ -16,26 +25,34 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
         pages.push(i);
       }
     } else {
-      if (currentPage > 3) pages.push(1, "..."); // Show first page + dots
+      if (currentPage > 3) pages.push(1, "..."); 
       for (let i = Math.max(1, currentPage - 1); i <= Math.min(totalPages, currentPage + 1); i++) {
         pages.push(i);
       }
-      if (currentPage < totalPages - 2) pages.push("...", totalPages); // Show last page + dots
+      if (currentPage < totalPages - 2) pages.push("...", totalPages); 
     }
     return pages;
   };
 
+  const uniqueAmenities = [...new Set(hostels.flatMap(hostel => hostel.amenities))];
+
   return (
-    <div className="flex justify-center m-4">
+    <div className="flex flex-col items-center m-4">
       <div className="flex justify-between max-w-3xl items-center p-4 border rounded-lg w-full">
         {/* Compare Button */}
-        <button className="bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-800">
+        <button
+          className={`px-4 py-2 rounded-lg font-semibold ${
+            selectedHostels.length === 2
+              ? "bg-blue-700 text-white hover:bg-blue-800"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+          onClick={() => setIsCompareOpen(true)}
+          disabled={selectedHostels.length !== 2}
+        >
           Compare
         </button>
-
-        {/* Pagination */}
+        {/* Pagination Controls */}
         <div className="flex items-center gap-2">
-          {/* Previous Button */}
           <button
             className="p-2 border rounded-lg disabled:opacity-50"
             onClick={() => handlePageChange(currentPage - 1)}
@@ -43,8 +60,6 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
           >
             <ChevronLeft size={18} />
           </button>
-
-          {/* Dynamic Page Numbers */}
           {renderPageNumbers().map((page, index) =>
             page === "..." ? (
               <MoreHorizontal key={index} size={20} />
@@ -58,8 +73,6 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
               </button>
             )
           )}
-
-          {/* Next Button */}
           <button
             className="p-2 border rounded-lg disabled:opacity-50"
             onClick={() => handlePageChange(currentPage + 1)}
@@ -69,6 +82,18 @@ const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
           </button>
         </div>
       </div>
+
+      
+
+      {/* Comparison Modal */}
+      {isCompareOpen && (
+        <Comparison 
+          open={isCompareOpen} 
+          onClose={() => setIsCompareOpen(false)} 
+          hostels={selectedHostels} 
+          amenities={uniqueAmenities} 
+        />
+      )}
     </div>
   );
 };
