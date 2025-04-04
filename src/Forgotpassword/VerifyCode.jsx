@@ -47,7 +47,7 @@ const VerifyCode = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px]"
+              className="w-[22vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px]"
             >
               SUBMIT
             </button>

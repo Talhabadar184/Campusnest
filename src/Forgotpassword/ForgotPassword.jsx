@@ -46,9 +46,9 @@ const ForgotPassword = () => {
             {/* Link to ForgotPassword1 Page */}
             <Link
               to="/VerifyCode"
-              className="w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md text-center hover:cursor-pointer hover:text-[18px]"
+              className="w-[22vw] text-white bg-blue-900 px-4 py-2 rounded-md text-center hover:cursor-pointer hover:text-[18px]"
             >
-              SIGN IN
+              SUBMIT
             </Link>
           </div>
         </form>

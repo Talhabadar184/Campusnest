@@ -30,7 +30,7 @@ function Hostels() {
       price: "15,000 PKR",
       description: "Lorem ipsum dolor sit amet.",
       ratings: "⭐⭐⭐⭐⭐",
-      amenities: ["WiFi", "Laundry", "Security", "Mess"],
+      amenities: ["WiFi", "Laundry", "Security", "Mess","24/7 Security","Gym/Fitness Center","Study Area","Common Room/TV Lounge","Private Bathrooms","Parking","Housekeeping Services"],
     },
     {
       id: 2,
@@ -40,7 +40,7 @@ function Hostels() {
       price: "18,000 PKR",
       description: "Lorem ipsum dolor sit amet.",
       ratings: "⭐⭐⭐⭐⭐",
-      amenities: ["AC", "Parking", "Laundry", "TV"],
+      amenities: ["WiFi", "Laundry", "Security", "Mess","24/7 Security","Gym/Fitness Center","Study Area","Common Room/TV Lounge","Private Bathrooms","Parking","Housekeeping Services"],
     },
   ];
 

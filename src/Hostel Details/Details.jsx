@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useLocation } from "react-router-dom";
 import Booking from "../Booking Forms/Booking";
+import { Link } from "react-router-dom";
 
 const Details = () => {
   const location = useLocation();
@@ -15,12 +16,14 @@ const Details = () => {
     }
   }, [location.state]);
 
+  
+
   if (!hostel) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <>
       <Navbar />
-      <Booking isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+      {/* <Booking isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} /> */}
 
       <div className="bg-gray-100 p-4">
         <div className="max-w-6xl mx-auto">
@@ -49,7 +52,7 @@ const Details = () => {
                 <strong>Availability:</strong>{" "}
                 {hostel.availability ? "Available" : "Not Available"}
               </p>
-              <p className="text-gray-700 mt-4">{hostel.description}</p>
+              <p className="text-gray-700 mt-4"><strong>Description:</strong> {hostel.description}</p>
             </div>
 
             {/* Right Side */}
@@ -57,12 +60,14 @@ const Details = () => {
               <div className="flex max-w-[25vw] h-9 space-x-2">
                 <button
                   onClick={() => setIsBookingOpen(true)}
-                  className="bg-blue-500 text-white px-4 py-2 hover:cursor-pointer rounded w-full"
+                  className="text-blue-500 bg-white border-blue-600 border  h-9  hover:cursor-pointer rounded w-[8vw]"
                 >
                   Book Now
                 </button>
-                <button className="bg-gray-300 text-gray-700 hover:cursor-pointer px-4 py-2 rounded w-full">
+                <button className="bg-blue-600 text-white hover:cursor-pointer w-[12vw] rounded " >
+                <Link to={"/Inbox"} >
                   Chat with Owner
+                </Link>
                 </button>
               </div>
               <img
@@ -72,6 +77,8 @@ const Details = () => {
               />
             </div>
           </div>
+
+          <Booking isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} hostelPrice={hostel.price || "15,500/-"} />
 
           {/* Lower Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
@@ -113,18 +120,12 @@ const Details = () => {
             <div>
               <h2 className="text-xl font-bold">Key Amenities</h2>
               <ul className="list-disc pl-6 text-gray-700">
-                {hostel.amenities
-                  ? hostel.amenities.map((amenity, index) => (
-                      <li key={index}>{amenity}</li>
-                    ))
-                  : [
-                      "Room Types: Dorms, Private Rooms, and Family Rooms",
-                      "Shared Facilities: Common lounge, kitchen",
-                      "Free Services: WiFi, linen, lockers, and hot water",
-                      "Paid Services: Laundry, airport transfers, and tour bookings",
-                    ].map((defaultAmenity, index) => (
-                      <li key={index}>{defaultAmenity}</li>
-                    ))}
+                <li> <strong>Room Types:</strong>  Dorms, Private Rooms, and Family Rooms</li>
+                <li> <strong>Shared Facilities: </strong> Clean and modern bathrooms, common lounge, and kitchen</li>
+                <li> <strong>Free Services:</strong>  Wi-Fi, linen, towels, and breakfast</li>
+                <li> <strong>Paid Services: </strong> Laundry, airport transfers, and tour bookings</li>
+
+                
               </ul>
 
               <h2 className="text-xl text-center font-bold mt-4">User Reviews</h2>

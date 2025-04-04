@@ -1,51 +1,136 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
 import crossIcon from "../assets/Listing/cross.png";
 
-function Booking({ isOpen, onClose }) {
+function Booking({ isOpen, onClose, hostelPrice =0 }) {
+
   const [isPaymentStep, setIsPaymentStep] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    mobileNo: "",
-    roomType: "",
-    moveInDate: "",
-    lengthOfStay: "",
-    occupants: "",
-    message: "",
-  });
   const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false); // ✅ Move this to the top
+  const [paymentErrors, setPaymentErrors] = useState({});
+  const [isPaymentValid, setIsPaymentValid] = useState(false); // To track payment validation
+  const [hPrice, setHPrice] = useState(0);
 
-  if (!isOpen) return null;
 
-  const validateForm = () => {
+  const [formData, setFormData] = useState(() => {
+    const savedData = localStorage.getItem("bookingFormData");
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          firstName: "",
+          lastName: "",
+          email: "",
+          mobileNo: "",
+          roomType: "",
+          moveInDate: "",
+          lengthOfStay: "",
+          occupants: "",
+          message: "",
+        };
+        
+  });
+
+  useEffect(() => {
+    console.log("Payment step changed:", isPaymentStep);
+  }, [isPaymentStep]);
+
+
+  const validateForm = (data) => {
     let newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First Name is mandatory";
-    if (!formData.email) newErrors.email = "Email is mandatory";
-    if (!formData.mobileNo) newErrors.mobileNo = "Mobile No. is mandatory";
-    if (!formData.roomType) newErrors.roomType = "Please select a Room Type";
-    if (!formData.lengthOfStay) newErrors.lengthOfStay = "Please select Length of Stay";
-    if (!formData.occupants) newErrors.occupants = "Please select Number of Occupants";
+    if (!data.firstName.trim()) newErrors.firstName = "First Name is mandatory";
+    if (!data.email.trim()) newErrors.email = "Email is mandatory";
+    if (!data.mobileNo.trim()) newErrors.mobileNo = "Mobile No. is mandatory";
+    if (!data.roomType) newErrors.roomType = "Please select a Room Type";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const isValid = Object.keys(newErrors).length === 0;
+    setIsFormValid(isValid);
+    return isValid;
   };
+  console.log(hostelPrice);
 
   const handleSaveAndNext = (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm(formData)) {
+      console.log("Form validation failed!", errors);
+      return;
+    }
+
+    localStorage.setItem("bookingFormData", JSON.stringify(formData));
+    console.log("Form submitted successfully!", formData);
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 5000);
     setIsPaymentStep(true);
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+
+  useEffect(() => {
+    calculatePrice();
+    console.log(calculatePrice,"total")
+  }, [formData.lengthOfStay, formData.occupants]);
+
+  const calculatePrice = () => {
+    const stayMapping = {
+      "1 Month": 30,
+      "6 Months": 180,
+      "1 Year": 365,
+    };
+
+    const basePricePerDay = hostelPrice; // Example base price per person per day
+    const days = stayMapping[formData.lengthOfStay] || 0;
+    const people = parseInt(formData.occupants) || 0;
+
+    const totalPrice = days * people * basePricePerDay;
+    setHPrice(totalPrice);
   };
+
+
+  const validatePayment = (data) => {
+    let newPaymentErrors = {};
+    if (!data.paymentMethod || data.paymentMethod === "-- Please Select --") {
+      newPaymentErrors.paymentMethod = "Payment method is required";
+    }
+    if (!data.mobileNo.trim()) {
+      newPaymentErrors.mobileNo = "Mobile number is required";
+    }
+  
+    setPaymentErrors(newPaymentErrors);
+    const isValid = Object.keys(newPaymentErrors).length === 0;
+    setIsPaymentValid(isValid);
+    return isValid;
+  };
+  const handlePaymentChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setPaymentErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  
+    validatePayment({ ...formData, [name]: value });
+  };
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    if (!validatePayment(formData)) {
+      console.log("Payment validation failed!", paymentErrors);
+      return;
+    }
+  
+    // Process payment and proceed
+    console.log("Payment successfully processed!");
+    // Handle further submission (e.g., API call, success message, etc.)
+  };
+      
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+
+    validateForm({ ...formData, [name]: value });
+  };
+
+  
+  if (!isOpen) return null; // ✅ Ensure hooks are declared before any return statements
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 px-4 sm:px-6 md:px-8 lg:px-10">
@@ -66,35 +151,62 @@ function Booking({ isOpen, onClose }) {
 
         {isPaymentStep ? (
           <>
-            <h2 className="text-xl font-semibold mb-4">Payment</h2>
-            <p className="text-gray-600 mb-4">Complete your payment below.</p>
-            <h3 className="text-2xl font-bold text-center">Rs. 25,000</h3>
-
-            <label className="block mt-4">Pay Using</label>
-            <SelectField
-              name="paymentMethod"
-              options={["-- Please Select --", "Credit Card", "Bank Transfer", "JazzCash", "Easypaisa"]}
-              onChange={handleChange}
-            />
-
-            <label className="block mt-4">Add Your Number</label>
-            <InputField type="text" placeholder="Enter your mobile number" />
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-end mt-4">
-              <button type="button" onClick={() => setIsPaymentStep(false)} className="bg-gray-300 px-4 py-2 rounded">
-                Back
-              </button>
-              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                Pay Rs. 25,000
+          <h2 className="text-xl font-semibold mb-4">Payment</h2>
+          <div className="h-0.5 w-full bg-black"></div>
+          <h3 className="text-2xl font-bold text-center">
+  Rs. {hPrice ? hPrice : "N/A"}
+</h3>    
+          <label className="block mt-4">Pay Using</label>
+          <SelectField
+            name="paymentMethod"
+            value={formData.paymentMethod}
+            options={["-- Please Select --", "Credit Card", "Bank Transfer", "JazzCash", "Easypaisa"]}
+            onChange={handlePaymentChange}
+          />
+          {paymentErrors.paymentMethod && (
+            <p className="text-red-500 text-sm">{paymentErrors.paymentMethod}</p>
+          )}
+    
+          <label className="block mt-4 ml-5">Add Your Number</label>
+          <div className="flex justify-between m-6">
+            <div className="flex flex-col align-baseline">
+              <InputField
+                type="text"
+                name="mobileNo"
+                placeholder="Enter your Mobile No."
+                value={formData.mobileNo}
+                onChange={handlePaymentChange}
+                className={paymentErrors.mobileNo ? "border-red-500" : ""}
+              />
+              {paymentErrors.mobileNo && (
+                <p className="text-red-500 text-sm">{paymentErrors.mobileNo}</p>
+              )}
+            </div>
+    
+            <div className="flex flex-col sm:flex-row gap-3 justify-end ">
+              <button
+                type="submit"
+                onClick={handlePaymentSubmit}
+                className="bg-blue-500 text-white px-10 h-12 rounded hover:cursor-pointer"
+                disabled={!isPaymentValid} // Disable button until valid
+              >
+                Pay Rs. {hPrice}
               </button>
             </div>
-          </>
+          </div>
+        </>
         ) : (
           <>
             <h2 className="text-xl font-semibold mb-4">Booking Form</h2>
-            <p className="text-gray-600 mb-4">Please fill out the form below. All fields are mandatory!</p>
+            <div className="h-0.5 w-full bg-black"></div>
+            <p className="text-gray-600 mb-4">
+              Please fill out the form below. All fields are mandatory!
+            </p>
 
-            <form className="space-y-3" onSubmit={handleSaveAndNext}>
+            <form
+              className="space-y-3 max-h-[70vh] overflow-y-auto p-2"
+              onSubmit={handleSaveAndNext}
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label>First Name</label>
@@ -106,34 +218,118 @@ function Booking({ isOpen, onClose }) {
                     onChange={handleChange}
                     className={errors.firstName ? "border-red-500" : ""}
                   />
-                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm">{errors.firstName}</p>
+                  )}
                 </div>
                 <div>
                   <label>Last Name</label>
-                  <InputField type="text" name="lastName" placeholder="Enter your Last Name" onChange={handleChange} />
+                  <InputField
+                    type="text"
+                    name="lastName"
+                    placeholder="Enter your Last Name"
+                    onChange={handleChange}
+                    className={errors.lastName ? "border-red-500" : ""}
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-sm">{errors.lastName}</p>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <InputField type="email" name="email" placeholder="Enter your Email" value={formData.email} onChange={handleChange} className={errors.email ? "border-red-500" : ""} />
-                <InputField type="text" name="mobileNo" placeholder="Enter your Mobile No." value={formData.mobileNo} onChange={handleChange} className={errors.mobileNo ? "border-red-500" : ""} />
+                <label>Email</label>
+                <label>Mobile no.</label>
+                <InputField
+                  type="email"
+                  name="email"
+                  placeholder="Enter your Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className={errors.email ? "border-red-500" : ""}
+                />
+
+                <InputField
+                  type="text"
+                  name="mobileNo"
+                  placeholder="Enter your Mobile No."
+                  value={formData.mobileNo}
+                  onChange={handleChange}
+                  className={errors.mobileNo ? "border-red-500" : ""}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+
+                {errors.mobileNo && (
+                  <p className="text-red-500 text-sm">{errors.mobileNo}</p>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <SelectField name="roomType" options={["-- Please Select Room Type --", "Single", "Shared"]} onChange={handleChange} />
-                <InputField type="date" name="moveInDate" onChange={handleChange} />
+                <label>Room type</label>
+                <label>Preferred Move-in Date</label>
+                <SelectField
+                  name="roomType"
+                  options={[
+                    "-- Please Select Room Type --",
+                    "Single",
+                    "Shared",
+                  ]}
+                  onChange={handleChange}
+                />
+                <InputField
+                  type="date"
+                  name="moveInDate"
+                  onChange={handleChange}
+                />
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <SelectField name="lengthOfStay" options={["-- Please Select Length of Stay --", "1 Month", "6 Months", "1 Year"]} onChange={handleChange} />
-                <SelectField name="occupants" options={["-- Please Select Number of Occupants --", "1", "2", "3"]} onChange={handleChange} />
+                <label>Length of stay</label>
+                <label>Number of Occupants</label>
+                <SelectField
+                  name="lengthOfStay"
+                  options={[
+                    "-- Please Select Length of Stay --",
+                    "1 Month",
+                    "6 Months",
+                    "1 Year",
+                  ]}
+                  onChange={handleChange}
+                />
+                <SelectField
+                  name="occupants"
+                  options={[
+                    "-- Please Select Number of Occupants --",
+                    "1",
+                    "2",
+                    "3",
+                  ]}
+                  onChange={handleChange}
+                />
               </div>
 
-              <textarea placeholder="Type your message (optional)" className="border p-2 rounded w-full" name="message" onChange={handleChange}></textarea>
+              <textarea
+                placeholder="Type your message (optional)"
+                className="border p-2 rounded w-full"
+                name="message"
+                onChange={handleChange}
+              ></textarea>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-end mt-4">
-                <button type="button" onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">Reset</button>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Save & Next</button>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="bg-gray-300 px-4 py-2 rounded"
+                >
+                  Reset
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"
+                >
+                  Save & Next
+                </button>
               </div>
             </form>
           </>

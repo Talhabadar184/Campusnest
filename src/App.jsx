@@ -13,6 +13,13 @@ import Details from "./Hostel Details/Details";
 import Booking from "./Booking Forms/Booking";
 import Payment from "./Booking Forms/Payment";
 import Ratings from "./Ratings Feedback/Ratings";
+import Notifications from "./components/Notifications";
+import Profile from "./Profile/Profile";
+import MyProfile from "./Profile/Myprofile";
+import Tennet from "./Dashboard/Tennet";
+import Owner from "./Dashboard/Owner";
+import Inbox from "./Inbox/Inbox"
+
 
 function AppRoutes() {
   return (
@@ -37,6 +44,12 @@ function AppRoutes() {
       <Route path="Payment" element={<Payment />} />
     </Route>
     <Route path="/Ratings" element={<Ratings />} />
+    <Route path="/Notifications" element={<Notifications />} />
+    <Route path="/Profile" element={<Profile />} />
+    <Route path="/Myprofile" element={<MyProfile />} />
+    <Route path="/Tennet" element={<Tennet />} />
+    <Route path="/Owner" element={<Owner />} />
+    <Route path="/Inbox" element={<Inbox />} />
 
   </RouterRoutes>
 </BrowserRouter>

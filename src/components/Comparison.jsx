@@ -5,7 +5,7 @@ const Comparison = ({ open, onClose, hostels }) => {
   if (!open) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 flex justify-center items-center p-4">
+    <div className="fixed  top-0 left-0 w-full h-full bg-transparent bg-opacity-50 flex justify-center items-center p-4">
       {/* Dark overlay background */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg text-center relative">
@@ -19,7 +19,7 @@ const Comparison = ({ open, onClose, hostels }) => {
 
         <h2 className="text-xl font-bold mb-4">Hostel Comparison</h2>
 
-        <div>
+        <div className="max-h-[70vh] overflow-y-auto p-2">
           {hostels.length === 2 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {hostels.map((hostel, index) => (
@@ -51,7 +51,7 @@ const Comparison = ({ open, onClose, hostels }) => {
                         key={i}
                         className="flex justify-between border-b py-1 px-3"
                       >
-                        <span className="text-left">{amenity.name}</span>
+                        <span className="text-left">{amenity}</span>
                         <span className="text-right font-semibold">
                           {amenity.available ? "Yes" : "No"}
                         </span>

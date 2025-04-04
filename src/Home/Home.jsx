@@ -15,7 +15,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useRef } from "react";
 import Testimonials from "../components/Testimonials";
-import search from "../assets/Register/searchicon.png"
+import search from "../assets/Home/search.png"
 
 function Home() {
   const [institution, setInstitution] = useState("");
@@ -92,7 +92,7 @@ function Home() {
       <div className="bg-gray-100">
       <HomeNavbar />
         {/* Heading Section */}
-        <div className="flex flex-col lg:flex-row items-center items-center justify-center min-h-[90vh] lg:max-w-[95vw] rounded-2xl mx-auto bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 mt-6">
+        <div className="flex flex-col  items-center justify-center min-h-[90vh] lg:max-w-[95vw] rounded-2xl mx-auto bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 mt-6">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2 text-center">
             Find Your Ideal Hostel in Lahore
           </h1>
@@ -144,10 +144,10 @@ function Home() {
 
         {/* How It Works Section */}
         <div className="max-w-6xl mx-auto my-16 px-6">
-          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+          <h2 className="text-2xl font-semibold text-blue-800 text-center  mb-6">
             How It Works?
           </h2>
-          <div className="border-t border-gray-300 w-20 mx-auto mb-16"></div>
+          <div className="border-t border-black w-20 mx-auto mb-16"></div>
 
           <div className="flex flex-col md:flex-row items-center justify-center text-center gap-10">
             {/* For Tenants */}
@@ -197,49 +197,54 @@ function Home() {
 
         {/* Newly Listed Hostels Section */}
         <div className="max-w-6xl mx-auto my-16 px-6 text-center">
-          <h1 className="text-3xl font-bold text-center mb-6">
+          <h1 className="text-3xl text-blue-800 font-bold text-center mb-6">
             Newly Listed Hostels
           </h1>
+          <div className="border-t border-black w-20 mx-auto mb-16"></div>
+          <div className="relative">
+  <Swiper
+    modules={[Navigation, Pagination]}
+    spaceBetween={20}
+    slidesPerView={3}
+    pagination={{ clickable: true }}
+    breakpoints={{
+      1024: { slidesPerView: 3 },
+      768: { slidesPerView: 2 },
+      0: { slidesPerView: 1 },
+    }}
+    onSwiper={(swiper) => (swiperRef.current = swiper)}
+    className="custom-swiper relative pb-16 mt-10"
+  >
+    {hostels.map((hostel) => (
+      <SwiperSlide key={hostel.id}>
+        <div className="bg-white shadow-md rounded-lg p-4">
+          <img
+            src={hostel.image}
+            alt={hostel.name}
+            className="w-full h-48 object-cover rounded-md"
+          />
+          <h2 className="text-lg font-semibold mt-2">{hostel.name}</h2>
+          <p className="text-gray-600">{hostel.desc}</p>
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+  
+  {/* Pagination Dots Positioned Outside */}
 
-          <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={20}
-            slidesPerView={3}
-            pagination={{ clickable: true }}
-            breakpoints={{
-              1024: { slidesPerView: 3 },
-              768: { slidesPerView: 2 },
-              0: { slidesPerView: 1 },
-            }}
-            onSwiper={(swiper) => (swiperRef.current = swiper)}
-            className="pb-8"
-          >
-            {hostels.map((hostel) => (
-              <SwiperSlide key={hostel.id}>
-                <div className="bg-white shadow-md rounded-lg p-4">
-                  <img
-                    src={hostel.image}
-                    alt={hostel.name}
-                    className="w-full h-48 object-cover rounded-md"
-                  />
-                  <h2 className="text-lg font-semibold mt-2">{hostel.name}</h2>
-                  <p className="text-gray-600">{hostel.desc}</p>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+</div>
 
           {/* Custom Navigation Buttons */}
-          <div className="w-full flex justify-center md:justify-end p-4">
+          <div className="w-full flex justify-center  md:justify-end p-4">
             <button
               onClick={handlePrev}
-              className="p-2 border hover:cursor-pointer rounded-full text-blue-600"
+              className="p-2  hover:cursor-pointer rounded-full text-blue-600"
             >
               <img src={leftArrow} alt="Left" className="w-6 h-6" />
             </button>
             <button
               onClick={handleNext}
-              className="p-2 border hover:cursor-pointer rounded-full text-blue-600 ml-2 md:ml-4"
+              className="p-2  hover:cursor-pointer rounded-full text-blue-600 ml-2 "
             >
               <img src={rightArrow} alt="Right" className="w-6 h-6" />
             </button>

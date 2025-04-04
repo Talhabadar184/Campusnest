@@ -1,19 +1,25 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/Signup/signuplogo.png";
 import hamburger from "../assets/Register/hamburgericon.png";
 import search from "../assets/Register/searchicon.png";
 import notification from "../assets/Register/notificationicon.png";
 import profile from "../assets/Register/profileicon.png";
+import { Link } from "react-router-dom";
 
 function Navbar() {
-  
   const [showSearch, setShowSearch] = useState(false);
-  const [userName, setUserName] = useState("User"); 
+  const [userName, setUserName] = useState("User");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
-    const storedName = localStorage.getItem("userName");
-    if (storedName) {
-      setUserName(storedName);
+    const storedProfile = localStorage.getItem("userProfile");
+    if (storedProfile) {
+      const profileData = JSON.parse(storedProfile);
+      setUserName(profileData.firstName || "User"); // Default to "User" if firstName is missing
     }
   }, []);
 
@@ -30,14 +36,14 @@ function Navbar() {
           showSearch ? "w-2/3 md:w-1/3" : "w-[2.5rem] md:w-1/3"
         }`}
       >
-        {/* Hamburger Icon  */}
+        {/* Hamburger Icon */}
         <img
           src={hamburger}
           alt="Hamburger Menu"
           className="h-4 md:h-3 m-1 cursor-pointer"
         />
 
-        {/* Search Bar  */}
+        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search"
@@ -46,7 +52,7 @@ function Navbar() {
           } md:w-full md:block`}
         />
 
-        {/* Search Icon  */}
+        {/* Search Icon */}
         <img
           src={search}
           alt="Search Icon"
@@ -62,13 +68,28 @@ function Navbar() {
           <img src={notification} alt="Notification" className="h-5" />
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
         </div>
-<div className="h-1 w-1 caret-neutral-800"></div>
-        {/* User Profile  */}
-        <div className="flex items-center cursor-pointer gap-1">
-          <img src={profile} alt="profile" className="h-4" />
-          <span className="hidden md:block text-gray-700 font-medium">{userName}</span>
-          <span className="ml-1">▼</span>
+        <div className="h-1 w-1 caret-neutral-800"></div>
+
+        {/* User Profile */}
+      <div 
+        className="flex items-center cursor-pointer gap-1" 
+        onClick={toggleDropdown}
+      >
+        <img src={profile} alt="Profile" className="h-4" />
+        <span className="hidden md:block text-gray-700 font-medium">{userName}</span>
+        <span className="ml-1">▼</span>
+      </div>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <div className="absolute right-0 mt-44 bg-white shadow-md rounded-md w-40">
+          <ul>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer"><Link to={"/Myprofile"}>My Profile</Link></li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Settings</li>
+            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Logout</li>
+          </ul>
         </div>
+      )}
       </div>
     </nav>
   );

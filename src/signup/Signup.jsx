@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
 import Inputfield from "../components/Inputfield";
 import Selectfield from "../components/Selectfield";
 import signuplogo from "../assets/Signup/signuplogo.png";
@@ -91,7 +90,7 @@ function Signup() {
 
             <div className="pt-6 flex justify-center">
               {/* Button */}
-              <Button className="w-full sm:w-auto px-6 py-2 text-lg hover:text-[18px]" text={"SIGN UP"} />
+              <button className="w-[20vw] rounded-[10px] text-white  bg-blue-900 px-6 py-2 text-lg hover:text-[18px]"> SIGN UP </button>
             </div>
           </form>
         </div>

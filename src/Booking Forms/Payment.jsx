@@ -8,6 +8,7 @@ const Payment = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center  bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg w-[90%] md:w-[50%] shadow-lg relative border border-blue-500">
         {/* Close Button */}
+        <h1>Booking Form</h1>
         <img
           src={crossIcon}
           alt="Close"

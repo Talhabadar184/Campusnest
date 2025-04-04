@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+.custom-swiper .swiper-pagination {
+  position: absolute;
+  bottom: -40px; /* Push dots further down */
+  left: 50%;
+  transform: translateY(100%);
+  width: auto; /* Ensures it doesn't stretch */
+}
+
+.swiper-pagination-bullet {
+  background-color: #333; /* Customize color */
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #000;
+  opacity: 1;
+}

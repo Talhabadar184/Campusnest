@@ -5,7 +5,7 @@ import Selectfield from "../components/Selectfield";
 import upload from "../assets/Register/upload.png";
 import Footer from "../components/Footer";
 
-const Register = () => {
+const Profile = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -50,20 +50,8 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Check if any field is empty
-    for (const key in formData) {
-      if (formData[key] === "" || formData[key] === null) {
-        alert(`Please fill in all fields before submitting.`);
-        return;
-      }
-    }
-  
-    // Save to localStorage if all fields are filled
-    localStorage.setItem("userProfile", JSON.stringify(formData));
-    alert("Profile saved successfully!");
+    console.log("Form Data Submitted:", formData);
   };
-  
 
   return (
     <>
@@ -123,24 +111,12 @@ const Register = () => {
                   value={formData.gender}
                   onChange={handleChange}
                 />
-                <Field
-                  label="CNIC"
-                  placeholder="Enter your CNIC number"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="\d{13}"
-                  maxlength="13"
-                  name="cnic"
-                  value={formData.cnic}
-                  onChange={handleChange}
-                />
-              </div>
-              {/* Upload Photo */}
-              <div className="mt-9">
+                {/* Upload Photo */}
+              <div >
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Upload your photo
                 </label>
-                <div className="relative w-[28%]">
+                <div className="relative w-[20vw]">
                   <input
                     type="file"
                     id="fileUpload"
@@ -149,13 +125,15 @@ const Register = () => {
                   />
                   <label
                     htmlFor="fileUpload"
-                    className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md cursor-pointer w-full"
+                    className="flex items-center justify-center gap-2 bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer w-full"
                   >
                     <img src={upload} alt="upload" className="h-5 w-5" />
                     <span>Upload</span>
                   </label>
                 </div>
               </div>
+              </div>
+              
               {/* Permanent Address  */}
               <div className="mb-6">
                 <h3 className="text-lg font-medium text-blue-600 pt-4 mb-3">
@@ -238,4 +216,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Profile;

@@ -70,7 +70,7 @@ const Testimonials = () => {
         modules={[Navigation, Pagination]}
         spaceBetween={20}
         slidesPerView={3}
-        pagination={{ clickable: true }}
+        
         breakpoints={{
           1024: { slidesPerView: 3 },
           768: { slidesPerView: 2 },
@@ -101,13 +101,13 @@ const Testimonials = () => {
       <div className="w-full flex justify-center md:justify-end p-4">
         <button
           onClick={handlePrevTestimonials}
-          className="p-2 border hover:cursor-pointer rounded-full text-blue-600"
+          className="p-2  hover:cursor-pointer rounded-full text-blue-600"
         >
           <img src={leftArrow} alt="Left" className="w-6 h-6" />
         </button>
         <button
           onClick={handleNextTestimonials}
-          className="p-2 border hover:cursor-pointer rounded-full text-blue-600 ml-2 md:ml-4"
+          className="p-2  hover:cursor-pointer rounded-full text-blue-600 ml-2 "
         >
           <img src={rightArrow} alt="Right" className="w-6 h-6" />
         </button>

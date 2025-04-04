@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import InputField from "../components/InputField";
 import SelectField from "../components/SelectField";
+import left from "../assets/Ratings/left.png"
+import right from "../assets/Ratings/right.png"
 
 const Ratings = () => {
   const [feedback, setFeedback] = useState("");
@@ -24,7 +26,7 @@ const Ratings = () => {
       id: 1,
       name: "Kamran Ali",
       role: "LUMS Student",
-      rating: 4.5,
+      rating:  "⭐⭐⭐⭐4.5",
       review:
         "Lahore Backpackers exceeded all my expectations! The hostel is clean, comfortable, and well-maintained, offering a cozy environment perfect for travelers. The staff is incredibly friendly and helpful, always ready to provide tips on local attractions and hidden gems in Lahore. I highly recommend Lahore Backpackers to anyone looking for a memorable and budget-friendly experience in Lahore.",
       profileImg: "https://via.placeholder.com/50",
@@ -33,7 +35,7 @@ const Ratings = () => {
       id: 2,
       name: "Ayesha Khan",
       role: "Travel Blogger",
-      rating: 5,
+      rating: "⭐⭐⭐⭐⭐5",
       review:
         "This was the best hostel experience I’ve had! The location is amazing, and the service is outstanding. Will definitely stay here again.",
       profileImg: "https://via.placeholder.com/50",
@@ -49,16 +51,16 @@ const Ratings = () => {
     <Navbar />
     <div className="min-h-screen bg-gray-100 flex flex-col">
       
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl text-blue-500 font-semibold mb-4">Ratings and Feedback</h2>
+      <div className="container mx-auto px-4 py-6">
+        <h2 className="text-2xl text-blue-700  ml-20 mb-4">Ratings and Feedback</h2>
 
         {/* Feedback Form */}
-        <div className="bg-white p-6 rounded-lg shadow-md max-w-[80vw]  mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-centers">
+        <div className="bg-white p-6 border border-gray-400 rounded-lg shadow-md max-w-[80vw]  mx-auto">
+          <form onSubmit={handleSubmit} className="space-y-4 flex flex-col justify-centers items-center">
             {/* Rating & Recommendation Fields */}
-            <div className=" flex justify-center  gap-4 w-[60vw]">
+            <div className=" flex justify-center items-center  gap-12 w-[60vw]">
               <div className="w-[20vw]">
-                <label className="block font-medium">Your Ratings</label>
+                <label className="block ">Your Ratings</label>
                 <SelectField
                   options={["-- Please Select --", "1", "2", "3", "4", "5"]}
                   value={rating}
@@ -66,7 +68,7 @@ const Ratings = () => {
                 />
               </div>
               <div className="w-[20vw]">
-                <label className="block text-1 w-80 font-medium">
+                <label className="block text-1 w-80 ">
                   Would you like to recommend this hostel?
                 </label>
                 <SelectField
@@ -78,17 +80,21 @@ const Ratings = () => {
             </div>
 
             {/* Feedback Input */}
-            <div className=" flex flex-col justify-center items-center">
-            <label className="block font-medium ">Your Feedback</label>
-            <InputField
-              type="text"
-              placeholder="Type your feedback..."
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            />
-            </div>
+            <div className="flex flex-col w-[45vw] h-[20vh]">
+  <label className="block font-medium mb-1">Your Feedback</label>
+  <input
+    type="text"
+    placeholder="Type your feedback"
+    value={feedback}
+    onChange={(e) => setFeedback(e.target.value)}
+    
+    className="w-full h-[20vh] p-3 rounded-lg bg-gray-100 text-gray-500 border border-gray-300 outline-none resize-none"
+  />
+</div>
+
+
             {/* Buttons */}
-            <div className="flex justify-end gap-3">
+            <div className="w-[45vw] flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -96,7 +102,7 @@ const Ratings = () => {
                   setRating("");
                   setRecommend("");
                 }}
-                className="bg-gray-300 px-4 py-2 rounded"
+                className="bg-white border border-blue-500 text-blue-400 px-4 py-2 rounded"
               >
                 Reset
               </button>
@@ -111,23 +117,24 @@ const Ratings = () => {
         </div>
 
         {/* User Reviews Section */}
-        <div className="mt-8 border rounded-lg p-6 shadow-md max-w-3xl mx-auto">
+        <div className="mt-8 min-h-screen  rounded-lg p-6 shadow-md max-w-6xl mx-auto">
           <h3 className="text-xl font-semibold mb-4 text-center">User Reviews</h3>
+          
           {currentReviews.map((review) => (
             <div key={review.id} className="bg-white p-4 rounded-lg shadow-md">
               <div className="flex items-center gap-4">
                 <img
                   src={review.profileImg}
                   alt="Profile"
-                  className="w-12 h-12 rounded-full"
+                  className="w-12 h-12 ml-5 border border-black rounded-full"
                 />
                 <div>
                   <h4 className="font-semibold">{review.name}</h4>
                   <p className="text-sm text-gray-500">{review.role}</p>
-                  <p className="text-yellow-500">⭐ {review.rating} / 5</p>
+                  <p > {review.rating} / 5</p>
                 </div>
               </div>
-              <p className="mt-2">{review.review}</p>
+              <p className="mt-2 m-12 ">{review.review}</p>
             </div>
           ))}
 
@@ -138,7 +145,10 @@ const Ratings = () => {
               disabled={currentPage === 1}
               className={`px-3 py-1 rounded ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"}`}
             >
-              ← Back
+              <div className="flex gap-1 text-blue-600 hover:cursor-pointer ">
+                <img src={left} alt="" className="h-5 justify-center items-center" />
+                Back
+                </div>
             </button>
             <span className="text-sm">
               {currentPage} of {totalPages} records
@@ -148,7 +158,11 @@ const Ratings = () => {
               disabled={currentPage === totalPages}
               className={`px-3 py-1 rounded ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"}`}
             >
-              Next →
+              <div className="flex gap-1 text-blue-600 hover:cursor-pointer ">
+                Next
+                <img src={right} alt="" className="h-5 justify-center items-center" />
+
+                </div>
             </button>
           </div>
         </div>
