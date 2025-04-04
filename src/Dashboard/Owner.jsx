@@ -9,11 +9,11 @@ function Owner() {
     const [messages, setMessages] = useState([]);
 
   const hostelData = [
-    { hostelName: "Ali Town Hostel", ownerName: "Ahmed Raza" },
-    { hostelName: "Lahore Nest Hostel", ownerName: "Shoaib Noor" },
-    { hostelName: "Lahore Haven Hostel", ownerName: "Tayyab Ahmed" },
-    { hostelName: "Skyline Hostel", ownerName: "Muhammad Iqbal" },
-    { hostelName: "Lahore Backpackers", ownerName: "Zubair Khan" }
+    { id: 1,hostelName: "Ali Town Hostel", tenantName: "Ali Khan", messages: [] },
+    { id: 2,hostelName: "Lahore Nest Hostel", tenantName: "Sara Ali", messages: [] },
+    { id: 3,hostelName: "Lahore Haven Hostel", tenantName: "Tariq Jamil", messages: [] },
+    { id: 4,hostelName: "Skyline Hostel", tenantName: "Asad Malik", messages: [] },
+    { id: 5,hostelName: "Ali Town Hostel", tenantName: "Zainab Fatima", messages: [] },
   ];
 
   useEffect(() => {
@@ -45,12 +45,7 @@ function Owner() {
     setHostels(hostels.filter((hostel) => hostel.id !== id));
   };
 
-//   useEffect(() => {
-//     const storedData = localStorage.getItem("bookingFormData");
-//     if (storedData) {
-//       setBookingData(JSON.parse(storedData));
-//     }
-//   }, []);
+
 
   return (
     <>
@@ -150,7 +145,7 @@ function Owner() {
               <thead>
                 <tr className="border-b border-gray-300">
                   <th className="text-left py-2">Hostel Name</th>
-                  <th className="text-left py-2">Owner Name</th>
+                  <th className="text-left py-2">Tenant Name</th>
                   <th className="text-left py-2">Action</th>
                 </tr>
               </thead>
@@ -160,7 +155,7 @@ function Owner() {
                   return (
                     <tr key={index} className={`border-b border-gray-200 ${message ? "bg-yellow-100" : ""}`}>
                       <td className="py-2">{hostel.hostelName}</td>
-                      <td className="py-2">{hostel.ownerName}</td>
+                      <td className="py-2">{hostel.tenantName}</td>
                       <td className="py-2">
                         <Link to="/Inbox"
                         state={{

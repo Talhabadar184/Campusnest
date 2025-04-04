@@ -65,9 +65,19 @@ const Details = () => {
                   Book Now
                 </button>
                 <button className="bg-blue-600 text-white hover:cursor-pointer w-[12vw] rounded " >
-                <Link to={"/Inbox"} >
-                  Chat with Owner
-                </Link>
+                <Link 
+  to="/Inbox"
+  state={{
+    role: "tenant", // or "owner"
+    hostelName: hostel.hostelName,
+    tenantName: hostel.tenantName, // make sure these values exist
+    ownerName: hostel.ownerName,
+  }}
+>
+  Chat with Owner
+</Link>
+
+
                 </button>
               </div>
               <img
