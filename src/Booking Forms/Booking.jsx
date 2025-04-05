@@ -63,13 +63,17 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 5000);
     setIsPaymentStep(true);
+    calculatePrice();
   };
 
 
   useEffect(() => {
-    calculatePrice();
-    console.log(calculatePrice,"total")
-  }, [formData.lengthOfStay, formData.occupants]);
+    if (formData.lengthOfStay && formData.occupants) {
+      calculatePrice();
+    }
+  }, [formData.lengthOfStay, formData.occupants, hostelPrice]);
+  
+  
 
   const calculatePrice = () => {
     const stayMapping = {
@@ -77,14 +81,22 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
       "6 Months": 180,
       "1 Year": 365,
     };
-
-    const basePricePerDay = hostelPrice; // Example base price per person per day
+  
+    const basePricePerDay = Number(hostelPrice) || 0;
     const days = stayMapping[formData.lengthOfStay] || 0;
-    const people = parseInt(formData.occupants) || 0;
-
+    const people = Number(formData.occupants) || 0;
+  
+    if (days === 0 || people === 0 || basePricePerDay === 0) {
+      setHPrice(0); // Ensure it never becomes NaN
+      return;
+    }
+  
     const totalPrice = days * people * basePricePerDay;
     setHPrice(totalPrice);
+    console.log("Calculated Price:", totalPrice);
   };
+  
+  
 
 
   const validatePayment = (data) => {
@@ -115,9 +127,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
       return;
     }
   
-    // Process payment and proceed
     console.log("Payment successfully processed!");
-    // Handle further submission (e.g., API call, success message, etc.)
   };
       
 
@@ -130,7 +140,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
   };
 
   
-  if (!isOpen) return null; // ✅ Ensure hooks are declared before any return statements
+  if (!isOpen) return null; 
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 px-4 sm:px-6 md:px-8 lg:px-10">
@@ -154,8 +164,9 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
           <h2 className="text-xl font-semibold mb-4">Payment</h2>
           <div className="h-0.5 w-full bg-black"></div>
           <h3 className="text-2xl font-bold text-center">
-  Rs. {hPrice ? hPrice : "N/A"}
-</h3>    
+  Rs. {isNaN(hPrice) || hPrice === 0 ? "N/A" : hPrice}
+</h3>
+
           <label className="block mt-4">Pay Using</label>
           <SelectField
             name="paymentMethod"
@@ -271,8 +282,9 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
                 <label>Preferred Move-in Date</label>
                 <SelectField
                   name="roomType"
+                  value={formData.roomType}
                   options={[
-                    "-- Please Select Room Type --",
+                    "-- Please Select   value={formData.roomType} Type --",
                     "Single",
                     "Shared",
                   ]}
@@ -289,6 +301,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
                 <label>Number of Occupants</label>
                 <SelectField
                   name="lengthOfStay"
+                  value={formData.lengthOfStay}
                   options={[
                     "-- Please Select Length of Stay --",
                     "1 Month",
@@ -299,6 +312,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }) {
                 />
                 <SelectField
                   name="occupants"
+                  value={formData.occupants}
                   options={[
                     "-- Please Select Number of Occupants --",
                     "1",

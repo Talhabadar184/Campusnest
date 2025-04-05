@@ -141,13 +141,7 @@ function Tennet() {
                       <td className="py-2">{hostel.ownerName}</td>
                       <td className="py-2">
                         <Link
-  to="/Inbox"
-  state={{
-    role: "tenant", // or "owner"
-    hostelName: hostel.hostelName,
-    tenantName: hostel.tenantName, // make sure these values exist
-    ownerName: hostel.ownerName,
-  }}
+  
   className="text-blue-500 font-medium hover:underline"
 >
   View Chat {message ? "🔔" : ""}
