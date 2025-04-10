@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import Booking from "../Booking Forms/Booking";
 import { Link } from "react-router-dom";
 
+
 const Details = () => {
   const location = useLocation();
   const [hostel, setHostel] = useState(null);
@@ -151,9 +152,9 @@ const Details = () => {
                   - {hostel.reviewer || "Saad Raza, UMT Lahore Student"}
                 </p>
               </div>
-              <p className="mt-2 text-blue-600 text-center cursor-pointer">
+              <Link to={"/Ratings"} className="mt-2 text-blue-600 text-center cursor-pointer">
                 See All Reviews | Help Us
-              </p>
+              </Link>
 
               {/* Quick Links */}
               <div className="mt-6">

@@ -21,10 +21,15 @@ const Register = () => {
     district: "",
     state: "",
   });
+  const [errors, setErrors] = useState({});
+
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+  
 
   const handleFileChange = (e) => {
     setFormData({ ...formData, photo: e.target.files[0] });
@@ -48,21 +53,42 @@ const Register = () => {
     });
   };
 
+  const validateForm = (data) => {
+    let newErrors = {};
+    if (!data.firstName.trim()) newErrors.firstName = "First Name is required";
+    if (!data.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!data.email.trim()) newErrors.email = "Email is required";
+    if (!data.mobile.trim()) newErrors.mobile = "Mobile Number is required";
+    if (!data.gender) newErrors.gender = "Gender is required";
+    if (!data.cnic.trim()) newErrors.cnic = "CNIC is required";
+    if (!data.photo) newErrors.photo = "Photo is required";
+    if (!data.house.trim()) newErrors.house = "House Number is required";
+    if (!data.street.trim()) newErrors.street = "Street Name is required";
+    if (!data.postalCode.trim()) newErrors.postalCode = "Postal Code is required";
+    if (!data.city.trim()) newErrors.city = "City is required";
+    if (!data.district) newErrors.district = "District is required";
+    if (!data.state) newErrors.state = "State is required";
+  
+    return newErrors;
+  };
+  
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    const validationErrors = validateForm(formData);
   
-    // Check if any field is empty
-    for (const key in formData) {
-      if (formData[key] === "" || formData[key] === null) {
-        alert(`Please fill in all fields before submitting.`);
-        return;
-      }
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
   
-    // Save to localStorage if all fields are filled
     localStorage.setItem("userProfile", JSON.stringify(formData));
     alert("Profile saved successfully!");
+    setErrors({}); // Clear errors
   };
+  
+  
   
 
   return (
@@ -85,13 +111,17 @@ const Register = () => {
                 Basic Info
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 mb-2 gap-4">
-                <Field
+                <div><Field
                   label="First Name"
                   placeholder="Enter your first name"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
                 />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                </div>
+                
+                <div>
                 <Field
                   label="Last Name"
                   placeholder="Enter your last name"
@@ -99,6 +129,10 @@ const Register = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                 />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                </div>
+                
+                <div>
                 <Field
                   label="Email"
                   placeholder="Enter your email"
@@ -107,6 +141,10 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                 />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                </div>
+                
+                <div>
                 <Field
                   label="Mobile Number"
                   placeholder="Enter your mobile number"
@@ -115,6 +153,10 @@ const Register = () => {
                   value={formData.mobile}
                   onChange={handleChange}
                 />
+                {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+                </div>
+                
+
                 <Selectfield
                   label="Gender"
                   type="select"
@@ -123,6 +165,8 @@ const Register = () => {
                   value={formData.gender}
                   onChange={handleChange}
                 />
+
+                <div>
                 <Field
                   label="CNIC"
                   placeholder="Enter your CNIC number"
@@ -134,6 +178,10 @@ const Register = () => {
                   value={formData.cnic}
                   onChange={handleChange}
                 />
+                {errors.cnic && <p className="text-red-500 text-sm">{errors.cnic}</p>}
+                </div>
+                
+
               </div>
               {/* Upload Photo */}
               <div className="mt-9">

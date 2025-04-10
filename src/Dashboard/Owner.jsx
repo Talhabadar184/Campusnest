@@ -70,7 +70,7 @@ function Owner() {
       Manage Hostels
     </h2>
     <button className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer">
-      View Details
+      Hostels
     </button>
   </div>
   <div className="w-full h-0.5 bg-gray-400 mb-3"></div>

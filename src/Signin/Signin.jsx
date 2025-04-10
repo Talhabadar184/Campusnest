@@ -1,22 +1,38 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Import useNavigate & Link
-import InputField from "../components/Inputfield"; // Importing InputField Component
-import logo from "../assets/Signin/logo.png"; // Importing logo
+import { useNavigate, Link } from "react-router-dom"; 
+import InputField from "../components/Inputfield"; 
+import logo from "../assets/Signin/logo.png"; 
 
 const SignIn = () => {
   const [formData, setFormData] = useState({ userId: "", password: "" });
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); 
+  const validateForm = (data) => {
+    let newErrors = {};
+    if (!data.userId.trim()) newErrors.userId = "userId  is required";
+    if (!data.password.trim()) newErrors.password = "password  is required";
+
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("User ID:", formData.userId, "Password:", formData.password);
-
-    navigate("/home");
-  };
+ const handleSubmit = (e) => {
+       e.preventDefault();
+       const validationErrors = validateForm(formData);
+     
+       if (Object.keys(validationErrors).length > 0) {
+         setErrors(validationErrors);
+         return;
+       }
+     
+       localStorage.setItem("Signindata", JSON.stringify(formData));
+       
+       setErrors({}); 
+       navigate("/home"); 
+     };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-white px-4 sm:px-6">
@@ -30,6 +46,7 @@ const SignIn = () => {
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
           
           <div className="w-full flex flex-col justify-center gap-4">
+            <div>
             <InputField
               label="User ID"
               type="text"
@@ -38,7 +55,11 @@ const SignIn = () => {
               onChange={handleChange}
               placeholder="Enter your User ID"
             />
-
+            {errors.userId && <p className="text-red-500 text-sm">{errors.userId}</p>}
+            </div>
+            
+            
+            <div>
             <InputField
               label="Password"
               type="password"
@@ -47,6 +68,10 @@ const SignIn = () => {
               onChange={handleChange}
               placeholder="Enter your Password"
             />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            </div>
+            
+
 
             {/* Sign In Button */}
             <button

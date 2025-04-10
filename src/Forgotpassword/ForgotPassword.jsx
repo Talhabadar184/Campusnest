@@ -1,26 +1,43 @@
 import React, { useState } from "react";
-import InputField from '../components/Inputfield'; 
-import logo from "../assets/Signin/logo.png"; 
-import { Link } from "react-router-dom"; 
+import InputField from "../components/Inputfield";
+import logo from "../assets/Signin/logo.png";
+import { useNavigate } from "react-router-dom"; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate(); 
+
+  const validateForm = (email) => {
+    let newErrors = {};
+    if (!email.trim()) newErrors.email = "Email is required";
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     setEmail(e.target.value);
+    setErrors({}); 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Email ID:", email);
+
+    const validationErrors = validateForm(email);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    localStorage.setItem("forgotpass_email", JSON.stringify(email));
+    setErrors({});
+    navigate("/VerifyCode"); 
   };
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-white">
-      {/* Logo */}
       <img src={logo} alt="CampusNest Logo" className="w-28 mb-4" />
 
-      {/* Forgot Password Form */}
       <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col">
         <h2 className="text-blue-800 text-xl font-semibold mb-2">
           FORGOT PASSWORD
@@ -34,22 +51,27 @@ const ForgotPassword = () => {
           className="w-full flex flex-col items-center"
         >
           <div className="w-[22vw] flex flex-col gap-4">
-            <InputField
-              label="Email ID"
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              placeholder="Enter your Email ID"
-            />
+            <div>
+              <InputField
+                label="Email ID"
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+                placeholder="Enter your Email ID"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+            </div>
 
-            {/* Link to ForgotPassword1 Page */}
-            <Link
-              to="/VerifyCode"
+             
+            <button
+              type="submit"
               className="w-[22vw] text-white bg-blue-900 px-4 py-2 rounded-md text-center hover:cursor-pointer hover:text-[18px]"
             >
               SUBMIT
-            </Link>
+            </button>
           </div>
         </form>
       </div>

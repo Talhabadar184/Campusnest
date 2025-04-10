@@ -19,6 +19,7 @@ import MyProfile from "./Profile/Myprofile";
 import Tennet from "./Dashboard/Tennet";
 import Owner from "./Dashboard/Owner";
 import Inbox from "./Inbox/Inbox"
+import NewHostel from "./Dashboard/NewHostel"
 
 
 function AppRoutes() {
@@ -50,6 +51,7 @@ function AppRoutes() {
     <Route path="/Tennet" element={<Tennet />} />
     <Route path="/Owner" element={<Owner />} />
     <Route path="/Inbox" element={<Inbox />} />
+    <Route path="/NewHostel" element={<NewHostel />} />
 
   </RouterRoutes>
 </BrowserRouter>

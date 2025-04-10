@@ -14,18 +14,38 @@ function Signup() {
     gender: "",
     tenantOwner: "",
   });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = (data) => {
+    let newErrors = {};
+    if (!data.firstName.trim()) newErrors.firstName = "First Name is required";
+    if (!data.lastName.trim()) newErrors.lastName = "Last Name is required";
+    if (!data.email.trim()) newErrors.email = "Email is required";
+    if (!data.mobile.trim()) newErrors.mobile = "Mobile Number is required";
+    if (!data.gender) newErrors.gender = "Gender is required";
+    if (!data.tenantOwner.trim()) newErrors.cnic = "TenantOwner is required";
+    
+  
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
-    localStorage.setItem("userName", fullName);
-    localStorage.setItem("signupData", JSON.stringify(formData));
-    navigate("/register");
-  };
+      e.preventDefault();
+      const validationErrors = validateForm(formData);
+    
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
+    
+      localStorage.setItem("Signupdata", JSON.stringify(formData));
+      alert("Profile saved successfully!");
+      navigate("/SignIn");
+    };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -42,6 +62,7 @@ function Signup() {
           {/* Input Fields */}
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
               <Inputfield
                 label="First Name"
                 placeholder="Enter your first name"
@@ -49,6 +70,10 @@ function Signup() {
                 value={formData.firstName}
                 onChange={handleChange}
               />
+              {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+              </div>
+              
+              <div>
               <Inputfield
                 label="Last Name"
                 placeholder="Enter your last name"
@@ -56,6 +81,10 @@ function Signup() {
                 value={formData.lastName}
                 onChange={handleChange}
               />
+              {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+              </div>
+              
+              <div>
               <Inputfield
                 label="Email"
                 placeholder="Enter your email address"
@@ -64,7 +93,12 @@ function Signup() {
                 value={formData.email}
                 onChange={handleChange}
               />
-              <Inputfield
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+              </div>
+              
+
+            <div>
+            <Inputfield
                 label="Mobile No."
                 placeholder="Enter your mobile number"
                 type="tel"
@@ -72,13 +106,23 @@ function Signup() {
                 value={formData.mobile}
                 onChange={handleChange}
               />
-              <Selectfield
+              {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+              </div>
+            
+
+             <div>
+             <Selectfield
                 label="Gender"
                 options={["Male", "Female", "Other"]}
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
               />
+              {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+             </div>
+           
+
+              <div>
               <Selectfield
                 label="Tenant/Owner"
                 options={["Tenant", "Owner"]}
@@ -86,11 +130,14 @@ function Signup() {
                 value={formData.tenantOwner}
                 onChange={handleChange}
               />
+              {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+              </div>
+              
             </div>
 
-            <div className="pt-6 flex justify-center">
+            <div className="pt-6 flex justify-center hover:cursor-pointer hover:text-[18px]">
               {/* Button */}
-              <button className="w-[20vw] rounded-[10px] text-white  bg-blue-900 px-6 py-2 text-lg hover:text-[18px]"> SIGN UP </button>
+              <button onClick={handleSubmit} className="w-[20vw] rounded-[10px] text-white  bg-blue-900 px-6 py-2 text-lg hover:text-[18px]"> SIGN UP </button>
             </div>
           </form>
         </div>

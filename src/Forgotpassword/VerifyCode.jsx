@@ -1,21 +1,35 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import InputField from "../components/Inputfield"; // Importing InputField Component
-import logo from "../assets/Signin/logo.png"; // Importing logo
+import { useNavigate } from "react-router-dom";
+import InputField from "../components/Inputfield";
+import logo from "../assets/Signin/logo.png";
 
 const VerifyCode = () => {
   const [code, setCode] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [error, setError] = useState(""); // Error state
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCode(e.target.value);
+    setError(""); // Clear error on change
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validation
+    if (!code) {
+      setError("Verification code is required.");
+      return;
+    }
+
+    if (!/^\d{6}$/.test(code)) {
+      setError("Please enter a valid 6-digit code.");
+      return;
+    }
+
     console.log("Entered Code:", code);
 
-    // Navigate to ResetPassword page after submission
+    // If valid, navigate
     navigate("/ResetPassword");
   };
 
@@ -33,7 +47,6 @@ const VerifyCode = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-          {/* Input Field */}
           <div className="w-[22vw] flex flex-col gap-4">
             <InputField
               label="Code"
@@ -44,6 +57,9 @@ const VerifyCode = () => {
               placeholder="Enter your Code"
             />
             
+            {/* Show error if any */}
+            {error && <p className="text-red-600 text-sm">{error}</p>}
+
             {/* Submit Button */}
             <button
               type="submit"
