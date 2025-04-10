@@ -8,8 +8,8 @@ function Selectfield({ label, options, name, onChange }) {
     <div>
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <select 
-        name={name}  // Ensure name is assigned properly
-        onChange={onChange}  // Pass the event up to the parent
+        name={name}  
+        onChange={onChange}  
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className={`mt-1 w-full px-3 py-2 border rounded-lg text-gray-700 bg-gray-100 focus:outline-none focus:ring-2 ${isFocused ? "border-blue-500 shadow-md" : "border-gray-300"}`}

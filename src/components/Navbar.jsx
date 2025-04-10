@@ -19,7 +19,7 @@ function Navbar() {
     const storedProfile = localStorage.getItem("userProfile");
     if (storedProfile) {
       const profileData = JSON.parse(storedProfile);
-      setUserName(profileData.firstName || "User"); // Default to "User" if firstName is missing
+      setUserName(profileData.firstName || "User"); 
     }
   }, []);
 

@@ -10,7 +10,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
   const [isFormValid, setIsFormValid] = useState(false);
   const [paymentErrors, setPaymentErrors] = useState({});
   const [isPaymentValid, setIsPaymentValid] = useState(false);
-  const [hPrice, setHPrice] = useState(0); // Total price state
+  const [hPrice, setHPrice] = useState(0); 
 
   const [formData, setFormData] = useState(() => {
     const savedData = localStorage.getItem("bookingFormData");
@@ -34,7 +34,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
     if (isPaymentStep) {
       calculatePrice();
     }
-  }, [isPaymentStep]); // Recalculate price when the step changes
+  }, [isPaymentStep]); 
 
   const validateForm = (data) => {
     let newErrors = {};
@@ -61,11 +61,9 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
     setIsSubmitted(true);
     setTimeout(() => setIsSubmitted(false), 5000);
 
-    // Move to the payment step after validating
     setIsPaymentStep(true);
   };
 
-  // Calculate total price based on length of stay, number of occupants, and hostel price
   const calculatePrice = () => {
     const stayMapping = {
       "1 Month": 30,
@@ -78,12 +76,12 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
     const people = Number(formData.occupants) || 0;
 
     if (days === 0 || people === 0 || basePricePerDay === 0) {
-      setHPrice(0); // Ensure it never becomes NaN
+      setHPrice(0); 
       return;
     }
 
     const totalPrice = days * people * basePricePerDay;
-    setHPrice(totalPrice); // Set the total price in state
+    setHPrice(totalPrice); 
     console.log("Calculated Price:", totalPrice);
   };
 
@@ -188,7 +186,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
                 type="submit"
                 onClick={handlePaymentSubmit}
                 className="bg-blue-500 text-white px-10 h-12 rounded hover:cursor-pointer"
-                disabled={!isPaymentValid} // Disable button until valid
+                disabled={!isPaymentValid} 
               >
                 Pay Rs. {hPrice}
               </button>

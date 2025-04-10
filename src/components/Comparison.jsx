@@ -1,6 +1,5 @@
 import React from "react";
-import crossIcon from "../assets/Listing/cross.png"; // Adjust path if necessary
-
+import crossIcon from "../assets/Listing/cross.png"; 
 const Comparison = ({ open, onClose, hostels }) => {
   if (!open) return null;
 

@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import Booking from "../Booking Forms/Booking";
 import { Link } from "react-router-dom";
 
-
 const Details = () => {
   const location = useLocation();
   const [hostel, setHostel] = useState(null);
@@ -17,8 +16,6 @@ const Details = () => {
     }
   }, [location.state]);
 
-  
-
   if (!hostel) return <p className="text-center mt-10">Loading...</p>;
 
   return (
@@ -29,7 +26,7 @@ const Details = () => {
       <div className="bg-gray-100 p-4">
         <div className="max-w-6xl mx-auto">
           {/* Top Section */}
-          <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex flex-col w-full  items-center lg:flex-row gap-6">
             {/* Left Side */}
             <div className="max-w-[40vw] lg:w-2/3 space-y-3">
               <h1 className="text-2xl font-bold">{hostel.name}</h1>
@@ -57,39 +54,41 @@ const Details = () => {
             </div>
 
             {/* Right Side */}
-            <div className="w-[40vw]  space-y-4">
+            <div className="w-[40vw] space-y-4 flex flex-col items-center lg:items-start">
               <div className="flex max-w-[25vw] h-9 space-x-2">
                 <button
                   onClick={() => setIsBookingOpen(true)}
-                  className="text-blue-500 bg-white border-blue-600 border  h-9  hover:cursor-pointer rounded w-[8vw]"
+                  className="text-blue-500 bg-white border-blue-600 border h-9 hover:cursor-pointer rounded w-[8vw]"
                 >
                   Book Now
                 </button>
-                <button className="bg-blue-600 text-white hover:cursor-pointer w-[12vw] rounded " >
-                <Link 
-  to="/Inbox"
-  state={{
-    role: "tenant", // or "owner"
-    hostelName: hostel.hostelName,
-    tenantName: hostel.tenantName, // make sure these values exist
-    ownerName: hostel.ownerName,
-  }}
->
-  Chat with Owner
-</Link>
-
-
+                <button className="bg-blue-600 text-white hover:cursor-pointer w-[12vw] rounded">
+                  <Link
+                    to="/Inbox"
+                    state={{
+                      role: "tenant", // or "owner"
+                      hostelName: hostel.hostelName,
+                      tenantName: hostel.tenantName, // make sure these values exist
+                      ownerName: hostel.ownerName,
+                    }}
+                  >
+                    Chat with Owner
+                  </Link>
                 </button>
               </div>
               <img
                 src={hostel.image || "/images/hostel-main.jpg"}
                 alt="Hostel"
-                className="w-[50vw] h-64 bg-gray-400 object-cover rounded-lg"
+                className=" w-[50vw] h-64 bg-gray-400 object-cover rounded-lg mx-auto lg:mx-0"
               />
             </div>
           </div>
 
-          <Booking isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} hostelPrice={hostel.price || "15,500/-"} />
+          <Booking
+            isOpen={isBookingOpen}
+            onClose={() => setIsBookingOpen(false)}
+            hostelPrice={hostel.price || "15,500/-"}
+          />
 
           {/* Lower Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
@@ -103,7 +102,7 @@ const Details = () => {
                     className="w-full h-full object-cover rounded-lg"
                   />
                 </div>
-                <div className="flex justify-center  space-x-2 mt-4">
+                <div className="flex justify-center space-x-2 mt-4">
                   {hostel.gallery
                     ? hostel.gallery.map((img, index) => (
                         <div key={index} className="w-16 h-16 bg-gray-200 rounded-md">
@@ -131,12 +130,10 @@ const Details = () => {
             <div>
               <h2 className="text-xl font-bold">Key Amenities</h2>
               <ul className="list-disc pl-6 text-gray-700">
-                <li> <strong>Room Types:</strong>  Dorms, Private Rooms, and Family Rooms</li>
-                <li> <strong>Shared Facilities: </strong> Clean and modern bathrooms, common lounge, and kitchen</li>
-                <li> <strong>Free Services:</strong>  Wi-Fi, linen, towels, and breakfast</li>
-                <li> <strong>Paid Services: </strong> Laundry, airport transfers, and tour bookings</li>
-
-                
+                <li><strong>Room Types:</strong> Dorms, Private Rooms, and Family Rooms</li>
+                <li><strong>Shared Facilities:</strong> Clean and modern bathrooms, common lounge, and kitchen</li>
+                <li><strong>Free Services:</strong> Wi-Fi, linen, towels, and breakfast</li>
+                <li><strong>Paid Services:</strong> Laundry, airport transfers, and tour bookings</li>
               </ul>
 
               <h2 className="text-xl text-center font-bold mt-4">User Reviews</h2>
@@ -152,7 +149,10 @@ const Details = () => {
                   - {hostel.reviewer || "Saad Raza, UMT Lahore Student"}
                 </p>
               </div>
-              <Link to={"/Ratings"} className="mt-2 text-blue-600 text-center cursor-pointer">
+              <Link
+                to={"/Ratings"}
+                className="mt-2 text-blue-600 text-center cursor-pointer"
+              >
                 See All Reviews | Help Us
               </Link>
 

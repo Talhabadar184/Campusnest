@@ -68,7 +68,7 @@ const Ratings = () => {
                 />
               </div>
               <div className="w-[20vw]">
-                <label className="block text-1 w-80 ">
+                <label className="block w-[20vw] text-1 w-80 ">
                   Would you like to recommend this hostel?
                 </label>
                 <SelectField
