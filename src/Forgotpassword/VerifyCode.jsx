@@ -5,18 +5,18 @@ import logo from "../assets/Signin/logo.png";
 
 const VerifyCode = () => {
   const [code, setCode] = useState("");
-  const [error, setError] = useState(""); // Error state
+  const [error, setError] = useState(""); 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCode(e.target.value);
-    setError(""); // Clear error on change
+    setError(""); 
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation
+  
     if (!code) {
       setError("Verification code is required.");
       return;
@@ -29,7 +29,7 @@ const VerifyCode = () => {
 
     console.log("Entered Code:", code);
 
-    // If valid, navigate
+   
     navigate("/ResetPassword");
   };
 

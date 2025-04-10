@@ -85,7 +85,7 @@ const Register = () => {
   
     localStorage.setItem("userProfile", JSON.stringify(formData));
     alert("Profile saved successfully!");
-    setErrors({}); // Clear errors
+    setErrors({}); 
   };
   
   
@@ -276,7 +276,6 @@ const Register = () => {
           </div>
         </div>
 
-        {/* Space Below Form with Gray Background */}
         <div className="flex-grow bg-gray-100"></div>
       </div>
 

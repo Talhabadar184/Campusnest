@@ -57,7 +57,7 @@ const Profile = () => {
     <>
       <Navbar />
 
-      {/* Main Wrapper with Gray Background */}
+      {/* Main  */}
       <div className="min-h-screen bg-gray-100 flex flex-col">
         {/* My Profile Section */}
         <div className="pt-7 pl-36">
@@ -206,7 +206,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Space Below Form with Gray Background */}
         <div className="flex-grow bg-gray-100"></div>
       </div>
 

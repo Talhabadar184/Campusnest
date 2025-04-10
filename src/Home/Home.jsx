@@ -230,7 +230,6 @@ function Home() {
     ))}
   </Swiper>
   
-  {/* Pagination Dots Positioned Outside */}
 
 </div>
 

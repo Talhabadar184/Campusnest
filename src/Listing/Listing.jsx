@@ -200,7 +200,7 @@ function Listing() {
 
         </div>
 
-        {/* Hostels Section - Responsive */}
+        {/* Hostels Section -  */}
         <div className="flex-1 w-full">
           <Hostels />
         </div>

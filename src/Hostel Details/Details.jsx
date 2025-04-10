@@ -66,9 +66,9 @@ const Details = () => {
                   <Link
                     to="/Inbox"
                     state={{
-                      role: "tenant", // or "owner"
+                      role: "tenant", 
                       hostelName: hostel.hostelName,
-                      tenantName: hostel.tenantName, // make sure these values exist
+                      tenantName: hostel.tenantName, 
                       ownerName: hostel.ownerName,
                     }}
                   >

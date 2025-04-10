@@ -10,7 +10,6 @@ function MyProfile() {
   const [editableProfile, setEditableProfile] = useState({});
 
   useEffect(() => {
-    // Retrieve profile data from localStorage
     const storedProfile = localStorage.getItem("userProfile");
     if (storedProfile) {
       const parsedProfile = JSON.parse(storedProfile);
@@ -20,19 +19,16 @@ function MyProfile() {
   }, []);
 
   useEffect(() => {
-    // Retrieve booking data from localStorage
     const storedBooking = localStorage.getItem("bookingFormData");
     if (storedBooking) {
       setBooking(JSON.parse(storedBooking));
     }
   }, []);
 
-  // Toggle Edit Mode
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
 
-  // Handle input change
   const handleChange = (e) => {
     setEditableProfile({
       ...editableProfile,
@@ -40,7 +36,6 @@ function MyProfile() {
     });
   };
 
-  // Save changes
   const handleSave = () => {
     setProfile(editableProfile);
     localStorage.setItem("userProfile", JSON.stringify(editableProfile));
