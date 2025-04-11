@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import InputField from "../components/InputField";
-import SelectField from "../components/SelectField";
+import InputField from "../components/Inputfield";
+import SelectField from "../components/Selectfield";
 import left from "../assets/Ratings/left.png"
 import right from "../assets/Ratings/right.png"
 
@@ -68,7 +68,7 @@ const Ratings = () => {
                 />
               </div>
               <div className="w-[20vw]">
-                <label className="block w-[20vw] text-1 w-80 ">
+                <label className="block w-[20vw] text-1  ">
                   Would you like to recommend this hostel?
                 </label>
                 <SelectField

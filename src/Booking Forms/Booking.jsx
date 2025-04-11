@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import InputField from "../components/InputField";
-import SelectField from "../components/SelectField";
+import InputField from "../components/Inputfield";
+import SelectField from "../components/Selectfield";
 import crossIcon from "../assets/Listing/cross.png";
 
 function Booking({ isOpen, onClose, hostelPrice =0 }){
