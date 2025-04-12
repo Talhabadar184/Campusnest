@@ -62,9 +62,9 @@ function Navbar() {
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center gap-4 md:gap-6">
+      <div className="flex items-center gap-2 md:gap-2 sm:gap-1">
         {/* Notification Icon */}
-        <div className="relative cursor-pointer">
+        <div className="relative ml-7 cursor-pointer">
           <Link to={"/Notifications"}><img src={notification} alt="Notification" className="h-5" /></Link>
           <span className="absolute top-0 right-0 w-2 h-2 bg-red-600 rounded-full"></span>
         </div>

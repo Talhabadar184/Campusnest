@@ -18,3 +18,15 @@
   background-color: #000;
   opacity: 1;
 }
+/* In your global CSS file (e.g., index.css or tailwind.css) */
+@layer utilities {
+  @media (max-width: 300px) {
+    .w-xs-button {
+      width: 3rem; /* or any smaller width you prefer */
+      font-size: 0.65rem; /* slightly smaller font for narrow screens */
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+}
+

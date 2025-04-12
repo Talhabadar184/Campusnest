@@ -3,14 +3,14 @@ import InputField from "../components/Inputfield";
 import SelectField from "../components/Selectfield";
 import crossIcon from "../assets/Listing/cross.png";
 
-function Booking({ isOpen, onClose, hostelPrice =0 }){
+function Booking({ isOpen, onClose, hostelPrice = 0 }) {
   const [isPaymentStep, setIsPaymentStep] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [paymentErrors, setPaymentErrors] = useState({});
   const [isPaymentValid, setIsPaymentValid] = useState(false);
-  const [hPrice, setHPrice] = useState(0); 
+  const [hPrice, setHPrice] = useState(0);
 
   const [formData, setFormData] = useState(() => {
     const savedData = localStorage.getItem("bookingFormData");
@@ -34,7 +34,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
     if (isPaymentStep) {
       calculatePrice();
     }
-  }, [isPaymentStep]); 
+  }, [isPaymentStep]);
 
   const validateForm = (data) => {
     let newErrors = {};
@@ -76,12 +76,12 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
     const people = Number(formData.occupants) || 0;
 
     if (days === 0 || people === 0 || basePricePerDay === 0) {
-      setHPrice(0); 
+      setHPrice(0);
       return;
     }
 
     const totalPrice = days * people * basePricePerDay;
-    setHPrice(totalPrice); 
+    setHPrice(totalPrice);
     console.log("Calculated Price:", totalPrice);
   };
 
@@ -149,50 +149,55 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
           <>
           <h2 className="text-xl font-semibold mb-4">Payment</h2>
           <div className="h-0.5 w-full bg-black"></div>
-         <h3 className="text-2xl font-bold text-center">
-  Rs. {(hPrice) }
-</h3>
-
-
+          <h3 className="text-2xl font-bold text-center mt-2">Rs. {hPrice}</h3>
+        
           <label className="block mt-4">Pay Using</label>
           <SelectField
             name="paymentMethod"
             value={formData.paymentMethod}
-            options={["-- Please Select --", "Credit Card", "Bank Transfer", "JazzCash", "Easypaisa"]}
+            options={[
+              "-- Please Select --",
+              "Credit Card",
+              "Bank Transfer",
+              "JazzCash",
+              "Easypaisa",
+            ]}
             onChange={handlePaymentChange}
           />
           {paymentErrors.paymentMethod && (
             <p className="text-red-500 text-sm">{paymentErrors.paymentMethod}</p>
           )}
-    
-          <label className="block mt-4 ml-5">Add Your Number</label>
-          <div className="flex justify-between m-6">
-            <div className="flex flex-col align-baseline">
+        
+          <label className="block mt-6">Add Your Number</label>
+        
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
+            <div className="flex-1">
               <InputField
                 type="text"
                 name="mobileNo"
                 placeholder="Enter your Mobile No."
                 value={formData.mobileNo}
                 onChange={handlePaymentChange}
-                className={paymentErrors.mobileNo ? "border-red-500" : ""}
+                className={`w-full ${paymentErrors.mobileNo ? "border-red-500" : ""}`}
               />
               {paymentErrors.mobileNo && (
-                <p className="text-red-500 text-sm">{paymentErrors.mobileNo}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {paymentErrors.mobileNo}
+                </p>
               )}
             </div>
-    
-            <div className="flex flex-col sm:flex-row gap-3 justify-end ">
-              <button
-                type="submit"
-                onClick={handlePaymentSubmit}
-                className="bg-blue-500 text-white px-10 h-12 rounded hover:cursor-pointer"
-                disabled={!isPaymentValid} 
-              >
-                Pay Rs. {hPrice}
-              </button>
-            </div>
+        
+            <button
+              type="submit"
+              onClick={handlePaymentSubmit}
+              className="bg-blue-500 text-white w-full sm:w-auto px-6 h-12 rounded hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!isPaymentValid}
+            >
+              Pay Rs. {hPrice}
+            </button>
           </div>
         </>
+        
         ) : (
           <>
             <h2 className="text-xl font-semibold mb-4">Booking Form</h2>
@@ -326,7 +331,7 @@ function Booking({ isOpen, onClose, hostelPrice =0 }){
                   Reset
                 </button>
                 <button
-                onClick={calculatePrice}
+                  onClick={calculatePrice}
                   type="submit"
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer"
                 >

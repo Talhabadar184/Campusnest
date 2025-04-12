@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import InputField from "../components/Inputfield"; 
-import logo from "../assets/Signin/logo.png"; 
-import Button from "../components/Button";
-import { Navigate, useNavigate } from "react-router-dom";
+import InputField from "../components/Inputfield";
+import logo from "../assets/Signin/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const SignIn1 = () => {
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
-const navigate=useNavigate();
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,47 +22,47 @@ const navigate=useNavigate();
     } else {
       console.log("Passwords do not match");
     }
-    navigate("/Home")
+    navigate("/Home");
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-white">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-white px-4">
       {/* Logo */}
-      <img src={logo} alt="CampusNest Logo" className="w-28 mb-4" />
+      <img src={logo} alt="CampusNest Logo" className="w-24 sm:w-28 mb-4" />
 
-      {/* Sign In Form */}
-      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col ">
-        <h2 className="text-blue-800 text-xl font-semibold mb-2">
-          FORGOT PASSWORD
-        </h2>
+      {/* Form Container */}
+      <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-md border-2 border-gray-500">
+        
+      <h2 className="text-blue-800 text-center text-base sm:text-lg md:text-xl font-semibold mb-4 break-words w-full max-w-xs sm:max-w-sm md:max-w-md">
+  FORGOT PASSWORD
+</h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="w-full flex flex-col items-center"
-        >
-          <div className="w-[22vw] flex flex-col gap-4">
-            <InputField
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your Password"
-            />
 
-            <InputField
-              label="Re-Type Password"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Re-enter your Password"
-            />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <InputField
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Enter your Password"
+          />
 
-            <button className=" w-[19vw] text-white bg-blue-900 px-4 py-2 rounded-md hover:cursor-pointer hover:text-[18px] ">
-              SIGN IN
-            </button>
-          </div>
+          <InputField
+            label="Re-Type Password"
+            type="password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Re-enter your Password"
+          />
+
+<button
+  type="submit"
+  className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition-all duration-300 text-sm sm:text-base"
+>
+  SUBMIT
+</button>
         </form>
       </div>
     </div>

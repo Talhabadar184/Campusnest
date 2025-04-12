@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import InputField from "../components/Inputfield";
 import logo from "../assets/Signin/logo.png";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const validateForm = (email) => {
     let newErrors = {};
@@ -16,14 +16,13 @@ const ForgotPassword = () => {
 
   const handleChange = (e) => {
     setEmail(e.target.value);
-    setErrors({}); 
+    setErrors({});
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const validationErrors = validateForm(email);
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -31,26 +30,26 @@ const ForgotPassword = () => {
 
     localStorage.setItem("forgotpass_email", JSON.stringify(email));
     setErrors({});
-    navigate("/VerifyCode"); 
+    navigate("/VerifyCode");
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-white">
-      <img src={logo} alt="CampusNest Logo" className="w-28 mb-4" />
+    <div className="flex flex-col justify-center items-center min-h-screen bg-white px-4">
+      <img src={logo} alt="CampusNest Logo" className="w-20 sm:w-24 md:w-28 mb-4" />
 
-      <div className="bg-white shadow-lg rounded-lg p-8 w-[37vw] border-2 border-gray-500 flex flex-col">
-        <h2 className="text-blue-800 text-xl font-semibold mb-2">
-          FORGOT PASSWORD
-        </h2>
-        <p className="text-gray-600 text-sm mb-4 flex flex-col items-center">
+      <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-md border border-gray-400">
+        <div className="flex justify-center items-center mb-4">
+          <h2 className="text-blue-800 text-lg sm:text-xl md:text-2xl font-semibold text-center">
+            FORGOT PASSWORD
+          </h2>
+        </div>
+
+        <p className="text-gray-600 text-sm text-center mb-6">
           Please enter your Email ID below
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="w-full flex flex-col items-center"
-        >
-          <div className="w-[22vw] flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="flex flex-col gap-4">
             <div>
               <InputField
                 label="Email ID"
@@ -61,14 +60,13 @@ const ForgotPassword = () => {
                 placeholder="Enter your Email ID"
               />
               {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
-             
             <button
               type="submit"
-              className="w-[22vw] text-white bg-blue-900 px-4 py-2 rounded-md text-center hover:cursor-pointer hover:text-[18px]"
+              className="w-full bg-blue-900 text-white py-2 rounded-md hover:bg-blue-800 transition duration-300 text-sm sm:text-base"
             >
               SUBMIT
             </button>

@@ -21,15 +21,14 @@ const Register = () => {
     district: "",
     state: "",
   });
-  const [errors, setErrors] = useState({});
 
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-  
 
   const handleFileChange = (e) => {
     setFormData({ ...formData, photo: e.target.files[0] });
@@ -68,94 +67,89 @@ const Register = () => {
     if (!data.city.trim()) newErrors.city = "City is required";
     if (!data.district) newErrors.district = "District is required";
     if (!data.state) newErrors.state = "State is required";
-  
     return newErrors;
   };
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
-  
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-  
+
     localStorage.setItem("userProfile", JSON.stringify(formData));
     alert("Profile saved successfully!");
-    setErrors({}); 
+    setErrors({});
   };
-  
-  
-  
 
   return (
     <>
       <Navbar />
 
-      {/* Main Wrapper with Gray Background */}
-      <div className="min-h-screen bg-gray-100 flex flex-col">
-        {/* My Profile Section */}
-        <div className="pt-7 pl-36">
-          <h2 className="text-2xl font-semibold text-blue-700">My Profile</h2>
+      <div className="min-h-screen bg-gray-100 flex flex-col px-4 md:px-0">
+        {/* Heading */}
+        <div className="pt-7 flex justify-center md:justify-start md:pl-36">
+          <h2 className="text-2xl font-semibold text-blue-700 text-center">
+            My Profile
+          </h2>
         </div>
 
-        {/* Form Section */}
+        {/* Form Container */}
         <div className="flex justify-center items-center pt-7 mb-16">
-          <div className="w-full max-w-4xl bg-white border-2 border-gray-300 p-8 rounded-lg shadow-lg">
-            {/* Basic Info Section */}
+          <div className="w-full max-w-4xl bg-white border-2 border-gray-300 p-6 md:p-8 rounded-lg shadow-lg">
+            {/* Basic Info */}
             <div className="mb-6">
               <h3 className="text-lg font-medium text-blue-600 mb-3">
                 Basic Info
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 mb-2 gap-4">
-                <div><Field
-                  label="First Name"
-                  placeholder="Enter your first name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                />
-                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-                </div>
-                
                 <div>
-                <Field
-                  label="Last Name"
-                  placeholder="Enter your last name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                />
-                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                  <Field
+                    label="First Name"
+                    placeholder="Enter your first name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                  />
+                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
                 </div>
-                
+
                 <div>
-                <Field
-                  label="Email"
-                  placeholder="Enter your email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                  <Field
+                    label="Last Name"
+                    placeholder="Enter your last name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                  />
+                  {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
                 </div>
-                
+
                 <div>
-                <Field
-                  label="Mobile Number"
-                  placeholder="Enter your mobile number"
-                  type="tel"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                />
-                {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+                  <Field
+                    label="Email"
+                    placeholder="Enter your email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
-                
+
+                <div>
+                  <Field
+                    label="Mobile Number"
+                    placeholder="Enter your mobile number"
+                    type="tel"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                  />
+                  {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+                </div>
 
                 <Selectfield
                   label="Gender"
@@ -167,28 +161,27 @@ const Register = () => {
                 />
 
                 <div>
-                <Field
-                  label="CNIC"
-                  placeholder="Enter your CNIC number"
-                  type="text"
-                  inputmode="numeric"
-                  pattern="\d{13}"
-                  maxlength="13"
-                  name="cnic"
-                  value={formData.cnic}
-                  onChange={handleChange}
-                />
-                {errors.cnic && <p className="text-red-500 text-sm">{errors.cnic}</p>}
+                  <Field
+                    label="CNIC"
+                    placeholder="Enter your CNIC number"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="\d{13}"
+                    maxLength="13"
+                    name="cnic"
+                    value={formData.cnic}
+                    onChange={handleChange}
+                  />
+                  {errors.cnic && <p className="text-red-500 text-sm">{errors.cnic}</p>}
                 </div>
-                
-
               </div>
+
               {/* Upload Photo */}
-              <div className="mt-9">
+              <div className="mt-6">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Upload your photo
                 </label>
-                <div className="relative w-[28%]">
+                <div className="relative w-full md:w-[28%]">
                   <input
                     type="file"
                     id="fileUpload"
@@ -202,16 +195,18 @@ const Register = () => {
                     <img src={upload} alt="upload" className="h-5 w-5" />
                     <span>Upload</span>
                   </label>
+                  {errors.photo && <p className="text-red-500 text-sm mt-1">{errors.photo}</p>}
                 </div>
               </div>
-              {/* Permanent Address  */}
+
+              {/* Permanent Address */}
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-blue-600 pt-4 mb-3">
+                <h3 className="text-lg font-medium text-blue-600 pt-6 mb-3">
                   Permanent Address
                 </h3>
-                <div className="grid pt-3.5 grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Field
-                    label="House/Unit/Apartment/Suite Number"
+                    label="House/Unit/Apartment"
                     placeholder="Enter your House/Apartment/Suite Number"
                     name="house"
                     value={formData.house}
@@ -258,16 +253,16 @@ const Register = () => {
               </div>
 
               {/* Buttons */}
-              <div className="flex justify-end gap-4">
+              <div className="flex flex-col md:flex-row justify-end gap-4 mt-4">
                 <button
                   onClick={handleReset}
-                  className="border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-100 hover:cursor-pointer transition"
+                  className="border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-100 transition"
                 >
                   Reset
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 hover:cursor-pointer transition"
+                  className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
                 >
                   Submit
                 </button>
@@ -276,10 +271,9 @@ const Register = () => {
           </div>
         </div>
 
-        <div className="flex-grow bg-gray-100"></div>
+        <div className="flex-grow bg-gray-100" />
       </div>
 
-      {/* Footer */}
       <Footer />
     </>
   );

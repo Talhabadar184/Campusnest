@@ -52,41 +52,41 @@ const notifications = [
 
 const Notifications = () => {
   return (
-<>
-<Navbar/>
-    <div className="flex flex-col justify-center items-center  min-h-screen bg-gray-100 p-6">
-            <div className="items-start w-[70vw] flex justify-start"><h2 className="text-xl font-semibold text-blue-700  mb-4">Notifications</h2>
-</div>  
-      <div className="bg-white shadow-lg max-w-[70vw] w-full rounded-lg p-4">
-        {notifications.map((notif) => (
-          <NotificationCard key={notif.id} {...notif} />
-        ))}
+    <>
+      <Navbar />
+      <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4 sm:p-6">
+        <div className="w-full max-w-5xl mb-4">
+          <h2 className="text-xl font-semibold text-blue-700">Notifications</h2>
+        </div>
+        <div className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-4">
+          {notifications.map((notif) => (
+            <NotificationCard key={notif.id} {...notif} />
+          ))}
+        </div>
       </div>
-    </div>
-
-    <Footer/>
+      <Footer />
     </>
   );
 };
 
 const NotificationCard = ({ icon, title, message, buttonLabel, time }) => {
   return (
-
-    <div className="flex items-center justify-between p-4 border-b last:border-none">
-      <div className="flex items-center gap-3">
-        <div className="border-2 border-gray-200 rounded-full p-1">
-          <img src={icon} alt={title} className="w-5 h-5" />
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border-b last:border-none">
+      <div className="flex items-start gap-3">
+        <div className="border-2 border-gray-200 rounded-full p-1 sm:p-1.5">
+          <img src={icon} alt={title} c className="w-8 h-8 sm:w-5 sm:h-5 object-contain" />
         </div>
         <div>
           <p className="font-bold text-blue-700">{title}</p>
-          <p className="text-gray-600">{message}</p>
+          <p className="text-gray-600 text-sm sm:text-base">{message}</p>
         </div>
       </div>
-      <div className="flex gap-10 items-end">
-        <button className="border items-start hover:cursor-pointer  border-blue-500 text-blue-500 px-4 py-1 rounded-md hover:bg-blue-100">
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 ml-8 sm:ml-0">
+        <button className="border border-blue-500 text-blue-500 px-4 py-1 rounded-md hover:bg-blue-100 text-sm sm:text-base">
           {buttonLabel}
         </button>
-        <p className="text-black font-semibold text-sm ">{time}</p>
+        <p className="text-black font-medium text-xs sm:text-sm">{time}</p>
       </div>
     </div>
   );
