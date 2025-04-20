@@ -69,8 +69,8 @@ const NewHostel = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black  opacity-95 flex items-center justify-center ">
-      <div className="bg-white w-[42vw] max-h-[95vh] rounded-xl shadow-lg overflow-y-auto p-6">
+    <div className="fixed inset-0 bg-black opacity-97 flex items-center justify-center  p-4">
+      <div className="bg-white w-full max-w-4xl max-h-[95vh] rounded-xl shadow-lg overflow-y-auto p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-gray-700">Add New Hostel</h2>
           <button onClick={onClose} className="text-gray-600 text-2xl font-bold hover:text-red-500">
@@ -82,58 +82,30 @@ const NewHostel = ({ onClose }) => {
           Please fill out the form below.
         </p>
 
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-8" onSubmit={handleSubmit}>
           {/* Hostel Information */}
           <div>
             <h3 className="text-md font-semibold text-gray-700 mb-3">Hostel Information</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Hostel Name</label>
-                <input
-                  type="text"
-                  name="hostelName"
-                  value={formData.hostelName}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.hostelName && <p className="text-red-500 text-xs">{errors.hostelName}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Admin Email</label>
-                <input
-                  type="email"
-                  name="adminEmail"
-                  value={formData.adminEmail}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.adminEmail && <p className="text-red-500 text-xs">{errors.adminEmail}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.address && <p className="text-red-500 text-xs">{errors.address}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.city && <p className="text-red-500 text-xs">{errors.city}</p>}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { label: "Hostel Name", name: "hostelName", placeholder: "enter hostel name" },
+                { label: "Admin Email", name: "adminEmail", type: "email", placeholder: "enter your email" },
+                { label: "Address", name: "address", placeholder: "enter your address" },
+                { label: "City", name: "city" ,placeholder: "enter your city" },
+              ].map(({ label, name, type = "text",placeholder }) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium text-gray-700">{label}</label>
+                  <input
+                    type={type}
+                    name={name}
+                    placeholder={placeholder}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+                  />
+                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
+                </div>
+              ))}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">University</label>
@@ -141,7 +113,7 @@ const NewHostel = ({ onClose }) => {
                   name="university"
                   value={formData.university}
                   onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+                  className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
                 >
                   <option value="">-- Choose University --</option>
                   <option value="UCP">UCP</option>
@@ -150,13 +122,13 @@ const NewHostel = ({ onClose }) => {
                 {errors.university && <p className="text-red-500 text-xs">{errors.university}</p>}
               </div>
 
-              <div className="col-span-2">
+              <div className="sm:col-span-2">
                 <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full resize-none h-20"
+                  className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full resize-none h-20"
                 />
                 {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
               </div>
@@ -166,98 +138,56 @@ const NewHostel = ({ onClose }) => {
           {/* Hostel Details */}
           <div>
             <h3 className="text-md font-semibold text-gray-700 mb-3">Hostel Details</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">No. of Rooms</label>
-                <select name="rooms" value={formData.rooms} onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                >
-                  <option value="">-- No. of Rooms --</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                </select>
-                {errors.rooms && <p className="text-red-500 text-xs">{errors.rooms}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Room Type</label>
-                <select name="roomType" value={formData.roomType} onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                >
-                  <option value="">-- Room Type --</option>
-                  <option value="Single">Single</option>
-                  <option value="Shared">Shared</option>
-                </select>
-                {errors.roomType && <p className="text-red-500 text-xs">{errors.roomType}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Room Price</label>
-                <select name="roomPrice" value={formData.roomPrice} onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                >
-                  <option value="">-- Room Price --</option>
-                  <option value="5000">5000</option>
-                  <option value="8000">8000</option>
-                </select>
-                {errors.roomPrice && <p className="text-red-500 text-xs">{errors.roomPrice}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Available Slots</label>
-                <select name="slots" value={formData.slots} onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                >
-                  <option value="">-- Available Slots --</option>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                </select>
-                {errors.slots && <p className="text-red-500 text-xs">{errors.slots}</p>}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { label: "No. of Rooms", name: "rooms", options: ["5", "10"] },
+                { label: "Room Type", name: "roomType", options: ["Single", "Shared"] },
+                { label: "Room Price", name: "roomPrice", options: ["5000", "8000"] },
+                { label: "Available Slots", name: "slots", options: ["5", "10"] },
+              ].map(({ label, name, options }) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium text-gray-700">{label}</label>
+                  <select
+                    name={name}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+                  >
+                    <option value="">{`-- ${label} --`}</option>
+                    {options.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Contact Info */}
           <div>
             <h3 className="text-md font-semibold text-gray-700 mb-3">Contact Information</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Owner Name</label>
-                <input
-                  type="text"
-                  name="ownerName"
-                  value={formData.ownerName}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.ownerName && <p className="text-red-500 text-xs">{errors.ownerName}</p>}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { label: "Owner Name", name: "ownerName",placeholder: "enter owner name" },
+                { label: "Contact Number", name: "contact",placeholder: "enter contact number" },
+                { label: "Email", name: "email", type: "email",placeholder: "enter your email" },
+              ].map(({ label, name, type = "text",placeholder }) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium text-gray-700">{label}</label>
+                  <input
+                    type={type}
+                    name={name}
+                    placeholder={placeholder}
+                    value={formData[name]}
+                    onChange={handleChange}
+                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
+                  />
+                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
+                </div>
+              ))}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Contact Number</label>
-                <input
-                  type="text"
-                  name="contact"
-                  value={formData.contact}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.contact && <p className="text-red-500 text-xs">{errors.contact}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
-              </div>
-
-              <div>
+<div>
                 <label className="block text-sm font-medium text-gray-700">Upload Photo</label>
                 <input
                   type="file"
@@ -270,19 +200,13 @@ const NewHostel = ({ onClose }) => {
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <button
-              type="reset"
-              onClick={() => setFormData({ ...formData, photo: null })}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
-            >
-              Reset
-            </button>
+          {/* Submit Button */}
+          <div className="text-end">
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md transition"
             >
-              Submit
+              Submit Hostel
             </button>
           </div>
         </form>
