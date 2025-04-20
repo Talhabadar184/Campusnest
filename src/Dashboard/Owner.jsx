@@ -3,10 +3,14 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import cross from "../assets/Listing/cross.png";
 import { Link } from "react-router-dom";
+import plus from "../assets/Owner/plus.png"
+import NewHostel from "../Dashboard/NewHostel"
 
 function Owner() {
     const [hData, setHData] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   const hostelData = [
     { id: 1,hostelName: "Ali Town Hostel", tenantName: "Ali Khan", messages: [] },
@@ -64,15 +68,23 @@ function Owner() {
           <div className="flex flex-col md:flex-row justify-center items-start gap-8">
             
             {/* Manage Bookings */}
-            <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
-  <div className="flex justify-between items-center mb-4">
-    <h2 className="text-lg font-semibold text-blue-700">
-      Manage Hostels
-    </h2>
-    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:cursor-pointer">
-      Hostels
-    </button>
-  </div>
+          <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
+          <div className="flex justify-between items-center mb-4">
+  <h2 className="text-lg font-semibold text-blue-700">
+    Manage Hostels
+  </h2>
+  <button
+    onClick={() => setIsModalOpen(true)}
+    className="bg-blue-500 gap-2 items-center flex text-white px-4 py-2 rounded hover:cursor-pointer"
+  >
+    <img className="h-4" src={plus} alt="" />
+    Hostels
+  </button>
+</div>
+
+{isModalOpen && <NewHostel onClose={() => setIsModalOpen(false)} />}
+
+
   <div className="w-full h-0.5 bg-gray-400 mb-3"></div>
 
   <div className="overflow-x-auto">
