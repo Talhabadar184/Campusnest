@@ -193,57 +193,57 @@ const Inbox = () => {
             ))}
           </div>
 
-          <div className="flex items-center px-3 py-2 border-t relative">
-            <input
-              type="text"
-              placeholder="Ask anything..."
-              className="flex-1 mx-2 px-3 py-2 rounded-lg border border-gray-300 focus:outline-none"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            />
+          <div className="flex flex-wrap items-center px-3 py-2 border-t relative w-full">
+  <input
+    type="text"
+    placeholder="Ask anything..."
+    className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none"
+    value={newMessage}
+    onChange={(e) => setNewMessage(e.target.value)}
+    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+  />
+
+  <div className="flex gap-3 items-center flex-wrap">
+    {/* 🎁 Gift Icon */}
+    <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
+
+    {/* 😊 Emoji Button */}
+    <img
+      src={emojis}
+      alt="emoji"
+      className="w-6 h-6 cursor-pointer"
+      onClick={() => setShowEmojis(!showEmojis)}
+    />
+
+    {/* 📎 Attachments */}
+    <img
+      src={attachments}
+      alt="attachment"
+      className="w-6 h-6 cursor-pointer"
+      onClick={() => fileInputRef.current.click()}
+    />
+    <input
+      type="file"
+      ref={fileInputRef}
+      className="hidden"
+      onChange={(e) => handleFileUpload(e.target.files[0])}
+    />
+  </div>
+
+  {/* 😍 Emoji Picker */}
+  {showEmojis && (
+    <div className="absolute bottom-12 right-3 z-50">
+      <EmojiPicker
+        onEmojiClick={(emojiObject) => {
+          setNewMessage((prev) => prev + emojiObject.emoji);
+          setShowEmojis(false);
+        }}
+      />
+    </div>
+  )}
+</div>
 
 
-            {/* Chat Input */}
-            <div className="flex gap-3 items-center">
-              {/* 🎁 Placeholder for gift icon */}
-              <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
-
-              {/* 😊 Emoji Button */}
-              <img
-                src={emojis}
-                alt="emoji"
-                className="w-6 h-6 cursor-pointer"
-                onClick={() => setShowEmojis(!showEmojis)}
-              />
-
-              {/* 📎 Attachments */}
-              <img
-                src={attachments}
-                alt="attachment"
-                className="w-6 h-6 cursor-pointer"
-                onClick={() => fileInputRef.current.click()}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                onChange={(e) => handleFileUpload(e.target.files[0])}
-              />
-            </div>
-
-            {/* 😍 Emoji Picker */}
-            {showEmojis && (
-              <div className="absolute bottom-12 right-3 z-50">
-                <EmojiPicker
-                  onEmojiClick={(emojiObject) => {
-                    setNewMessage((prev) => prev + emojiObject.emoji);
-                    setShowEmojis(false);
-                  }}
-                />
-              </div>
-            )}
-          </div>
         </div>
       )}
     </div>
