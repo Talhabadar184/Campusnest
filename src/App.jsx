@@ -25,6 +25,7 @@ import Tennet from "./Dashboard/Tennet";
 import Owner from "./Dashboard/Owner";
 import Inbox from "./Inbox/Inbox";
 import NewHostel from "./Dashboard/NewHostel";
+import VerifyEmail from "./VerifyEmail/VerifyEmail";
 
 function AppRoutes() {
   return (
@@ -33,6 +34,7 @@ function AppRoutes() {
         <Route path="/" element={<Navigate to="/Signin" replace />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path="/Signin" element={<Signin />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Verifycode" element={<VerifyCode />} />
