@@ -160,7 +160,7 @@ function Home() {
       </div>
 
       {/* Hostel Listings */}
-      <div className="max-w-7xl mx-auto my-16 px-6">
+      {/* <div className="max-w-7xl mx-auto my-16 px-6">
         <h1 className="text-3xl text-blue-800 font-bold text-center mb-6">
           Newly Listed Hostels
         </h1>
@@ -208,9 +208,9 @@ function Home() {
             <img src={rightArrow} alt="Next" className="w-6 h-6" />
           </button>
         </div>
-      </div>
+      </div> */}
 
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Footer />
     </div>
   );
