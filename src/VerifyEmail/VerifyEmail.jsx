@@ -21,7 +21,7 @@ const VerifyEmail = () => {
         // Redirect to signin after 3 seconds
         setTimeout(() => {
           navigate("/signin");  // Make sure this matches your frontend route exactly
-        }, 1000);
+        }, 500);
       } catch (err) {
         console.error("Verification failed:", err.response || err.message);
         setError(true);

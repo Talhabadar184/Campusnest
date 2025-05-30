@@ -363,11 +363,7 @@ const Register = () => {
     }
     setErrors({});
 
-    const payload = {
-      ...formData,
-      userType: "tenant",
-    };
-
+    const payload = { ...formData }; 
     dispatch(registerUser(payload));
   };
 
@@ -459,12 +455,13 @@ const Register = () => {
                 {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
 
                 <Selectfield
-                  label="Usertype"
-                  name="usertype"
-                  options={["tenant", "owner"]}
-                  value={formData.userType}
-                  onChange={handleChange}
-                />
+                  label="User Type"
+                    name="userType"
+                options={["tenant", "owner"]}
+                value={formData.userType}
+                onChange={handleChange}
+                  />
+
                 {errors.userType && <p className="text-red-500 text-sm">{errors.userType}</p>}
 
                 {/* Address Fields */}
