@@ -343,7 +343,7 @@ const Register = () => {
     else if (data.password.length < 6) newErrors.password = "Password must be at least 6 characters";
     if (!data.mobileNo.trim()) newErrors.mobileNo = "Mobile Number is required";
     if (!data.gender) newErrors.gender = "Gender is required";
-    if (!data.userType) newErrors.userType = "user type is required";
+    // if (!data.userType) newErrors.userType = "user type is required";
     const addr = data.address;
     if (!addr.street.trim()) newErrors.street = "Street is required";
     if (!addr.city.trim()) newErrors.city = "City is required";
@@ -525,6 +525,7 @@ const Register = () => {
                       password: "",
                       mobileNo: "",
                       gender: "",
+                      userType:"",
                       address: {
                         street: "",
                         city: "",

@@ -12,7 +12,7 @@ const VerifyEmail = () => {
     const verifyToken = async () => {
       try {
         console.log("Sending verification request with token:", token);
-        const response = await axios.get(`http://localhost:8000/verify-email/${token}`);
+        const response = await axios.get(`http://localhost:8000/api/verify-email/${token}`);
         console.log("Verification response:", response.data);
 
         setMessage(response.data.message);
@@ -21,7 +21,7 @@ const VerifyEmail = () => {
         // Redirect to signin after 3 seconds
         setTimeout(() => {
           navigate("/signin");  // Make sure this matches your frontend route exactly
-        }, 3000);
+        }, 1000);
       } catch (err) {
         console.error("Verification failed:", err.response || err.message);
         setError(true);
