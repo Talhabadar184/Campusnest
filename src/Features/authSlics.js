@@ -380,7 +380,7 @@ export const getUserProfile = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-
+     console.log(response.data)
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Failed to fetch profile');
