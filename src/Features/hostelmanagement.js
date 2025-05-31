@@ -7,9 +7,9 @@ const API_BASE = "http://localhost:8000/api";
 // 🔹 Register Hostel (with multipart/form-data)
 export const registerHostel = createAsyncThunk(
   "hostel/registerHostel",
-  async (formData, { rejectWithValue }) => {
+  async (formData, { rejectWithValue, getState }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getState().auth.token;
 
       const response = await axios.post(`${API_BASE}/register-hostel`, formData, {
         headers: {
@@ -28,9 +28,16 @@ export const registerHostel = createAsyncThunk(
 // 🔹 Search Hostels (location, price, amenities, etc.)
 export const searchHostels = createAsyncThunk(
   "hostel/searchHostels",
-  async (filters, { rejectWithValue }) => {
+  async (filters, { rejectWithValue, getState }) => {
     try {
-      const response = await axios.post(`${API_BASE}/search-hostels`, filters);
+      const token = getState().auth.token;
+
+      const response = await axios.post(`${API_BASE}/search-hostels`, filters, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       return response.data.data; // Only return hostels
     } catch (err) {
       return rejectWithValue(err.response?.data?.error || "Search failed");
@@ -52,7 +59,7 @@ const hostelManagementSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Register
+    // Register Hostel
     builder
       .addCase(registerHostel.pending, (state) => {
         state.loading = true;
@@ -67,7 +74,7 @@ const hostelManagementSlice = createSlice({
         state.error = action.payload;
       });
 
-    // Search
+    // Search Hostels
     builder
       .addCase(searchHostels.pending, (state) => {
         state.loading = true;
