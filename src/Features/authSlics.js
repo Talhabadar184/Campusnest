@@ -279,7 +279,6 @@
 
 // export const { logout } = authSlice.actions;
 // export default authSlice.reducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -305,10 +304,7 @@ export const registerUser = createAsyncThunk(
         },
       };
 
-      const response = await axios.post(
-        'http://localhost:8000/api/register',
-        payload
-      );
+      const response = await axios.post('http://localhost:8000/api/register', payload);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Registration failed');
@@ -360,10 +356,34 @@ export const resetPassword = createAsyncThunk(
   'auth/resetPassword',
   async ({ email, code, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/reset-password', { email, code, password });
+      const response = await axios.post('http://localhost:8000/api/reset-password', {
+        email,
+        code,
+        password,
+      });
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || 'Password reset failed');
+    }
+  }
+);
+
+// ✅ Get User Profile
+export const getUserProfile = createAsyncThunk(
+  'auth/getUserProfile',
+  async (_, { getState, rejectWithValue }) => {
+    try {
+      const { accessToken } = getState().auth;
+
+      const response = await axios.get('http://localhost:8000/api/profile', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || 'Failed to fetch profile');
     }
   }
 );
@@ -377,7 +397,7 @@ const authSlice = createSlice({
     refreshToken: null,
     loading: false,
     error: null,
-    resetStatus: null, // to track reset-related flow
+    resetStatus: null,
   },
   reducers: {
     logout: (state) => {
@@ -475,8 +495,24 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.resetStatus = null;
       });
+
+    // ✅ Get User Profile
+    builder
+      .addCase(getUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(getUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;
+

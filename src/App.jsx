@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes as RouterRoutes, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { BrowserRouter, Route, Routes as RouterRoutes } from "react-router-dom";
 
 // Screens
 import Signup from "./signup/Signup";
@@ -34,9 +33,11 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <RouterRoutes>
+        {/* Default route shows Home */}
+        <Route path="/" element={<Home />} />
+
         {/* Public Routes */}
-        <Route path="/" element={<Navigate to="/Signin" replace />} />
-        <Route path="/Signup" element={<Signup />} />
+        {/* <Route path="/Signup" element={<Signup />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
         <Route path="/Signin" element={<Signin />} />
@@ -44,25 +45,13 @@ function AppRoutes() {
         <Route path="/Verifycode" element={<VerifyCode />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
 
+        {/* Public Pages accessible to all users */}
+        <Route path="/Home" element={<Home />} />
+        <Route path="/NewHostel" element={<NewHostel />} />
+
         {/* Protected Routes */}
-        <Route
-          path="/Home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/Listing"
-          element={
-            <PrivateRoute>
-              <Listing />
-            </PrivateRoute>
-          }
-        >
-          <Route path="Comparison" element={<Comparison />} />
-        </Route>
+        <Route path="/Listing" element={<Listing />} />
+        <Route path="/Listing/Comparison" element={<Comparison />} />
 
         <Route
           path="/Details"
@@ -72,6 +61,7 @@ function AppRoutes() {
             </PrivateRoute>
           }
         />
+
         <Route
           path="/Booking"
           element={
@@ -136,14 +126,6 @@ function AppRoutes() {
           element={
             <PrivateRoute>
               <Inbox />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/NewHostel"
-          element={
-            <PrivateRoute>
-              <NewHostel />
             </PrivateRoute>
           }
         />

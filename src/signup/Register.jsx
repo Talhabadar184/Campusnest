@@ -380,7 +380,7 @@ const Register = () => {
       <div className="min-h-screen bg-gray-100 flex flex-col px-4 md:px-0">
         <div className="pt-7 flex justify-center md:justify-start md:pl-36">
           <h2 className="text-2xl font-semibold text-blue-700 text-center">
-            My Profile
+            Sign Up
           </h2>
         </div>
 
@@ -541,7 +541,7 @@ const Register = () => {
                   disabled={loading}
                   className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
                 >
-                  {loading ? "Submitting..." : "Submit"}
+                  {loading ? "Submitting..." : "Sign Up"}
                 </button>
               </div>
               {error && <p className="text-red-500 mt-2">{error}</p>}
