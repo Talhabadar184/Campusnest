@@ -1,17 +1,18 @@
 import React from "react";
+import { BrowserRouter, Route, Routes as RouterRoutes, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+// Screens
 import Signup from "./signup/Signup";
 import Signin from "./Signin/Signin";
 import ResetPassword from "./Signin/ResetPassword";
 import Register from "./signup/Register";
 import ForgotPassword from "./Forgotpassword/ForgotPassword";
 import VerifyCode from "./Forgotpassword/VerifyCode";
+import VerifyEmail from "./VerifyEmail/VerifyEmail";
+
+// Protected Pages
 import Home from "./Home/Home";
-import {
-  BrowserRouter,
-  Route,
-  Routes as RouterRoutes,
-  Navigate,
-} from "react-router-dom";
 import Listing from "./Listing/Listing";
 import Comparison from "./components/Comparison";
 import Details from "./Hostel Details/Details";
@@ -25,12 +26,15 @@ import Tennet from "./Dashboard/Tennet";
 import Owner from "./Dashboard/Owner";
 import Inbox from "./Inbox/Inbox";
 import NewHostel from "./Dashboard/NewHostel";
-import VerifyEmail from "./VerifyEmail/VerifyEmail";
+
+// Route Guard
+import PrivateRoute from "./private";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <RouterRoutes>
+        {/* Public Routes */}
         <Route path="/" element={<Navigate to="/Signin" replace />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/register" element={<Register />} />
@@ -39,25 +43,110 @@ function AppRoutes() {
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/Verifycode" element={<VerifyCode />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
-        <Route path="/Home" element={<Home />} />
-        <Route path="/Listing" element={<Listing />}>
+
+        {/* Protected Routes */}
+        <Route
+          path="/Home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Listing"
+          element={
+            <PrivateRoute>
+              <Listing />
+            </PrivateRoute>
+          }
+        >
           <Route path="Comparison" element={<Comparison />} />
         </Route>
-        <Route path="/Details" element={<Details />} />
-        <Route path="/Details" element={<Details />}>
-          <Route path="Booking" element={<Booking />} />
-        </Route>
-        <Route path="/Booking" element={<Booking />}>
+
+        <Route
+          path="/Details"
+          element={
+            <PrivateRoute>
+              <Details />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Booking"
+          element={
+            <PrivateRoute>
+              <Booking />
+            </PrivateRoute>
+          }
+        >
           <Route path="Payment" element={<Payment />} />
         </Route>
-        <Route path="/Ratings" element={<Ratings />} />
-        <Route path="/Notifications" element={<Notifications />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/Myprofile" element={<MyProfile />} />
-        <Route path="/Tennet" element={<Tennet />} />
-        <Route path="/Owner" element={<Owner />} />
-        <Route path="/Inbox" element={<Inbox />} />
-        <Route path="/NewHostel" element={<NewHostel />} />
+
+        <Route
+          path="/Ratings"
+          element={
+            <PrivateRoute>
+              <Ratings />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Notifications"
+          element={
+            <PrivateRoute>
+              <Notifications />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Myprofile"
+          element={
+            <PrivateRoute>
+              <MyProfile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Tennet"
+          element={
+            <PrivateRoute>
+              <Tennet />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Owner"
+          element={
+            <PrivateRoute>
+              <Owner />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/Inbox"
+          element={
+            <PrivateRoute>
+              <Inbox />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/NewHostel"
+          element={
+            <PrivateRoute>
+              <NewHostel />
+            </PrivateRoute>
+          }
+        />
       </RouterRoutes>
     </BrowserRouter>
   );
