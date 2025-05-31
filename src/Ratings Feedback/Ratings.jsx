@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeedback } from "../Features/ratings";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import InputField from "../components/Inputfield";
 import SelectField from "../components/Selectfield";
 import left from "../assets/Ratings/left.png";
 import right from "../assets/Ratings/right.png";
@@ -13,9 +15,23 @@ const Ratings = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 1;
 
+  const dispatch = useDispatch();
+const feedbackList = useSelector((state) => state.ratings.entries);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Feedback submitted:", { rating, recommend, feedback });
+    if (!rating || !recommend || !feedback.trim()) return;
+
+    const newEntry = {
+      id: Date.now(),
+      name: "Anonymous User", // You can make this dynamic
+      role: "Guest",
+      rating: `${"⭐".repeat(rating)}${rating}`,
+      review: feedback,
+      profileImg: "https://via.placeholder.com/50",
+    };
+
+    dispatch(addFeedback(newEntry));
     setFeedback("");
     setRating("");
     setRecommend("");
@@ -28,7 +44,7 @@ const Ratings = () => {
       role: "LUMS Student",
       rating: "⭐⭐⭐⭐4.5",
       review:
-        "Lahore Backpackers exceeded all my expectations! The hostel is clean, comfortable, and well-maintained, offering a cozy environment perfect for travelers. The staff is incredibly friendly and helpful, always ready to provide tips on local attractions and hidden gems in Lahore. I highly recommend Lahore Backpackers to anyone looking for a memorable and budget-friendly experience in Lahore.",
+        "Lahore Backpackers exceeded all my expectations! The hostel is clean, comfortable, and well-maintained...",
       profileImg: "https://via.placeholder.com/50",
     },
     {
@@ -37,9 +53,10 @@ const Ratings = () => {
       role: "Travel Blogger",
       rating: "⭐⭐⭐⭐⭐5",
       review:
-        "This was the best hostel experience I’ve had! The location is amazing, and the service is outstanding. Will definitely stay here again.",
+        "This was the best hostel experience I’ve had! The location is amazing, and the service is outstanding...",
       profileImg: "https://via.placeholder.com/50",
     },
+    ...feedbackList, // include submitted feedback
   ];
 
   const totalPages = Math.ceil(userReviews.length / reviewsPerPage);
@@ -56,7 +73,6 @@ const Ratings = () => {
           {/* Feedback Form */}
           <div className="bg-white p-6 border border-gray-300 rounded-lg shadow-md w-full max-w-4xl mx-auto">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Rating & Recommendation Fields */}
               <div className="flex flex-col gap-6 sm:flex-row justify-between">
                 <div className="w-full sm:w-1/2">
                   <label className="block mb-1 font-medium">Your Rating</label>
@@ -67,9 +83,7 @@ const Ratings = () => {
                   />
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <label className="block mb-1 font-medium">
-                    Would you like to recommend this hostel?
-                  </label>
+                  <label className="block mb-1 font-medium">Would you like to recommend this hostel?</label>
                   <SelectField
                     options={["-- Please Select --", "Yes", "No"]}
                     value={recommend}
@@ -78,7 +92,6 @@ const Ratings = () => {
                 </div>
               </div>
 
-              {/* Feedback Text Field */}
               <div>
                 <label className="block font-medium mb-1">Your Feedback</label>
                 <textarea
@@ -89,7 +102,6 @@ const Ratings = () => {
                 />
               </div>
 
-              {/* Buttons */}
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
@@ -112,20 +124,13 @@ const Ratings = () => {
             </form>
           </div>
 
-          {/* User Reviews Section */}
+          {/* User Reviews */}
           <div className="mt-12 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold mb-6 text-center">User Reviews</h3>
             {currentReviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-gray-50 p-4 rounded-lg shadow-md mb-6"
-              >
+              <div key={review.id} className="bg-gray-50 p-4 rounded-lg shadow-md mb-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <img
-                    src={review.profileImg}
-                    alt="Profile"
-                    className="w-12 h-12 border border-black rounded-full"
-                  />
+                  <img src={review.profileImg} alt="Profile" className="w-12 h-12 border border-black rounded-full" />
                   <div>
                     <h4 className="font-semibold">{review.name}</h4>
                     <p className="text-sm text-gray-500">{review.role}</p>
@@ -142,26 +147,18 @@ const Ratings = () => {
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className={`flex items-center gap-1 px-4 py-2 rounded ${
-                  currentPage === 1
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-gray-200"
+                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
                 }`}
               >
                 <img src={left} alt="Previous" className="h-5" />
                 <span className="text-blue-600">Back</span>
               </button>
-              <span className="text-sm">
-                Page {currentPage} of {totalPages}
-              </span>
+              <span className="text-sm">Page {currentPage} of {totalPages}</span>
               <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className={`flex items-center gap-1 px-4 py-2 rounded ${
-                  currentPage === totalPages
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-gray-200"
+                  currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-200"
                 }`}
               >
                 <span className="text-blue-600">Next</span>
