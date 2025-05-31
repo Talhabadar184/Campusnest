@@ -53,14 +53,8 @@ function AppRoutes() {
         <Route path="/Listing" element={<Listing />} />
         <Route path="/Listing/Comparison" element={<Comparison />} />
 
-        <Route
-          path="/Details"
-          element={
-            <PrivateRoute>
-              <Details />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/details/:id" element={<Details />} />
+
 
         <Route
           path="/Booking"

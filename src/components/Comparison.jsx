@@ -1,10 +1,11 @@
 import React from "react";
-import crossIcon from "../assets/Listing/cross.png"; 
+import crossIcon from "../assets/Listing/cross.png";
+
 const Comparison = ({ open, onClose, hostels }) => {
   if (!open) return null;
 
   return (
-    <div className="fixed  top-0 left-0 w-full h-full bg-transparent bg-opacity-50 flex justify-center items-center p-4">
+    <div className="fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 flex justify-center items-center p-4">
       {/* Dark overlay background */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg text-center relative">
@@ -35,13 +36,13 @@ const Comparison = ({ open, onClose, hostels }) => {
                     />
                   </div>
                   <p>
-                    <strong>Location:</strong> {hostel.location}
+                    <strong>Location:</strong> {hostel.location?.address || "N/A"}
                   </p>
                   <p>
-                    <strong>Price:</strong> {hostel.price} per person
+                    <strong>Price:</strong> {hostel.pricePerMonth || hostel.price || "N/A"} per person
                   </p>
                   <p>
-                    <strong>Rating:</strong> {hostel.ratings}
+                    <strong>Rating:</strong> {hostel.averageRating || hostel.ratings || "No ratings"}
                   </p>
                   <h3 className="mt-2 font-semibold text-blue-700">Amenities</h3>
                   <div className="border border-gray-400 w-full mt-2">
@@ -50,9 +51,11 @@ const Comparison = ({ open, onClose, hostels }) => {
                         key={i}
                         className="flex justify-between border-b py-1 px-3"
                       >
-                        <span className="text-left">{amenity}</span>
+                        <span className="text-left">
+                          {typeof amenity === "string" ? amenity : amenity.name || "Amenity"}
+                        </span>
                         <span className="text-right font-semibold">
-                          {amenity.available ? "Yes" : "No"}
+                          {amenity.available === undefined ? "Yes" : amenity.available ? "Yes" : "No"}
                         </span>
                       </div>
                     ))}

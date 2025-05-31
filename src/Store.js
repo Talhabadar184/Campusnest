@@ -4,10 +4,13 @@ import authReducer from '../src/Features/authSlics';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Uses localStorage by default
 import { combineReducers } from 'redux';
+import hostelReducer from '../src/Features/hostelSlice';
 
 // Combine reducers (if you have more in future)
 const rootReducer = combineReducers({
   auth: authReducer,
+  hostel: hostelReducer,
+
 });
 
 // Persist config
