@@ -6,15 +6,15 @@ export const submitFeedback = createAsyncThunk(
   "ratings/submitFeedback",
   async ({ hostelId, ratings, recommended, comment, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `http://localhost:8000/api/hostel/${hostelId}/feedback`,
-        { ratings, recommended, comment },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response =  await axios.post(
+  `http://localhost:8000/api/hostel/${hostelId}/feedback`,
+  { ratings, recommended, comment },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.error || "Something went wrong");

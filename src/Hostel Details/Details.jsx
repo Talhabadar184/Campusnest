@@ -301,7 +301,7 @@ const Details = () => {
           {/* Lower Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
             {/* Image Gallery */}
-            <div>
+            {/* <div>
               <div className="border border-gray-300 rounded-lg p-4">
                 <div className="w-full h-64 bg-gray-200 rounded-lg">
                   <img
@@ -324,10 +324,10 @@ const Details = () => {
                       ))}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Amenities & Reviews */}
-            <div>
+            <div className="justify-right">
               <h2 className="text-xl font-bold">Key Amenities</h2>
               <ul className="list-disc pl-6 text-gray-700">
                 <li><strong>Room Types:</strong> Dorms, Private Rooms, and Family Rooms</li>
@@ -346,7 +346,13 @@ const Details = () => {
                 "</p>
                 <p className="mt-2 text-gray-600">- {hostel.reviewer || "Saad Raza, UMT Lahore Student"}</p>
               </div>
-              <Link to="/Ratings" className="mt-2 text-blue-600 text-center cursor-pointer">See All Reviews | Help Us</Link>
+<Link
+  key={hostel._id}
+  to={`/Ratings/${hostel._id}`}
+  className="mt-2 text-blue-600 text-center cursor-pointer"
+>
+  See All Reviews | Help Us
+</Link>
 
               <div className="mt-6">
                 <h3 className="text-lg font-semibold text-gray-800">Quick Links</h3>

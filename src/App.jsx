@@ -297,7 +297,7 @@ import Comparison from "./components/Comparison";
 import Details from "./Hostel Details/Details";
 import Booking from "./Booking Forms/Booking";
 import Payment from "./Booking Forms/Payment";
-import Ratings from "./Ratings Feedback/Ratings";
+ import Ratings from "./Ratings Feedback/Ratings";
 import Notifications from "./components/Notifications";
 import Profile from "./Profile/Profile";
 import MyProfile from "./Profile/Myprofile";
@@ -355,13 +355,14 @@ function AppRoutes() {
           </Route>
 
           <Route
-            path="/Ratings"
-            element={
-              <PrivateRoute>
-                <Ratings />
-              </PrivateRoute>
-            }
-          />
+  path="/Ratings/:id"
+  element={
+    <PrivateRoute>
+      <Ratings />
+    </PrivateRoute>
+  }
+/>
+
           <Route
             path="/Notifications"
             element={

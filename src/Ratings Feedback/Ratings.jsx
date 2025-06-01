@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeedback } from "../Features/ratings";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SelectField from "../components/Selectfield";
 import left from "../assets/Ratings/left.png";
 import right from "../assets/Ratings/right.png";
+import FeedbackForm from "../Ratings Feedback/feedback";
+
+import { submitFeedback, addFeedback } from "../Features/ratings";
 
 const Ratings = () => {
   const [feedback, setFeedback] = useState("");
@@ -16,25 +18,60 @@ const Ratings = () => {
   const reviewsPerPage = 1;
 
   const dispatch = useDispatch();
-const feedbackList = useSelector((state) => state.ratings.entries);
 
-  const handleSubmit = (e) => {
+  const feedbackList = useSelector((state) => state.ratings.entries);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { selectedHostel } = useSelector((state) => state.hostel);
+
+  const hostelId = selectedHostel?._id; // ✅ from store
+  const token = userInfo?.token;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!rating || !recommend || !feedback.trim()) return;
 
-    const newEntry = {
-      id: Date.now(),
-      name: "Anonymous User", // You can make this dynamic
-      role: "Guest",
-      rating: `${"⭐".repeat(rating)}${rating}`,
-      review: feedback,
-      profileImg: "https://via.placeholder.com/50",
-    };
+    if (!token) {
+      alert("You must be logged in to submit feedback.");
+      return;
+    }
 
-    dispatch(addFeedback(newEntry));
-    setFeedback("");
-    setRating("");
-    setRecommend("");
+    if (!hostelId) {
+      alert("Hostel ID is missing.");
+      return;
+    }
+
+    if (!rating || !recommend || !feedback.trim()) {
+      alert("Please fill in all feedback fields.");
+      return;
+    }
+
+    try {
+      await dispatch(
+        submitFeedback({
+          hostelId,
+          ratings: Number(rating),
+          recommended: recommend === "Yes",
+          comment: feedback,
+          token,
+        })
+      ).unwrap();
+
+      dispatch(
+        addFeedback({
+          id: Date.now(),
+          name: userInfo?.name || "Anonymous",
+          role: "Guest",
+          rating: `${"⭐".repeat(rating)}${rating}`,
+          review: feedback,
+          profileImg: "https://via.placeholder.com/50",
+        })
+      );
+
+      setFeedback("");
+      setRating("");
+      setRecommend("");
+    } catch (err) {
+      console.error("Feedback error:", err);
+    }
   };
 
   const userReviews = [
@@ -56,7 +93,7 @@ const feedbackList = useSelector((state) => state.ratings.entries);
         "This was the best hostel experience I’ve had! The location is amazing, and the service is outstanding...",
       profileImg: "https://via.placeholder.com/50",
     },
-    ...feedbackList, // include submitted feedback
+    ...feedbackList,
   ];
 
   const totalPages = Math.ceil(userReviews.length / reviewsPerPage);
@@ -68,69 +105,31 @@ const feedbackList = useSelector((state) => state.ratings.entries);
       <Navbar />
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <div className="container mx-auto px-4 py-6">
-          <h2 className="text-2xl text-blue-700 mb-4 text-center sm:text-left">Ratings and Feedback</h2>
+          <h2 className="text-2xl text-blue-700 mb-4 text-center sm:text-left">
+            Ratings and Feedback
+          </h2>
 
-          {/* Feedback Form */}
-          <div className="bg-white p-6 border border-gray-300 rounded-lg shadow-md w-full max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="flex flex-col gap-6 sm:flex-row justify-between">
-                <div className="w-full sm:w-1/2">
-                  <label className="block mb-1 font-medium">Your Rating</label>
-                  <SelectField
-                    options={["-- Please Select --", "1", "2", "3", "4", "5"]}
-                    value={rating}
-                    onChange={(e) => setRating(e.target.value)}
-                  />
-                </div>
-                <div className="w-full sm:w-1/2">
-                  <label className="block mb-1 font-medium">Would you like to recommend this hostel?</label>
-                  <SelectField
-                    options={["-- Please Select --", "Yes", "No"]}
-                    value={recommend}
-                    onChange={(e) => setRecommend(e.target.value)}
-                  />
-                </div>
-              </div>
+          <FeedbackForm
+            hostelId={hostelId}
+            handleSubmit={handleSubmit}
+            feedback={feedback}
+            setFeedback={setFeedback}
+            rating={rating}
+            setRating={setRating}
+            recommend={recommend}
+            setRecommend={setRecommend}
+          />
 
-              <div>
-                <label className="block font-medium mb-1">Your Feedback</label>
-                <textarea
-                  placeholder="Type your feedback"
-                  value={feedback}
-                  onChange={(e) => setFeedback(e.target.value)}
-                  className="w-full h-32 p-3 rounded-lg bg-gray-100 text-gray-700 border border-gray-300 outline-none resize-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setFeedback("");
-                    setRating("");
-                    setRecommend("");
-                  }}
-                  className="bg-white border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50 transition"
-                >
-                  Reset
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* User Reviews */}
           <div className="mt-12 p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold mb-6 text-center">User Reviews</h3>
             {currentReviews.map((review) => (
               <div key={review.id} className="bg-gray-50 p-4 rounded-lg shadow-md mb-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                  <img src={review.profileImg} alt="Profile" className="w-12 h-12 border border-black rounded-full" />
+                  <img
+                    src={review.profileImg}
+                    alt="Profile"
+                    className="w-12 h-12 border border-black rounded-full"
+                  />
                   <div>
                     <h4 className="font-semibold">{review.name}</h4>
                     <p className="text-sm text-gray-500">{review.role}</p>
@@ -141,7 +140,6 @@ const feedbackList = useSelector((state) => state.ratings.entries);
               </div>
             ))}
 
-            {/* Pagination */}
             <div className="flex flex-col sm:flex-row justify-between items-center mt-6 text-gray-600 gap-3">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -153,7 +151,9 @@ const feedbackList = useSelector((state) => state.ratings.entries);
                 <img src={left} alt="Previous" className="h-5" />
                 <span className="text-blue-600">Back</span>
               </button>
-              <span className="text-sm">Page {currentPage} of {totalPages}</span>
+              <span className="text-sm">
+                Page {currentPage} of {totalPages}
+              </span>
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}

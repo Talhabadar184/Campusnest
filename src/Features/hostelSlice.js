@@ -41,11 +41,10 @@
 
 // export default hostelSlice.reducer;
 
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Fetch all hostels
+// ✅ Fetch all hostels
 export const fetchAllHostels = createAsyncThunk(
   'hostel/fetchAllHostels',
   async (_, { rejectWithValue }) => {
@@ -75,14 +74,20 @@ const hostelSlice = createSlice({
   name: 'hostel',
   initialState: {
     hostels: [],
-    selectedHostel: null, // ✅ for storing one hostel
+    selectedHostel: null,
+    hostelId: null, // ✅ used across the app
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    // ✅ Set the selected hostel ID manually
+    setHostelId: (state, action) => {
+      state.hostelId = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      // All hostels
+      // ✅ All hostels
       .addCase(fetchAllHostels.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -111,5 +116,8 @@ const hostelSlice = createSlice({
       });
   },
 });
+
+// ✅ Export the action to set hostelId manually
+export const { setHostelId } = hostelSlice.actions;
 
 export default hostelSlice.reducer;
