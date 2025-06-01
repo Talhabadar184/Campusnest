@@ -312,12 +312,16 @@ import { getUserProfile } from "./Features/authSlics";
 function AppRoutes() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessToken);
+  const userInfo = useSelector((state) => state.auth.user);
+  const state = useSelector(state => state);
+  console.log("Inbox entire Redux state:", state);
+  
 
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && !userInfo ) {
       dispatch(getUserProfile());
     }
-  }, [accessToken, dispatch]);
+  }, [accessToken,userInfo, dispatch]);
 
   return (
     <Elements stripe={stripePromise}>
