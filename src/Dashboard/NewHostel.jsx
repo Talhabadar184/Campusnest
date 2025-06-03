@@ -1,52 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const NewHostel = ({ onClose }) => {
   const [formData, setFormData] = useState({
-    hostelName: '',
-    adminEmail: '',
-    address: '',
-    city: '',
-    university: '',
-    description: '',
-    rooms: '',
-    roomType: '',
-    roomPrice: '',
-    slots: '',
-    ownerName: '',
-    contact: '',
-    email: '',
-    photo: null,
+    hostelName: "",
+    location: "",
+    contact: "",
+    price: "",
+    amenities: "",
+    description: "",
+    photos: null,
   });
 
   const [errors, setErrors] = useState({});
 
   const validate = () => {
     const newErrors = {};
-
-    if (!formData.hostelName.trim()) newErrors.hostelName = "Hostel name is required";
-    if (!formData.adminEmail.trim()) {
-      newErrors.adminEmail = "Admin email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.adminEmail)) {
-      newErrors.adminEmail = "Invalid email format";
-    }
-    if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.city.trim()) newErrors.city = "City is required";
-    if (!formData.university) newErrors.university = "Select a university";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-
-    if (!formData.rooms) newErrors.rooms = "Select number of rooms";
-    if (!formData.roomType) newErrors.roomType = "Select room type";
-    if (!formData.roomPrice) newErrors.roomPrice = "Select room price";
-    if (!formData.slots) newErrors.slots = "Select slots";
-
-    if (!formData.ownerName.trim()) newErrors.ownerName = "Owner name is required";
-    if (!formData.contact.trim()) newErrors.contact = "Contact number is required";
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Invalid email";
-    }
-    if (!formData.photo) newErrors.photo = "Upload a photo";
+    if (!formData.hostelName.trim()) newErrors.hostelName = "Required";
+    if (!formData.location.trim()) newErrors.location = "Required";
+    if (!formData.contact.trim()) newErrors.contact = "Required";
+    if (!formData.price.trim()) newErrors.price = "Required";
+    if (!formData.amenities.trim()) newErrors.amenities = "Required";
+    if (!formData.description.trim()) newErrors.description = "Required";
+    if (!formData.photos) newErrors.photos = "Required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -54,159 +29,159 @@ const NewHostel = ({ onClose }) => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
+    setFormData({ ...formData, [name]: files ? files[0] : value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Form submitted successfully!", formData);
+      console.log("Form submitted!", formData);
       onClose();
     }
   };
 
+  const handleReset = () => {
+    setFormData({
+      hostelName: "",
+      location: "",
+      contact: "",
+      price: "",
+      amenities: "",
+      description: "",
+      photos: null,
+    });
+    setErrors({});
+  };
+
   return (
-    <div className="fixed inset-0 bg-black opacity-97 flex items-center justify-center  p-4">
-      <div className="bg-white w-full max-w-4xl max-h-[95vh] rounded-xl shadow-lg overflow-y-auto p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-700">Add New Hostel</h2>
-          <button onClick={onClose} className="text-gray-600 text-2xl font-bold hover:text-red-500">
+    <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4">
+      <div className="bg-white w-full max-w-3xl rounded-lg shadow-lg overflow-y-auto p-6">
+        <div className="flex justify-between items-center border-b pb-2 mb-4">
+          <h2 className="text-lg font-semibold text-blue-600">
+            Add New Hostel
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-3xl text-gray-600 hover:text-red-500"
+          >
             &times;
           </button>
         </div>
 
-        <p className="text-center text-sm text-gray-500 mb-6">
+        <p className="text-sm text-center text-gray-500 mb-6">
           Please fill out the form below.
         </p>
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
-          {/* Hostel Information */}
+        <h3 className="text-blue-600 font-semibold text-sm mb-4">
+          Hostel Information
+        </h3>
+
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+        >
+          {/* Hostel Name */}
           <div>
-            <h3 className="text-md font-semibold text-gray-700 mb-3">Hostel Information</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: "Hostel Name", name: "hostelName", placeholder: "enter hostel name" },
-                { label: "Admin Email", name: "adminEmail", type: "email", placeholder: "enter your email" },
-                { label: "Address", name: "address", placeholder: "enter your address" },
-                { label: "City", name: "city" ,placeholder: "enter your city" },
-              ].map(({ label, name, type = "text",placeholder }) => (
-                <div key={name}>
-                  <label className="block text-sm font-medium text-gray-700">{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    placeholder={placeholder}
-                    value={formData[name]}
-                    onChange={handleChange}
-                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                  />
-                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
-                </div>
-              ))}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">University</label>
-                <select
-                  name="university"
-                  value={formData.university}
-                  onChange={handleChange}
-                  className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                >
-                  <option value="">-- Choose University --</option>
-                  <option value="UCP">UCP</option>
-                  <option value="PU">PU</option>
-                </select>
-                {errors.university && <p className="text-red-500 text-xs">{errors.university}</p>}
-              </div>
-
-              <div className="sm:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full resize-none h-20"
-                />
-                {errors.description && <p className="text-red-500 text-xs">{errors.description}</p>}
-              </div>
-            </div>
+            <label className="block text-sm text-black mb-1">Hostel Name</label>
+            <input
+              type="text"
+              name="hostelName"
+              value={formData.hostelName}
+              onChange={handleChange}
+              placeholder="Enter your hostel name"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full"
+            />
           </div>
 
-          {/* Hostel Details */}
+          {/* Location */}
           <div>
-            <h3 className="text-md font-semibold text-gray-700 mb-3">Hostel Details</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: "No. of Rooms", name: "rooms", options: ["5", "10"] },
-                { label: "Room Type", name: "roomType", options: ["Single", "Shared"] },
-                { label: "Room Price", name: "roomPrice", options: ["5000", "8000"] },
-                { label: "Available Slots", name: "slots", options: ["5", "10"] },
-              ].map(({ label, name, options }) => (
-                <div key={name}>
-                  <label className="block text-sm font-medium text-gray-700">{label}</label>
-                  <select
-                    name={name}
-                    value={formData[name]}
-                    onChange={handleChange}
-                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                  >
-                    <option value="">{`-- ${label} --`}</option>
-                    {options.map((opt) => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
-                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
-                </div>
-              ))}
-            </div>
+            <label className="block text-sm text-black mb-1">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="Hostel location"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full"
+            />
           </div>
 
-          {/* Contact Info */}
+          {/* Contact */}
           <div>
-            <h3 className="text-md font-semibold text-gray-700 mb-3">Contact Information</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: "Owner Name", name: "ownerName",placeholder: "enter owner name" },
-                { label: "Contact Number", name: "contact",placeholder: "enter contact number" },
-                { label: "Email", name: "email", type: "email",placeholder: "enter your email" },
-              ].map(({ label, name, type = "text",placeholder }) => (
-                <div key={name}>
-                  <label className="block text-sm font-medium text-gray-700">{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    placeholder={placeholder}
-                    value={formData[name]}
-                    onChange={handleChange}
-                    className="mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                  />
-                  {errors[name] && <p className="text-red-500 text-xs">{errors[name]}</p>}
-                </div>
-              ))}
-
-<div>
-                <label className="block text-sm font-medium text-gray-700">Upload Photo</label>
-                <input
-                  type="file"
-                  name="photo"
-                  onChange={handleChange}
-                  className="input mt-1 bg-gray-100 border border-gray-300 rounded-md p-2 w-full"
-                />
-                {errors.photo && <p className="text-red-500 text-xs">{errors.photo}</p>}
-              </div>
-            </div>
+            <label className="block text-sm text-black mb-1">Contact Details</label>
+            <input
+              type="text"
+              name="contact"
+              value={formData.contact}
+              onChange={handleChange}
+              placeholder="Owner contact detail"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full"
+            />
           </div>
 
-          {/* Submit Button */}
-          <div className="text-end">
+          {/* Price */}
+          <div>
+            <label className="block text-sm text-black mb-1">Price/month</label>
+            <input
+              type="text"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Price"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full"
+            />
+          </div>
+
+          {/* Amenities */}
+          <div>
+            <label className="block text-sm text-black mb-1">Amenities</label>
+            <input
+              type="text"
+              name="amenities"
+              value={formData.amenities}
+              onChange={handleChange}
+              placeholder="Amenities"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full"
+            />
+          </div>
+
+          {/* Upload Photos */}
+          <div>
+            <label className="block text-sm text-black mb-1">Upload Photos</label>
+            <input
+              type="file"
+              name="photos"
+              onChange={handleChange}
+              className="text-sm text-black w-full"
+            />
+          </div>
+
+          {/* Description */}
+          <div className="md:col-span-2">
+            <label className="block text-sm text-black mb-1">Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Type your message (optional)"
+              className="bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 w-full h-24 resize-none"
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="col-span-1 md:col-span-2 flex justify-end gap-4 mt-4">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm hover:bg-gray-100"
+            >
+              Reset
+            </button>
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md transition"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
             >
-              Submit Hostel
+              Submit
             </button>
           </div>
         </form>
