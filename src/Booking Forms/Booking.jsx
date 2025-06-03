@@ -350,11 +350,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createBooking, processPayment, clearBookingState } from "../Features/BookingSlice";
-
 import InputField from "../components/Inputfield";
-import SelectField from "../components/Selectfield";
 import crossIcon from "../assets/Listing/cross.png";
-
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 }) {
@@ -362,383 +359,211 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
   const stripe = useStripe();
   const elements = useElements();
 
-  // Get the selected hostel from the store (adjust this selector to your store shape)
   const selectedHostel = useSelector((state) => state.hostel.selectedHostel);
-
-  // Booking state from store
   const { bookingResult, loading, error } = useSelector((state) => state.booking);
   const user = useSelector((state) => state.auth.user);
 
-  // Use hostel ID from store or fallback to prop
   const hostelId = selectedHostel?._id || propHostelId;
 
   const [formData, setFormData] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
     email: user?.email || "",
-    phone: user?.mobileNo || user?.phone || "", // normalize your phone number here
+    phone: user?.mobileNo || "",
     moveInDate: "",
     message: "",
-    paymentMethod: "default", // for validation, values: "card", "Bkash", "Nagad", "Rocket"
   });
 
-  const [isPaymentStep, setIsPaymentStep] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
-  const [paymentErrors, setPaymentErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [isPaymentValid, setIsPaymentValid] = useState(false);
-
-  // Stripe card element error state
   const [cardError, setCardError] = useState(null);
+  const [isPaymentStep, setIsPaymentStep] = useState(false);
+  // const cardElement = elements.getElement(CardElement);
+// console.log("CardElement:", cardElement); // should not be null
 
-  // Update user info if user changes in store
+
   useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      firstName: user?.firstName || "",
-      lastName: user?.lastName || "",
-      email: user?.email || "",
-      phone: user?.mobileNo || user?.phone || "",
-    }));
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        phone: user.mobileNo || "",
+      }));
+    }
   }, [user]);
 
-  // Validate on changes
-  useEffect(() => {
-    validateForm(formData);
-    validatePayment(formData);
-  }, [formData]);
-
-  const handleClose = () => {
-    dispatch(clearBookingState());
-    setIsPaymentStep(false);
-    setErrors({});
-    setPaymentErrors({});
-    setIsFormValid(false);
-    setIsPaymentValid(false);
-    setCardError(null);
-    onClose();
-  };
-
-  // Booking form validation
-  const validateForm = (data) => {
+  const validateForm = () => {
     const newErrors = {};
-    if (!data.firstName.trim()) newErrors.firstName = "First Name is required";
-    if (!data.email.trim()) newErrors.email = "Email is required";
-    if (!data.phone.trim()) newErrors.phone = "Phone is required";
-    if (!data.moveInDate) newErrors.moveInDate = "Move-In Date is required";
+    if (!formData.firstName.trim()) newErrors.firstName = "Required";
+    if (!formData.email.trim()) newErrors.email = "Required";
+    if (!formData.phone.trim()) newErrors.phone = "Required";
+    if (!formData.moveInDate) newErrors.moveInDate = "Required";
     setErrors(newErrors);
-    const valid = Object.keys(newErrors).length === 0;
-    setIsFormValid(valid);
-    return valid;
+    return Object.keys(newErrors).length === 0;
   };
 
-  // Payment validation
-  const validatePayment = (data) => {
-    const newErrors = {};
-    if (!data.paymentMethod || data.paymentMethod === "default") {
-      newErrors.paymentMethod = "Payment method is required";
-    }
-    if (!data.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
-    if (data.paymentMethod === "card" && cardError) {
-      newErrors.card = cardError;
-    }
-    setPaymentErrors(newErrors);
-    const valid = Object.keys(newErrors).length === 0;
-    setIsPaymentValid(valid);
-    return valid;
-  };
-
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handlePaymentChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setPaymentErrors((prev) => ({ ...prev, [name]: "" }));
-    // Reset card errors if payment method changes
-    if (name === "paymentMethod") {
-      setCardError(null);
-    }
+  const handleCardChange = (e) => {
+    setCardError(e.error ? e.error.message : null);
   };
 
-  // Handle Stripe CardElement changes to capture errors
-  const handleCardElementChange = (event) => {
-    setCardError(event.error ? event.error.message : null);
-  };
+  // const handleBookingSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!validateForm() || !hostelId) return;
 
-  // Create booking and move to payment step
-  const handleSaveAndNext = async (e) => {
+  //   const payload = {
+  //     hostelId,
+  //     firstName: formData.firstName,
+  //     lastName: formData.lastName,
+  //     email: formData.email,
+  //     phone: formData.phone,
+  //     moveInDate: formData.moveInDate,
+  //     message: formData.message,
+  //   };
+
+  //   const result = await dispatch(createBooking(payload));
+  //   if (createBooking.fulfilled.match(result)) {
+  //     setIsPaymentStep(true);
+  //   }
+  // };
+  const handleBookingSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm(formData)) return;
-
+  
+    // Validate form and required values
+    if (!validateForm()) return;
     if (!hostelId) {
-      alert("Hostel ID is missing.");
+      console.error("Hostel ID is missing");
       return;
     }
-
+  
+    // Build payload
     const payload = {
-      hostelId, // from store or prop
-      firstName: formData.firstName.trim(),
-      lastName: formData.lastName.trim(),
-      email: formData.email.trim(),
-      phone: formData.phone.trim(),
+      hostelId,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
       moveInDate: formData.moveInDate,
-      message: formData.message.trim(),
+      message: formData.message,
     };
-
+  
     try {
-      const resultAction = await dispatch(createBooking(payload));
-      if (createBooking.fulfilled.match(resultAction)) {
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 5000);
-        setIsPaymentStep(true);
+      const result = await dispatch(createBooking(payload));
+  
+      if (createBooking.fulfilled.match(result)) {
+        console.log("Booking successful:", result.payload);
+        setIsPaymentStep(true); // Proceed to next step
+      } else {
+        console.error("Booking failed:", result.payload);
+        alert(result.payload?.message || "Booking failed. Please try again.");
       }
     } catch (err) {
-      console.error("Booking dispatch error", err);
+      console.error("Unexpected error during booking:", err);
+      alert("Something went wrong. Please try again later.");
     }
   };
+  
 
-  // Payment submission
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
-    if (!validatePayment(formData)) return;
+    if (!stripe || !elements) return;
+    if (cardError) return alert("Fix card error before submitting");
 
-    const bookingId = bookingResult?.bookingId || bookingResult?._id;
-    if (!bookingId) {
-      alert("No booking found to pay for.");
+    const cardElement = elements.getElement(CardElement);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+      billing_details: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+      },
+    });
+
+    if (error) {
+      setCardError(error.message);
       return;
     }
 
-    // Handle Stripe Card payment method
-    if (formData.paymentMethod === "card") {
-      if (!stripe || !elements) {
-        alert("Stripe has not loaded yet.");
-        return;
-      }
+    const bookingId = bookingResult?.bookingId || bookingResult?._id;
+    const paymentData = {
+      bookingId,
+      paymentMethodId: paymentMethod.id,
+    };
 
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        alert("Card element not found.");
-        return;
-      }
-
-      // Create payment method with Stripe
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-        billing_details: {
-          name: `${formData.firstName} ${formData.lastName}`,
-          email: formData.email,
-          phone: formData.phone,
-        },
-      });
-
-      if (error) {
-        setCardError(error.message);
-        return;
-      }
-
-      try {
-        const resultAction = await dispatch(
-          processPayment({
-            bookingId,
-            paymentMethodId: paymentMethod.id,
-            amount: hostelPrice,
-            phone: formData.phone.trim(),
-          })
-        );
-
-        if (processPayment.fulfilled.match(resultAction)) {
-          alert("Payment successful!");
-          dispatch(clearBookingState());
-          setIsPaymentStep(false);
-          onClose();
-        } else {
-          alert("Payment failed. Please try again.");
-        }
-      } catch (err) {
-        console.error("Payment dispatch error", err);
-      }
+    const result = await dispatch(processPayment(paymentData));
+    if (processPayment.fulfilled.match(result)) {
+      alert("Payment successful!");
+      dispatch(clearBookingState());
+      onClose();
     } else {
-      // Handle other payment methods (Bkash, Nagad, Rocket)
-      try {
-        const resultAction = await dispatch(
-          processPayment({
-            bookingId,
-            paymentMethodId: formData.paymentMethod, // your token here (for now, just the string)
-            amount: hostelPrice,
-            phone: formData.phone.trim(),
-          })
-        );
-
-        if (processPayment.fulfilled.match(resultAction)) {
-          alert("Payment successful!");
-          dispatch(clearBookingState());
-          setIsPaymentStep(false);
-          onClose();
-        } else {
-          alert("Payment failed. Please try again.");
-        }
-      } catch (err) {
-        console.error("Payment dispatch error", err);
-      }
+      alert("Payment failed. Please try again.");
     }
+  };
+
+  
+  const handleClose = () => {
+    dispatch(clearBookingState());
+    onClose();
+    setIsPaymentStep(false);
+    setErrors({});
+    setCardError(null);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50 px-4 sm:px-6 md:px-8 lg:px-10">
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="bg-white p-6 rounded-lg w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl shadow-lg relative">
-        <img
-          src={crossIcon}
-          alt="Close"
-          className="absolute top-3 right-3 cursor-pointer w-6 h-6"
-          onClick={handleClose}
-        />
+    <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
+      <div className="absolute inset-0 bg-black opacity-50" />
+      <div className="bg-white p-6 rounded-lg w-full max-w-xl relative shadow-lg">
+        <img src={crossIcon} alt="Close" className="absolute top-3 right-3 w-6 h-6 cursor-pointer" onClick={handleClose} />
 
         {!isPaymentStep ? (
           <>
             <h2 className="text-2xl font-semibold mb-4">Booking</h2>
-            <form onSubmit={handleSaveAndNext} noValidate>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="First Name *"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  error={errors.firstName}
-                />
-                <InputField
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  error={errors.lastName}
-                />
-                <InputField
-                  label="Email *"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={errors.email}
-                />
-                <InputField
-                  label="Phone *"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  error={errors.phone}
-                />
-                <InputField
-                  label="Move In Date *"
-                  name="moveInDate"
-                  type="date"
-                  value={formData.moveInDate}
-                  onChange={handleChange}
-                  error={errors.moveInDate}
-                />
-                <InputField
-                  label="Message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={!isFormValid || loading}
-                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
-              >
-                {loading ? "Processing..." : "Save & Next"}
+            <form onSubmit={handleBookingSubmit}>
+              <InputField label="First Name *" name="firstName" value={formData.firstName} onChange={handleInputChange} error={errors.firstName} />
+              <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleInputChange} />
+              <InputField label="Email *" name="email" value={formData.email} onChange={handleInputChange} error={errors.email} />
+              <InputField label="Phone *" name="phone" value={formData.phone} onChange={handleInputChange} error={errors.phone} />
+              <InputField label="Move-In Date *" name="moveInDate" type="date" value={formData.moveInDate} onChange={handleInputChange} error={errors.moveInDate} />
+              <InputField label="Message" name="message" value={formData.message} onChange={handleInputChange} />
+              <button type="submit" className="mt-4 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled={loading}>
+                {loading ? "Saving..." : "Save & Continue to Payment"}
               </button>
-              {error && <p className="text-red-600 mt-2">{error}</p>}
-              {isSubmitted && !error && (
-                <p className="text-green-600 mt-2">Booking saved successfully!</p>
-              )}
             </form>
           </>
         ) : (
           <>
             <h2 className="text-2xl font-semibold mb-4">Payment</h2>
-            <form onSubmit={handlePaymentSubmit} noValidate>
-              <InputField
-                label="Phone *"
-                name="phone"
-                value={formData.phone}
-                onChange={handlePaymentChange}
-                error={paymentErrors.phone}
-              />
-              <SelectField
-                label="Payment Method *"
-                name="paymentMethod"
-                value={formData.paymentMethod}
-                onChange={handlePaymentChange}
-                options={[
-                  { value: "default", label: "-- Please Select --" },
-                  { value: "card", label: "Credit/Debit Card (Stripe)" },
-                  { value: "Bkash", label: "Bkash" },
-                  { value: "Nagad", label: "Nagad" },
-                  { value: "Rocket", label: "Rocket" },
-                ]}
-                error={paymentErrors.paymentMethod}
-              />
-              {formData.paymentMethod === "card" && (
-                <div className="mb-4 p-3 border rounded">
-                  <CardElement
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: "16px",
-                          color: "#32325d",
-                          "::placeholder": {
-                            color: "#aab7c4",
-                          },
-                        },
-                        invalid: {
-                          color: "#fa755a",
-                        },
+            <form onSubmit={handlePaymentSubmit}>
+              <div className="mb-4 p-3 border rounded">
+                <CardElement
+                  options={{
+                    style: {
+                      base: {
+                        fontSize: "16px",
+                        color: "#32325d",
+                        "::placeholder": { color: "#aab7c4" },
                       },
-                    }}
-                    onChange={handleCardElementChange}
-                  />
-                  {paymentErrors.card && (
-                    <p className="text-red-600 mt-2">{paymentErrors.card}</p>
-                  )}
-                </div>
-              )}
-              <div className="mb-4">
-                <p>
-                  Total to pay: <strong>Rs. {hostelPrice.toLocaleString()}</strong>
-                </p>
+                      invalid: { color: "#fa755a" },
+                    },
+                  }}
+                  onChange={handleCardChange}
+                />
+                {cardError && <p className="text-red-600 mt-2">{cardError}</p>}
               </div>
-              <button
-                type="submit"
-                disabled={!isPaymentValid || loading}
-                className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
-              >
-                {loading ? "Processing..." : "Confirm Payment"}
+              <p className="mb-4">Amount to pay: <strong>Rs. {hostelPrice.toLocaleString()}</strong></p>
+              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled={loading}>
+                {loading ? "Processing..." : "Pay Now"}
               </button>
               {error && <p className="text-red-600 mt-2">{error}</p>}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsPaymentStep(false);
-                  setCardError(null);
-                  setPaymentErrors({});
-                }}
-                className="text-blue-600 mt-4 underline"
-              >
-                ← Back to Booking Form
-              </button>
             </form>
           </>
         )}

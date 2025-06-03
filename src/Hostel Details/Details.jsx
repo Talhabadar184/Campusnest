@@ -219,7 +219,7 @@ import { fetchHostelById } from "../Features/hostelSlice";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Booking from "../Booking Forms/Booking";
-
+import BookingWrapper from "../BookingWrapper";
 const Details = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -292,11 +292,12 @@ const Details = () => {
           </div>
 
           {/* Booking */}
-          <Booking
-            isOpen={isBookingOpen}
-            onClose={() => setIsBookingOpen(false)}
-            hostelPrice={hostel.pricePerMonth || hostel.price || "15,500/-"}
-          />
+          <BookingWrapper
+  isOpen={isBookingOpen}
+  onClose={() => setIsBookingOpen(false)}
+  hostelPrice={hostel.pricePerMonth || hostel.price || "15,500/-"}
+/>
+
 
           {/* Lower Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">

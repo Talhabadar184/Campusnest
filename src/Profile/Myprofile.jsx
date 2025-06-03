@@ -201,10 +201,12 @@ function MyProfile() {
 
   // Get user profile from Redux
   const { user, loading, error } = useSelector((state) => state.auth);
+  const booking = useSelector((state) => state.booking.booking); // Adjust path based on your store
+
 
   const [editableProfile, setEditableProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [booking, setBooking] = useState(null);
+ 
 
   // Fetch profile from backend via Redux
   useEffect(() => {
@@ -219,12 +221,12 @@ function MyProfile() {
   }, [user]);
 
   // Load booking data from localStorage
-  useEffect(() => {
-    const storedBooking = localStorage.getItem("bookingFormData");
-    if (storedBooking) {
-      setBooking(JSON.parse(storedBooking));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedBooking = localStorage.getItem("bookingFormData");
+  //   if (storedBooking) {
+  //     setBooking(JSON.parse(storedBooking));
+  //   }
+  // }, []);
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);

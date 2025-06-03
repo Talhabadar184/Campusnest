@@ -190,4 +190,4 @@ const NewHostel = ({ onClose }) => {
   );
 };
 
-export default NewHostel;
+export default NewHostel;
