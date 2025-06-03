@@ -19,7 +19,6 @@ const rootReducer = combineReducers({
 
 });
 
-// Persist config
 const persistConfig = {
   key: 'root',
   storage,

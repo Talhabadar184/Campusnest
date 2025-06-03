@@ -76,9 +76,12 @@ const bookingSlice = createSlice({
         state.error = null;
       })
       .addCase(createBooking.fulfilled, (state, action) => {
-        state.loading = false;
-        state.bookingResult = action.payload;
-      })
+  console.log("Booking Payload:", action.payload); // Should contain full booking
+  state.loading = false;
+  state.bookingResult = action.payload.booking; // update this if you wrap it in `.booking`
+})
+
+      
       .addCase(createBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
