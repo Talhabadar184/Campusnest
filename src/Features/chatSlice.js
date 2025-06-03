@@ -8,7 +8,9 @@ export const getMessages = createAsyncThunk(
   'chat/getMessages',
   async (roomId, { getState, rejectWithValue }) => {
     try {
-      const token = getState().auth.accessToken;
+        const token = getState().auth.accessToken;
+        console.log("Token being used:", token); // ← Add this
+        
       if (!token) throw new Error('No token found');
 
       const response = await axios.get(`${API_URL}/${roomId}`, {

@@ -313,8 +313,8 @@ function AppRoutes() {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.accessToken);
   const userInfo = useSelector((state) => state.auth.user);
-  const state = useSelector(state => state);
-  console.log("Inbox entire Redux state:", state);
+  const ownerInfo = useSelector((state) => state.hostel);
+  console.log(ownerInfo)
   
 
   useEffect(() => {

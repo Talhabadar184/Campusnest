@@ -252,221 +252,126 @@
 // };
 
 // export default Inbox;
-
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import EmojiPicker from "emoji-picker-react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMessages, sendMessage as sendChatMessage } from "../Features/chatSlice";
-import cross from "../assets/Chats/cross.png";
+import EmojiPicker from "emoji-picker-react";
+import { getMessages, sendMessage } from "../Features/chatSlice";
+
 import gifts from "../assets/Chats/gifts.png";
 import emojis from "../assets/Chats/emojis.png";
 import attachments from "../assets/Chats/attachments.png";
 
-// Utility to create consistent room IDs (sort ensures uniqueness regardless of order)
-const generateRoomId = (id1, id2) => [id1, id2].sort().join("_");
-
 const Inbox = () => {
-  const location = useLocation();
   const dispatch = useDispatch();
-  const { role, ownerName, tenantName } = location.state || {};
-const state = useSelector(state => state);
-  console.log("Inbox entire Redux state:", state);
-  // Auth and chat slices from Redux store
-  const { accessToken } = useSelector((state) => state.auth.accessToken);
-  const userInfo = useSelector((state) => state.auth?.user);
-  console.log("user:",userInfo);
+  const fileInputRef = useRef(null);
+
+  const { accessToken } = useSelector((state) => state.auth);
+  const userInfo = useSelector((state) => state.auth.user);
+  const ownerId = useSelector((state) => state.hostel);
+  console.log(ownerId);
 
   const { messages } = useSelector((state) => state.chat);
 
-  const fileInputRef = useRef(null);
-
-  // Chat list is either owners (for tenant role) or tenants (for owner role)
-  const [chatList, setChatList] = useState([]);
-  const [selectedChat, setSelectedChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
-  const [showChat, setShowChat] = useState(false);
   const [showEmojis, setShowEmojis] = useState(false);
 
-  // Dummy data for chats; replace with API data as needed
+  const roomId = userInfo && ownerId ? `${userInfo._id}_${ownerId}` : "";
+
   useEffect(() => {
-    if (!role) return;
-
-    const defaultList =
-      role === "tenant"
-        ? [
-            { id: 1, name: "Ahmed Raza", ownerId: "6659511bf5233dabc21f230b" },
-            { id: 2, name: "Shoaib Noor", ownerId: "6659511bf5233dabc21f230c" },
-          ]
-        : [
-            { id: 1, name: "Ali Khan", tenantId: "6659511bf5233dabc21f230a" },
-            { id: 2, name: "Sara Ali", tenantId: "6659511bf5233dabc21f230d" },
-          ];
-
-    setChatList(defaultList);
-
-    // Auto-select chat based on passed ownerName or tenantName
-    let match = null;
-    if (role === "tenant" && ownerName) {
-      match = defaultList.find((chat) => chat.name === ownerName);
-    } else if (role === "owner" && tenantName) {
-      match = defaultList.find((chat) => chat.name === tenantName);
+    if (accessToken && roomId) {
+      dispatch(getMessages(roomId));
     }
+  }, [accessToken, dispatch, roomId]);
 
-    if (match) {
-      handleChatSelect(match);
-    }
-  }, [role, ownerName, tenantName]);
-
-  // Fetch messages and set selected chat
-  const handleChatSelect = (chat) => {
-    if (!userInfo?._id) {
-      console.error("User info missing");
-      return;
-    }
-
-    const partnerId = role === "tenant" ? chat.ownerId : chat.tenantId;
-    const roomId = generateRoomId(userInfo._id, partnerId);
-
-    dispatch(getMessages(roomId));
-    setSelectedChat({ ...chat, roomId });
-    setShowChat(true);
-  };
-  // Fetch messages whenever selectedChat changes
-useEffect(() => {
-  if (selectedChat?.roomId) {
-    dispatch(getMessages(selectedChat.roomId));
-  }
-}, [selectedChat, dispatch]);
-
-
-  // Send new message to backend via Redux action
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !selectedChat || !userInfo?._id || !accessToken) return;
+    if (!newMessage.trim() || !userInfo || !ownerId) return;
 
     const messagePayload = {
       senderId: userInfo._id,
-      receiverId: role === "tenant" ? selectedChat.ownerId : selectedChat.tenantId,
+      receiverId: ownerId,
       message: newMessage.trim(),
     };
 
-    dispatch(sendChatMessage({ roomId: selectedChat.roomId, messageData: messagePayload, token: accessToken }));
+    dispatch(sendMessage({ roomId, messageData: messagePayload }));
     setNewMessage("");
   };
 
-  // Stub for file upload handling
   const handleFileUpload = (file) => {
-    console.log("File selected:", file);
-    // TODO: Implement actual upload logic and message sending for attachments
+    console.log("File uploaded:", file);
+    // Future: handle file sending
   };
 
-  if (!userInfo) return <div>Loading user info...</div>;
+  if (!userInfo || !ownerId) return <div>Loading chat...</div>;
 
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row bg-gray-100">
-      {/* Chat list sidebar */}
-      <div className={`w-full md:w-[40vw] border-r bg-white shadow-lg ${showChat ? "hidden md:block" : "block"}`}>
-        <h2 className="p-4 text-lg flex justify-between font-semibold bg-blue-900 text-white">
-          Chats
-          <img src={cross} className="h-6 w-6" alt="close" />
-        </h2>
-
-        <div className="overflow-y-auto h-[calc(100vh-50px)]">
-          {chatList.map((chat) => (
-            <div
-              key={chat.id}
-              className={`p-4 border-b cursor-pointer hover:bg-gray-200 ${
-                selectedChat?.id === chat.id ? "bg-gray-300" : ""
-              }`}
-              onClick={() => handleChatSelect(chat)}
-            >
-              <h2 className="text-xl font-bold mb-2">Chat with {chat.name}</h2>
-              <p className="text-gray-500 text-sm truncate">
-                {/* Show last message for selected chat */}
-                {selectedChat?.id === chat.id && messages.length > 0
-                  ? messages.slice(-1)[0]?.message
-                  : "No messages"}
-              </p>
-            </div>
-          ))}
-        </div>
+    <div className="w-full h-screen flex flex-col bg-gray-100">
+      <div className="bg-blue-900 text-white px-4 py-3">
+        <span className="font-semibold">Chat with Owner</span>
       </div>
 
-      {/* Chat box */}
-      {selectedChat && (
-        <div className="w-full md:w-[60vw] h-[100vh] flex flex-col border bg-white shadow-lg">
-          <div className="bg-blue-900 text-white px-4 py-3 flex justify-between items-center">
-            <button className="md:hidden text-lg" onClick={() => setShowChat(false)}>
-              ← Back
-            </button>
-            <span className="font-semibold">Chatting with: {selectedChat.name}</span>
-          </div>
-
-          <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-150px)]">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex flex-col ${msg.senderId === userInfo._id ? "items-end" : "items-start"}`}
-              >
-                <div
-                  className={`px-3 py-2 rounded-lg max-w-[70%] w-fit ${
-                    msg.senderId === userInfo._id ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
-                  }`}
-                >
-                  <p>{msg.message}</p>
-                </div>
-                <span className="text-xs text-gray-500">
-                  {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap items-center px-3 py-2 border-t relative w-full">
-            <input
-              type="text"
-              placeholder="Ask anything..."
-              className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-            />
-
-            <div className="flex gap-3 items-center flex-wrap">
-              <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
-              <img
-                src={emojis}
-                alt="emoji"
-                className="w-6 h-6 cursor-pointer"
-                onClick={() => setShowEmojis((prev) => !prev)}
-              />
-              <img
-                src={attachments}
-                alt="attachment"
-                className="w-6 h-6 cursor-pointer"
-                onClick={() => fileInputRef.current.click()}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                onChange={(e) => handleFileUpload(e.target.files[0])}
-              />
+      <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-150px)]">
+        {Array.isArray(messages) && messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex flex-col ${msg.senderId === userInfo._id ? "items-end" : "items-start"}`}
+          >
+            <div
+              className={`px-3 py-2 rounded-lg max-w-[70%] w-fit ${
+                msg.senderId === userInfo._id ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+              }`}
+            >
+              <p>{msg.message}</p>
             </div>
-
-            {showEmojis && (
-              <div className="absolute bottom-12 right-3 z-50">
-                <EmojiPicker
-                  onEmojiClick={(emojiObject) => {
-                    setNewMessage((prev) => prev + emojiObject.emoji);
-                    setShowEmojis(false);
-                  }}
-                />
-              </div>
-            )}
+            <span className="text-xs text-gray-500">
+              {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </span>
           </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap items-center px-3 py-2 border-t relative w-full">
+        <input
+          type="text"
+          placeholder="Type a message..."
+          className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+        />
+
+        <div className="flex gap-3 items-center flex-wrap">
+          <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
+          <img
+            src={emojis}
+            alt="emoji"
+            className="w-6 h-6 cursor-pointer"
+            onClick={() => setShowEmojis(!showEmojis)}
+          />
+          <img
+            src={attachments}
+            alt="attachment"
+            className="w-6 h-6 cursor-pointer"
+            onClick={() => fileInputRef.current.click()}
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={(e) => handleFileUpload(e.target.files[0])}
+          />
         </div>
-      )}
+
+        {showEmojis && (
+          <div className="absolute bottom-12 right-3 z-50">
+            <EmojiPicker
+              onEmojiClick={(emojiObject) => {
+                setNewMessage((prev) => prev + emojiObject.emoji);
+                setShowEmojis(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
