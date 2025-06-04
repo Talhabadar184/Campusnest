@@ -194,10 +194,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import edit from "../assets/Profile/edit.png";
+import { Link,useNavigate } from "react-router-dom";
 import { getUserProfile } from "../Features/authSlics";
 
 function MyProfile() {
   const dispatch = useDispatch();
+   const navigate = useNavigate();
 
   // Get user profile from Redux
   const { user, loading, error } = useSelector((state) => state.auth);
@@ -243,10 +245,22 @@ function MyProfile() {
     // NOTE: You would normally dispatch an update profile API here
     setIsEditing(false);
   };
+   const handleDashboardClick = () => {
+    if (user?.userType === 'owner') {
+      navigate('/Owner'); // adjust this path to your actual owner dashboard route
+    } else if (user?.userType === 'tenant') {
+      navigate('/Tennet'); // adjust this path to your actual tenant dashboard route
+    } else {
+      navigate('/'); // fallback if userType is missing or unrecognized
+    }
+  };
 
   return (
     <>
       <Navbar />
+       <div className="w-full bg-blue-800 text-white  pl-28 h-8">
+              <p className="hover:cursor-pointer"><span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> |   <Link to={"/Notifications"}>Notifications</Link></p>
+            </div>
       <div className="bg-gray-100 min-h-screen">
         <div className="flex w-[40vw] justify-center items-start">
           <h1 className="text-xl sm:text-2xl text-blue-600 font-semibold mt-10 mb-4 px-4">

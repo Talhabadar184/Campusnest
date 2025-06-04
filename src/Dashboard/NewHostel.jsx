@@ -152,7 +152,7 @@ const NewHostel = ({ onClose }) => {
               type="file"
               name="photos"
               onChange={handleChange}
-              className="text-sm text-black w-full"
+              className=" text-black w-full bg-gray-100 rounded-md p-2 text-sm placeholder-gray-500 "
             />
           </div>
 

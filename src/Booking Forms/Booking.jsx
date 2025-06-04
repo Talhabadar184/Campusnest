@@ -515,31 +515,106 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
     setErrors({});
     setCardError(null);
   };
+  const handleReset = () => {
+  setFormData({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    moveInDate: "",
+    message: "",
+  });
+
+  setErrors({});
+};
+
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
-      <div className="absolute inset-0 bg-black opacity-50" />
-      <div className="bg-white p-6 rounded-lg w-full max-w-xl relative shadow-lg">
-        <img src={crossIcon} alt="Close" className="absolute top-3 right-3 w-6 h-6 cursor-pointer" onClick={handleClose} />
+  <div className="absolute inset-0 bg-black opacity-50" />
+  <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative shadow-lg">
+    <img
+      src={crossIcon}
+      alt="Close"
+      className="absolute top-3 right-3 w-6 h-6 cursor-pointer"
+      onClick={handleClose}
+    />
 
-        {!isPaymentStep ? (
-          <>
-            <h2 className="text-2xl font-semibold mb-4">Booking</h2>
-            <form onSubmit={handleBookingSubmit}>
-              <InputField label="First Name *" name="firstName" value={formData.firstName} onChange={handleInputChange} error={errors.firstName} />
-              <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleInputChange} />
-              <InputField label="Email *" name="email" value={formData.email} onChange={handleInputChange} error={errors.email} />
-              <InputField label="Phone *" name="phone" value={formData.phone} onChange={handleInputChange} error={errors.phone} />
-              <InputField label="Move-In Date *" name="moveInDate" type="date" value={formData.moveInDate} onChange={handleInputChange} error={errors.moveInDate} />
-              <InputField label="Message" name="message" value={formData.message} onChange={handleInputChange} />
-              <button type="submit" className="mt-4 bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled={loading}>
-                {loading ? "Saving..." : "Save & Continue to Payment"}
-              </button>
-            </form>
-          </>
-        ) : (
+    {!isPaymentStep ? (
+      <>
+        <h2 className="text-xl font-semibold text-center mb-1">Booking Form</h2>
+        <p className="text-sm text-center text-gray-500 mb-6">
+          Please fill out the form below, all fields are mandatory!
+        </p>
+
+        <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <InputField
+            label="First Name *"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
+            error={errors.firstName}
+          />
+          <InputField
+            label="Last Name"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
+          />
+          <InputField
+            label="Email *"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            error={errors.email}
+          />
+          <InputField
+            label="Mobile No."
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            error={errors.phone}
+          />
+          <InputField
+            label="Preferred Move-In Date"
+            name="moveInDate"
+            type="date"
+            value={formData.moveInDate}
+            onChange={handleInputChange}
+            error={errors.moveInDate}
+            className="md:col-span-2"
+          />
+          <InputField
+            label="Message (optional)"
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            textarea
+            className="md:col-span-2"
+          />
+
+          {/* Buttons */}
+          <div className="md:col-span-2 flex justify-end gap-3 mt-4">
+            <button
+              type="button"
+              onClick={handleReset}
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 text-sm"
+            >
+              Reset
+            </button>
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+              disabled={loading}
+            >
+              {loading ? "Saving..." : "Save & Next"}
+            </button>
+          </div>
+        </form>
+      </>
+    ) : (
           <>
             <h2 className="text-2xl font-semibold mb-4">Payment</h2>
             <form onSubmit={handlePaymentSubmit}>
