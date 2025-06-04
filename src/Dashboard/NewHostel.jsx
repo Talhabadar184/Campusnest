@@ -194,9 +194,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerHostel, resetHostelState } from "../Features/registerhostelslice";
+import { useNavigate } from "react-router-dom";
 
 const NewHostel = ({ onClose }) => {
   const dispatch = useDispatch();
+  const Navigate = useNavigate();
   const { loading, error, success } = useSelector((state) => state.registerHostel);
   const accessToken = useSelector((state) => state.auth.accessToken);
 
@@ -215,9 +217,9 @@ const NewHostel = ({ onClose }) => {
   useEffect(() => {
     if (success) {
       dispatch(resetHostelState());
-      onClose();
+      Navigate('/home');
     }
-  }, [success, dispatch, onClose]);
+  }, [success, dispatch]);
 
   const validate = () => {
     const newErrors = {};
