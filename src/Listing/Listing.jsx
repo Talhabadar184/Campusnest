@@ -228,10 +228,17 @@ function Listing() {
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [searchFilters, setSearchFilters] = useState({
-  institution: '',
-  radius: '',
-  location: '',
-});
+    institution: '',
+    radius: '',
+    location: '',
+  });
+
+   const dispatch = useDispatch();
+
+  // Whenever search filters update, dispatch the search thunk
+  useEffect(() => {
+    dispatch(searchHostelsThunk(searchFilters));
+  }, [searchFilters, dispatch]);
 
 
   return (

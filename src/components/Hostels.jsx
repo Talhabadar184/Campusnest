@@ -214,9 +214,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 import Comparison from "./Comparison";
 
-function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsCompareOpen, filters }) {
+function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsCompareOpen }) {
+
+   const { allHostels, loading, error } = useSelector((state) => state.hostel);
+
+  if (loading) return <p className="text-center">Loading...</p>;
+  if (error) return <p className="text-center text-red-500">{error}</p>;
   const dispatch = useDispatch();
-  const { hostels, loading, error } = useSelector((state) => state.hostel);
+  // const { hostels, loading, error } = useSelector((state) => state.hostel);
 
   // const [selectedHostels, setSelectedHostels] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

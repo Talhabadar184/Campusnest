@@ -40,7 +40,6 @@
 // });
 
 // export default hostelSlice.reducer;
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -70,54 +69,49 @@ export const fetchHostelById = createAsyncThunk(
   }
 );
 
-// ✅ Search hostels (based on filters like location, price, amenities)
-export const searchHostels = createAsyncThunk(
-  'hostel/searchHostels',
-  async (searchCriteria, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('http://localhost:8000/api/search-hostels', searchCriteria);
-      return response.data.data; // Assuming response format: { success: true, data: [...] }
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.error || error.message);
-    }
-  }
-);
-
 const hostelSlice = createSlice({
   name: 'hostel',
   initialState: {
     hostels: [],
+    filteredHostels: [],
     selectedHostel: null,
     hostelId: null,
     loading: false,
     error: null,
-    searchResults: [], // ✅ New state to store search results
+    searchTerm: '',
   },
   reducers: {
     setHostelId: (state, action) => {
       state.hostelId = action.payload;
     },
-    clearSearchResults: (state) => {
-      state.searchResults = [];
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+      state.filteredHostels = state.hostels.filter((hostel) =>
+        hostel.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
+    clearSearch: (state) => {
+      state.searchTerm = '';
+      state.filteredHostels = state.hostels;
     },
   },
   extraReducers: (builder) => {
     builder
-      // ✅ Fetch all hostels
       .addCase(fetchAllHostels.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchAllHostels.fulfilled, (state, action) => {
         state.loading = false;
-        state.hostels = action.payload.data || [];
+        const hostels = action.payload.data || [];
+        state.hostels = hostels;
+        state.filteredHostels = hostels; // ✅ set filteredHostels initially
       })
       .addCase(fetchAllHostels.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ✅ Fetch single hostel by ID
       .addCase(fetchHostelById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -129,25 +123,10 @@ const hostelSlice = createSlice({
       .addCase(fetchHostelById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
-
-      // ✅ Search hostels
-      .addCase(searchHostels.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(searchHostels.fulfilled, (state, action) => {
-        state.loading = false;
-        state.searchResults = action.payload || [];
-      })
-      .addCase(searchHostels.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       });
   },
 });
 
-// ✅ Export actions
-export const { setHostelId, clearSearchResults } = hostelSlice.actions;
+export const { setHostelId, setSearchTerm, clearSearch } = hostelSlice.actions;
 
 export default hostelSlice.reducer;
