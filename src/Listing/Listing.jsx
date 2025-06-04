@@ -218,6 +218,8 @@ import HomeNavbar from "../components/HomeNavbar";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Hostels from "../components/Hostels";
+import Comparison from "../components/Comparison";
+
 
 function Listing() {
   const [institution, setInstitution] = useState("");
@@ -225,6 +227,12 @@ function Listing() {
   const [location, setLocation] = useState("");
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
+  const [searchFilters, setSearchFilters] = useState({
+  institution: '',
+  radius: '',
+  location: '',
+});
+
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -240,8 +248,7 @@ function Listing() {
             >
               ✖
             </button>
-            <Hostels.Comparison selectedHostels={selectedHostels} />
-          </div>
+<Comparison selectedHostels={selectedHostels} />          </div>
         </div>
       )}
 
@@ -281,9 +288,18 @@ function Listing() {
             <option value="DHA">DHA</option>
           </select>
 
-          <button className="bg-[#2d3e8e] hover:bg-[#1f2b6f] p-2 rounded-lg text-white w-[40px] flex items-center justify-center">
-            🔍
-          </button>
+         <button
+  className="bg-[#2d3e8e] hover:bg-[#1f2b6f] p-2 rounded-lg text-white w-[40px] flex items-center justify-center"
+  onClick={() =>
+    setSearchFilters({
+      institution,
+      radius,
+      location,
+    })
+  }
+>
+  🔍
+</button>
         </div>
       </div>
 
@@ -414,11 +430,13 @@ function Listing() {
         {/* Hostels Section */}
         <div className="flex-1 w-full">
           <Hostels
-            selectedHostels={selectedHostels}
-            setSelectedHostels={setSelectedHostels}
-            isCompareOpen={isCompareOpen}
-            setIsCompareOpen={setIsCompareOpen}
-          />
+  selectedHostels={selectedHostels}
+  setSelectedHostels={setSelectedHostels}
+  isCompareOpen={isCompareOpen}
+  setIsCompareOpen={setIsCompareOpen}
+  filters={searchFilters}
+/>
+
         </div>
       </div>
 

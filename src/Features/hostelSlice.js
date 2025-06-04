@@ -70,24 +70,40 @@ export const fetchHostelById = createAsyncThunk(
   }
 );
 
+// ✅ Search hostels (based on filters like location, price, amenities)
+export const searchHostels = createAsyncThunk(
+  'hostel/searchHostels',
+  async (searchCriteria, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:8000/api/search-hostels', searchCriteria);
+      return response.data.data; // Assuming response format: { success: true, data: [...] }
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
 const hostelSlice = createSlice({
   name: 'hostel',
   initialState: {
     hostels: [],
     selectedHostel: null,
-    hostelId: null, // ✅ used across the app
+    hostelId: null,
     loading: false,
     error: null,
+    searchResults: [], // ✅ New state to store search results
   },
   reducers: {
-    // ✅ Set the selected hostel ID manually
     setHostelId: (state, action) => {
       state.hostelId = action.payload;
+    },
+    clearSearchResults: (state) => {
+      state.searchResults = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      // ✅ All hostels
+      // ✅ Fetch all hostels
       .addCase(fetchAllHostels.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -101,7 +117,7 @@ const hostelSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Single hostel by ID
+      // ✅ Fetch single hostel by ID
       .addCase(fetchHostelById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -113,11 +129,25 @@ const hostelSlice = createSlice({
       .addCase(fetchHostelById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // ✅ Search hostels
+      .addCase(searchHostels.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchHostels.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload || [];
+      })
+      .addCase(searchHostels.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-// ✅ Export the action to set hostelId manually
-export const { setHostelId } = hostelSlice.actions;
+// ✅ Export actions
+export const { setHostelId, clearSearchResults } = hostelSlice.actions;
 
 export default hostelSlice.reducer;

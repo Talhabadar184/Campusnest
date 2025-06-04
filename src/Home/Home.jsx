@@ -20,6 +20,8 @@ function Home() {
   const [institution, setInstitution] = useState("");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState("");
+    const [filteredHostels, setFilteredHostels] = useState([]);
+
 
   const hostels = [
     {
@@ -68,6 +70,18 @@ function Home() {
 
   const handleNext = () => {
     if (swiperRef.current) swiperRef.current.slideNext();
+  };
+
+   // 🔍 Search Logic
+  const searchHostels = () => {
+    const filtered = allHostels.filter((hostel) => {
+      return (
+        (institution ? hostel.institution === institution : true) &&
+        (location ? hostel.location === location : true)
+        // radius filtering can be added if distance data exists
+      );
+    });
+    setFilteredHostels(filtered);
   };
 
   return (

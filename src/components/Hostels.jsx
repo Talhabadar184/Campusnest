@@ -214,15 +214,27 @@ import { Link, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
 import Comparison from "./Comparison";
 
-function Hostels() {
+function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsCompareOpen, filters }) {
   const dispatch = useDispatch();
   const { hostels, loading, error } = useSelector((state) => state.hostel);
 
-  const [selectedHostels, setSelectedHostels] = useState([]);
+  // const [selectedHostels, setSelectedHostels] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isCompareOpen, setIsCompareOpen] = useState(false);
+  // const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   const hostelsPerPage = 5;
+    const filteredHostels = hostels.filter((hostel) => {
+  const matchesInstitution =
+  !filters?.institution || hostel.institution?.toLowerCase().includes(filters.institution.toLowerCase());
+  const matchesRadius =
+    !filters?.radius || hostel.radius === filters.radius;
+  const matchesLocation =
+    !filters?.location || hostel.location === filters.location;
+
+  return matchesInstitution && matchesRadius && matchesLocation;
+});
+
+
 
   useEffect(() => {
     dispatch(fetchAllHostels());
@@ -239,7 +251,7 @@ function Hostels() {
 
   const indexOfLast = currentPage * hostelsPerPage;
   const indexOfFirst = indexOfLast - hostelsPerPage;
-  const currentHostels = hostels?.slice(indexOfFirst, indexOfLast) || [];
+const currentHostels = filteredHostels?.slice(indexOfFirst, indexOfLast) || [];
 
   if (loading) return <p className="text-center mt-10">Loading hostels...</p>;
   if (error) return <p className="text-center text-red-600 mt-10">Error: {error.message || error}</p>;
@@ -296,7 +308,7 @@ function Hostels() {
 
       <Pagination
         hostels={hostels}
-        totalPages={Math.ceil(hostels.length / hostelsPerPage)}
+totalPages={Math.ceil(filteredHostels.length / hostelsPerPage)}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         selectedHostels={selectedHostels}
