@@ -69,10 +69,9 @@ function Owner() {
             
             {/* Manage Bookings */}
           <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-4">
-  <h2 className="text-lg font-semibold text-blue-700">
-    Manage Hostels
-  </h2>
+         {/* Manage Hostels Section */}
+<div className="flex justify-between items-center mb-4">
+  <h2 className="text-lg font-semibold text-blue-700">Manage Hostels</h2>
   <button
     onClick={() => setIsModalOpen(true)}
     className="bg-blue-500 gap-2 items-center flex text-white px-4 py-2 rounded hover:cursor-pointer"
@@ -83,6 +82,9 @@ function Owner() {
 </div>
 
 {isModalOpen && <NewHostel onClose={() => setIsModalOpen(false)} />}
+
+
+
 
 
   <div className="w-full h-0.5 bg-gray-400 mb-3"></div>

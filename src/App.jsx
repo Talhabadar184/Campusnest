@@ -460,7 +460,7 @@ function AppRoutes() {
   const accessToken = useSelector((state) => state.auth.accessToken);
   const userInfo = useSelector((state) => state.auth.user);
   const bookingResult = useSelector((state) => state.booking);
-console.log(bookingResult);
+console.log(accessToken);
   useEffect(() => {
     if (accessToken && !userInfo) {
       dispatch(getUserProfile());
