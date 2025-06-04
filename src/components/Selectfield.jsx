@@ -30,10 +30,10 @@
 // SelectField.js
 import React from "react";
 
-function SelectField({ label, name, value, onChange, options, error }) {
+const Selectfield = ({ label, name, value, onChange, options }) => {
   return (
-    <div className="mb-4">
-      <label htmlFor={name} className="block font-semibold mb-1">
+    <div className="flex flex-col">
+      <label htmlFor={name} className="mb-1 font-medium text-gray-700">
         {label}
       </label>
       <select
@@ -41,19 +41,18 @@ function SelectField({ label, name, value, onChange, options, error }) {
         name={name}
         value={value}
         onChange={onChange}
-        className={`w-full p-2 border rounded ${
-          error ? "border-red-500" : "border-gray-300"
-        }`}
+        className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        {options.map(({ value: optValue, label: optLabel }) => (
-          <option key={optValue} value={optValue}>
-            {optLabel}
+        <option value="">Select {label}</option>
+        {options.map((opt, index) => (
+          <option key={index} value={opt}>
+            {opt.charAt(0).toUpperCase() + opt.slice(1)}
           </option>
         ))}
       </select>
-      {error && <p className="text-red-600 mt-1">{error}</p>}
     </div>
   );
-}
+};
 
-export default SelectField;
+export default Selectfield;
+
