@@ -218,7 +218,6 @@ import HomeNavbar from "../components/HomeNavbar";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Hostels from "../components/Hostels";
-import Comparison from "../components/Comparison";
 
 
 function Listing() {
@@ -228,17 +227,10 @@ function Listing() {
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
   const [searchFilters, setSearchFilters] = useState({
-    institution: '',
-    radius: '',
-    location: '',
-  });
-
-   const dispatch = useDispatch();
-
-  // Whenever search filters update, dispatch the search thunk
-  useEffect(() => {
-    dispatch(searchHostelsThunk(searchFilters));
-  }, [searchFilters, dispatch]);
+  institution: '',
+  radius: '',
+  location: '',
+});
 
 
   return (
@@ -255,7 +247,8 @@ function Listing() {
             >
               ✖
             </button>
-<Comparison selectedHostels={selectedHostels} />          </div>
+            <Hostels.Comparison selectedHostels={selectedHostels} />
+          </div>
         </div>
       )}
 
