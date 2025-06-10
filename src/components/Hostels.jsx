@@ -364,6 +364,8 @@ import { fetchAllHostels } from "../Features/hostelSlice";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
 import Comparison from "./Comparison";
+import { useLocation } from "react-router-dom";
+
 
 
 function Hostels({
@@ -380,6 +382,8 @@ function Hostels({
   const filters = useSelector((state) => state.search.filters);
 
   const [currentPage, setCurrentPage] = useState(1);
+   const location = useLocation();
+  const results = location.state?.results || [];
 
   useEffect(() => {
     dispatch(fetchAllHostels());
@@ -452,7 +456,7 @@ const filteredHostels = hostels.filter((hostel) => {
       </h2>
 
       <div className="space-y-4">
-        {currentHostels.map((hostel) => (
+        {results.map((hostel) => (
           <div
             key={hostel._id}
             className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow"

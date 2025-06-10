@@ -15,6 +15,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Testimonials from "../components/Testimonials";
 import search from "../assets/Home/search.png";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [institution, setInstitution] = useState("");
@@ -63,6 +64,8 @@ function Home() {
   ];
 
   const swiperRef = useRef(null);
+  const navigate = useNavigate();
+
 
   const handlePrev = () => {
     if (swiperRef.current) swiperRef.current.slidePrev();
@@ -73,16 +76,16 @@ function Home() {
   };
 
    // 🔍 Search Logic
-  const searchHostels = () => {
-    const filtered = allHostels.filter((hostel) => {
-      return (
-        (institution ? hostel.institution === institution : true) &&
-        (location ? hostel.location === location : true)
-        // radius filtering can be added if distance data exists
-      );
-    });
-    setFilteredHostels(filtered);
-  };
+const searchHostels = () => {
+  const filtered = hostels.filter((hostel) => {
+    return (
+      (institution ? hostel.institution === institution : true) &&
+      (location ? hostel.location === location : true)
+    );
+  });
+
+  navigate("/listing", { state: { results: filtered } });
+};
 
   return (
     <div className="bg-gray-100">
@@ -98,11 +101,11 @@ function Home() {
         </p>
 
         {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-4 bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl">
+        <div className="flex flex-wrap justify-center gap-4  p-4 rounded-lg shadow-lg w-full max-w-4xl">
           
 
           <select
-            className="p-2 border rounded-lg text-gray-700 w-full sm:w-[180px]"
+            className="p-2 border rounded-lg bg-white text-gray-700 w-full sm:w-[250px] sm:h-[50px]"
             value={radius}
             onChange={(e) => setRadius(e.target.value)}
           >
@@ -113,7 +116,7 @@ function Home() {
           </select>
 
           <select
-            className="p-2 border rounded-lg text-gray-700 w-full sm:w-[200px]"
+            className="p-2 border rounded-lg text-gray-700 bg-white w-full sm:w-[250px]"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           >
@@ -123,7 +126,7 @@ function Home() {
             <option value="DHA">DHA</option>
           </select>
 
-          <button className="bg-blue-500 hover:bg-blue-600 p-2 rounded-lg text-white w-10 h-10 flex items-center justify-center">
+          <button  onClick={searchHostels} className="bg-blue-300 hover:bg-blue-600 p-2 rounded-lg text-white w-10 h-10 flex items-center justify-center">
             <img src={search} alt="Search" className="w-5 h-5" />
           </button>
         </div>

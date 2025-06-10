@@ -161,8 +161,8 @@ function HomeNavbar() {
         )}
       </div>
     </nav>
-         <div className="w-full bg-blue-900 text-white  text-xl pl-16 h-10">
-                  <p className="hover:cursor-pointer">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
+         <div className="w-full bg-blue-900 text-white   text-xl pl-16 h-10">
+                  <p className="hover:cursor-pointer pt-1 ">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
                 </div>
     </>
   );

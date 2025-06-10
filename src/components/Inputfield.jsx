@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from "react";
 
-const Inputfield = forwardRef(({ label, placeholder, type = "text", name, value, onChange }, ref) => {
+const Inputfield = forwardRef(({ label, placeholder, type = "text", name, value, onChange,className = "" }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (

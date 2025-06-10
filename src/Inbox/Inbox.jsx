@@ -258,6 +258,7 @@ import EmojiPicker from "emoji-picker-react";
 import { getMessages, sendMessage } from "../Features/chatSlice";
 import cross from "../assets/Chats/cross.png";
 import { useNavigate } from "react-router-dom"; // <-- Add this line
+import { useParams } from "react-router-dom"; // <-- Add this line
 
 
 
@@ -278,6 +279,7 @@ const Inbox = () => {
 
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
+   const { id } = useParams();
 
   const roomId = userInfo && ownerId ? `${userInfo._id}_${ownerId}` : "";
   const navigate = useNavigate(); // <-- Add this line
@@ -306,8 +308,8 @@ const Inbox = () => {
     // Future: handle file sending
   };
    const handleClose = () => {
-    navigate("/Home"); // <-- Navigate back to home page
-  };
+  navigate(`/Details/${id}`); // Navigates to the specific hostel details page
+};
 
   if (!userInfo || !ownerId) return <div>Loading chat...</div>;
 
