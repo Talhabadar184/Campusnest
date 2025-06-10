@@ -538,13 +538,14 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
     <img
       src={crossIcon}
       alt="Close"
-      className="absolute top-3 right-3 w-6 h-6 cursor-pointer"
+      className="absolute top-3 right-3 w-4 h-4 cursor-pointer"
       onClick={handleClose}
     />
 
     {!isPaymentStep ? (
       <>
         <h2 className="text-xl font-semibold text-center mb-1">Booking Form</h2>
+        <div className="h-0.5 w-full bg-black mb-4"></div>
         <p className="text-sm text-center text-gray-500 mb-6">
           Please fill out the form below, all fields are mandatory!
         </p>

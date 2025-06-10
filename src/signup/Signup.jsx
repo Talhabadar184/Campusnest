@@ -177,7 +177,8 @@ function Signup() {
     if (!data.email.trim()) newErrors.email = "Email is required";
     if (!data.mobile.trim()) newErrors.mobile = "Mobile Number is required";
     if (!data.gender) newErrors.gender = "Gender is required";
-    if (!data.tenantOwner.trim()) newErrors.tenantOwner = "Tenant/Owner is required";
+    if (!data.tenantOwner.trim())
+      newErrors.tenantOwner = "Tenant/Owner is required";
     return newErrors;
   };
 
@@ -226,7 +227,9 @@ function Signup() {
                   value={formData.firstName}
                   onChange={handleChange}
                 />
-                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm">{errors.firstName}</p>
+                )}
               </div>
 
               <div>
@@ -237,7 +240,9 @@ function Signup() {
                   value={formData.lastName}
                   onChange={handleChange}
                 />
-                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName}</p>
+                )}
               </div>
 
               <div>
@@ -249,7 +254,9 @@ function Signup() {
                   value={formData.email}
                   onChange={handleChange}
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -261,7 +268,9 @@ function Signup() {
                   value={formData.mobile}
                   onChange={handleChange}
                 />
-                {errors.mobile && <p className="text-red-500 text-sm">{errors.mobile}</p>}
+                {errors.mobile && (
+                  <p className="text-red-500 text-sm">{errors.mobile}</p>
+                )}
               </div>
 
               <div>
@@ -272,7 +281,9 @@ function Signup() {
                   value={formData.gender}
                   onChange={handleChange}
                 />
-                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+                {errors.gender && (
+                  <p className="text-red-500 text-sm">{errors.gender}</p>
+                )}
               </div>
 
               <div>
@@ -283,12 +294,16 @@ function Signup() {
                   value={formData.tenantOwner}
                   onChange={handleChange}
                 />
-                {errors.tenantOwner && <p className="text-red-500 text-sm">{errors.tenantOwner}</p>}
+                {errors.tenantOwner && (
+                  <p className="text-red-500 text-sm">{errors.tenantOwner}</p>
+                )}
               </div>
             </div>
 
             {/* Show loading state */}
-            {loading && <p className="text-blue-600 mt-4 text-center">Registering...</p>}
+            {loading && (
+              <p className="text-blue-600 mt-4 text-center">Registering...</p>
+            )}
             {/* Show error message */}
             {error && <p className="text-red-600 mt-4 text-center">{error}</p>}
 

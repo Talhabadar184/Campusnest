@@ -88,7 +88,7 @@ function Home() {
     <div className="bg-gray-100">
       <HomeNavbar />
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-[90vh] w-full rounded-2xl bg-gradient-to-b from-blue-900 to-blue-700 text-white p-6 mt-6">
+      <div className="flex flex-col items-center justify-center min-h-[90vh] w-full rounded-2xl  bg-blue-900  text-white p-6 mt-6">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-2 text-center">
           Find Your Ideal Hostel in Lahore
         </h1>
@@ -99,16 +99,7 @@ function Home() {
 
         {/* Filters */}
         <div className="flex flex-wrap justify-center gap-4 bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl">
-          <select
-            className="p-2 border rounded-lg text-gray-700 w-full sm:w-[220px]"
-            value={institution}
-            onChange={(e) => setInstitution(e.target.value)}
-          >
-            <option value="">-- Select Institution --</option>
-            <option value="LUMS">LUMS</option>
-            <option value="UCP">UCP</option>
-            <option value="FAST">FAST</option>
-          </select>
+          
 
           <select
             className="p-2 border rounded-lg text-gray-700 w-full sm:w-[180px]"

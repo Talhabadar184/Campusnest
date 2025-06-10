@@ -77,12 +77,14 @@ import profileIcon from "../assets/Register/profileicon.png";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../Features/authSlics";
+import { useNavigate } from "react-router-dom";
 
 function HomeNavbar() {
   const [showSearch, setShowSearch] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -92,8 +94,19 @@ function HomeNavbar() {
     dispatch(logout());
     setIsOpen(false);
   };
+  const handleDashboardClick = () => {
+    if (user?.userType === 'owner') {
+      navigate('/Owner'); // adjust this path to your actual owner dashboard route
+      
+    } else if (user?.userType === 'tenant') {
+      navigate('/Tennet'); // adjust this path to your actual tenant dashboard route
+    } else {
+      navigate('/'); // fallback if userType is missing or unrecognized
+    }
+  };
 
   return (
+    <>
     <nav className="flex items-center justify-between shadow-md px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-100 relative">
       {/* Logo */}
       <div className="flex items-center">
@@ -148,6 +161,10 @@ function HomeNavbar() {
         )}
       </div>
     </nav>
+         <div className="w-full bg-blue-900 text-white  text-xl pl-16 h-10">
+                  <p className="hover:cursor-pointer">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
+                </div>
+    </>
   );
 }
 
