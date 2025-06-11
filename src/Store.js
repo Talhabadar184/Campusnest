@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
   ratings: ratingReducer,
   chat: chatReducer,
   registerHostel: registerHostelReducer,
+  
 });
 
 const persistConfig = {
