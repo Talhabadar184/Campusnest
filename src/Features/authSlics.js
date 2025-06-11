@@ -560,7 +560,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Forgot Password
+// Forgot  //updated
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email, { rejectWithValue }) => {
