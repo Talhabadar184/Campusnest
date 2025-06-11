@@ -552,13 +552,14 @@ console.log(accessToken);
           }
         />
         <Route
-          path="/Inbox"
+          path="/Inbox/:id"
           element={
             <PrivateRoute>
               <Inbox />
             </PrivateRoute>
           }
         />
+        
       </RouterRoutes>
     </BrowserRouter>
   );

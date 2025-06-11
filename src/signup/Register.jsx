@@ -379,15 +379,16 @@ const Register = () => {
       <Navbar />
       <div className="min-h-screen bg-gray-100 flex flex-col px-4 md:px-0">
         <div className="pt-7 flex justify-center md:justify-start md:pl-36">
-          <h2 className="text-2xl font-semibold text-blue-700 text-center">
-            Sign Up
-          </h2>
+          
         </div>
 
         <div className="flex justify-center items-center pt-7 mb-16">
           <div className="w-full max-w-4xl bg-white border-2 border-gray-300 p-6 md:p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl flex  font-semibold text-blue-700 text-left mb-6">
+            Sign Up
+          </h2>
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Field
                     label="First Name"
@@ -445,14 +446,14 @@ const Register = () => {
                   {errors.mobileNo && <p className="text-red-500 text-sm">{errors.mobileNo}</p>}
                 </div>
 
-                <Selectfield
+                {/* <Selectfield
                   label="Gender"
                   name="gender"
                   options={["male", "female", "other"]}
                   value={formData.gender}
                   onChange={handleChange}
                 />
-                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>} */}
 
                 <Selectfield
                   label="User Type"
@@ -465,54 +466,54 @@ const Register = () => {
                 {errors.userType && <p className="text-red-500 text-sm">{errors.userType}</p>}
 
                 {/* Address Fields */}
-                <Field
+                {/* <Field
                   label="Street"
                   name="street"
                   placeholder="Enter your street"
                   value={formData.address.street}
                   onChange={handleAddressChange}
                 />
-                {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>}
+                {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>} */}
 
-                <Field
+                {/* <Field
                   label="City"
                   name="city"
                   placeholder="Enter your city"
                   value={formData.address.city}
                   onChange={handleAddressChange}
                 />
-                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>} */}
 
-                <Field
+                {/* <Field
                   label="District"
                   name="district"
                   placeholder="Enter your district"
                   value={formData.address.district}
                   onChange={handleAddressChange}
                 />
-                {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
+                {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>} */}
 
-                <Field
+                {/* <Field
                   label="State"
                   name="state"
                   placeholder="Enter your state"
                   value={formData.address.state}
                   onChange={handleAddressChange}
                 />
-                {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+                {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>} */}
 
-                <Field
+                {/* <Field
                   label="Postal Code"
                   name="postalCode"
                   placeholder="Enter your postal code"
                   value={formData.address.postalCode}
                   onChange={handleAddressChange}
                 />
-                {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>}
+                {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>} */}
               </div>
 
-              <div className="flex justify-end mt-6 gap-4">
-                <button
+              <div className="flex justify-center mt-6 gap-4">
+                {/* <button
                   type="button"
                   onClick={() =>
                     setFormData({
@@ -535,11 +536,11 @@ const Register = () => {
                   className="border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-100 transition"
                 >
                   Reset
-                </button>
+                </button> */}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition"
+                  className="bg-blue-900 text-white px-28 py-2 rounded-md hover:bg-blue-900 transition flex justify-center"
                 >
                   {loading ? "Submitting..." : "Sign Up"}
                 </button>

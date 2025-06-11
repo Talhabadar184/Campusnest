@@ -256,6 +256,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EmojiPicker from "emoji-picker-react";
 import { getMessages, sendMessage } from "../Features/chatSlice";
+import cross from "../assets/Chats/cross.png";
+import { useNavigate } from "react-router-dom"; // <-- Add this line
+import { useParams } from "react-router-dom"; // <-- Add this line
+
+
 
 import gifts from "../assets/Chats/gifts.png";
 import emojis from "../assets/Chats/emojis.png";
@@ -274,8 +279,10 @@ const Inbox = () => {
 
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
+   const { id } = useParams();
 
   const roomId = userInfo && ownerId ? `${userInfo._id}_${ownerId}` : "";
+  const navigate = useNavigate(); // <-- Add this line
 
   useEffect(() => {
     if (accessToken && roomId) {
@@ -300,13 +307,18 @@ const Inbox = () => {
     console.log("File uploaded:", file);
     // Future: handle file sending
   };
+   const handleClose = () => {
+  navigate(`/Details/${id}`); // Navigates to the specific hostel details page
+};
 
   if (!userInfo || !ownerId) return <div>Loading chat...</div>;
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100">
-      <div className="bg-blue-900 text-white px-4 py-3">
+      <div className="bg-blue-900 flex justify-between text-white px-4 py-3">
         <span className="font-semibold">Chat with Owner</span>
+        <button onClick={handleClose} className="hover:"><img src={cross} className="h-6 w-6" alt="" /></button>
+     
       </div>
 
       <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-150px)]">

@@ -56,7 +56,7 @@ function Tennet() {
           <div className="flex flex-col md:flex-row justify-center items-start gap-8">
             
             {/* Upcoming Bookings */}
-            <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
+            {/* <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-blue-700">
                   Upcoming Bookings
@@ -85,10 +85,10 @@ function Tennet() {
               ) : (
                 <p>No upcoming bookings found.</p>
               )}
-            </div>
+            </div> */}
 
             {/* Favorite Hostels */}
-            <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
+            {/* <div className="bg-white w-full md:w-[35vw] border border-gray-400 p-4 sm:p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-blue-700">
                   Favorite Hostels
@@ -115,7 +115,7 @@ function Tennet() {
                   <p className="text-gray-500 text-center">No favorite hostels.</p>
                 )}
               </ul>
-            </div>
+            </div> */}
             
           </div>
 

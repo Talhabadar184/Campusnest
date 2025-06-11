@@ -150,7 +150,7 @@
 //           <h2 className="text-xl font-semibold mb-4">Payment</h2>
 //           <div className="h-0.5 w-full bg-black"></div>
 //           <h3 className="text-2xl font-bold text-center mt-2">Rs. {hPrice}</h3>
-        
+
 //           <label className="block mt-4">Pay Using</label>
 //           <SelectField
 //             name="paymentMethod"
@@ -167,9 +167,9 @@
 //           {paymentErrors.paymentMethod && (
 //             <p className="text-red-500 text-sm">{paymentErrors.paymentMethod}</p>
 //           )}
-        
+
 //           <label className="block mt-6">Add Your Number</label>
-        
+
 //           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
 //             <div className="flex-1">
 //               <InputField
@@ -186,7 +186,7 @@
 //                 </p>
 //               )}
 //             </div>
-        
+
 //             <button
 //               type="submit"
 //               onClick={handlePaymentSubmit}
@@ -197,7 +197,7 @@
 //             </button>
 //           </div>
 //         </>
-        
+
 //         ) : (
 //           <>
 //             <h2 className="text-xl font-semibold mb-4">Booking Form</h2>
@@ -349,18 +349,30 @@
 // export default Booking;
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBooking, processPayment, clearBookingState } from "../Features/BookingSlice";
+import {
+  createBooking,
+  processPayment,
+  clearBookingState,
+} from "../Features/BookingSlice";
 import InputField from "../components/Inputfield";
 import crossIcon from "../assets/Listing/cross.png";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Inputfield from "../components/Inputfield";
 
-function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 }) {
+function Booking({
+  isOpen,
+  onClose,
+  hostelId: propHostelId,
+  hostelPrice = 25000,
+}) {
   const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
 
   const selectedHostel = useSelector((state) => state.hostel.selectedHostel);
-  const { bookingResult, loading, error } = useSelector((state) => state.booking);
+  const { bookingResult, loading, error } = useSelector(
+    (state) => state.booking
+  );
   const user = useSelector((state) => state.auth.user);
 
   const hostelId = selectedHostel?._id || propHostelId;
@@ -378,8 +390,7 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
   const [cardError, setCardError] = useState(null);
   const [isPaymentStep, setIsPaymentStep] = useState(false);
   // const cardElement = elements.getElement(CardElement);
-// console.log("CardElement:", cardElement); // should not be null
-
+  // console.log("CardElement:", cardElement); // should not be null
 
   useEffect(() => {
     if (user) {
@@ -434,14 +445,14 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
   // };
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Validate form and required values
     if (!validateForm()) return;
     if (!hostelId) {
       console.error("Hostel ID is missing");
       return;
     }
-  
+
     // Build payload
     const payload = {
       hostelId,
@@ -452,10 +463,10 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
       moveInDate: formData.moveInDate,
       message: formData.message,
     };
-  
+
     try {
       const result = await dispatch(createBooking(payload));
-  
+
       if (createBooking.fulfilled.match(result)) {
         console.log("Booking successful:", result.payload);
         setIsPaymentStep(true); // Proceed to next step
@@ -468,7 +479,6 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
       alert("Something went wrong. Please try again later.");
     }
   };
-  
 
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
@@ -507,7 +517,6 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
     }
   };
 
-  
   const handleClose = () => {
     dispatch(clearBookingState());
     onClose();
@@ -516,105 +525,181 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
     setCardError(null);
   };
   const handleReset = () => {
-  setFormData({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    moveInDate: "",
-    message: "",
-  });
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      moveInDate: "",
+      message: "",
+    });
 
-  setErrors({});
-};
-
+    setErrors({});
+  };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50 px-4">
-  <div className="absolute inset-0 bg-black opacity-50" />
-  <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative shadow-lg">
-    <img
-      src={crossIcon}
-      alt="Close"
-      className="absolute top-3 right-3 w-6 h-6 cursor-pointer"
-      onClick={handleClose}
-    />
+      <div className="absolute inset-0 bg-black opacity-50" />
+      <div className="bg-white p-6 rounded-lg w-full max-w-3xl relative shadow-lg">
+        <img
+          src={crossIcon}
+          alt="Close"
+          className="absolute top-3 right-3 w-4 h-4 cursor-pointer"
+          onClick={handleClose}
+        />
 
-    {!isPaymentStep ? (
-      <>
-        <h2 className="text-xl font-semibold text-center mb-1">Booking Form</h2>
-        <p className="text-sm text-center text-gray-500 mb-6">
-          Please fill out the form below, all fields are mandatory!
-        </p>
+        {!isPaymentStep ? (
+          <>
+            <h2 className="text-xl font-semibold text-center mb-1">
+              Booking Form
+            </h2>
+            <div className="h-0.5 w-full bg-black mb-4"></div>
+            <p className="text-sm text-center text-gray-500 mb-6">
+              Please fill out the form below, all fields are mandatory!
+            </p>
 
-        <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <InputField
-            label="First Name *"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            error={errors.firstName}
-          />
-          <InputField
-            label="Last Name"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-          />
-          <InputField
-            label="Email *"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            error={errors.email}
-          />
-          <InputField
-            label="Mobile No."
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            error={errors.phone}
-          />
-          <InputField
-            label="Preferred Move-In Date"
-            name="moveInDate"
-            type="date"
-            value={formData.moveInDate}
-            onChange={handleInputChange}
-            error={errors.moveInDate}
-            className="md:col-span-2"
-          />
-          <InputField
-            label="Message (optional)"
-            name="message"
-            value={formData.message}
-            onChange={handleInputChange}
-            textarea
-            className="md:col-span-2"
-          />
-
-          {/* Buttons */}
-          <div className="md:col-span-2 flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={handleReset}
-              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 text-sm"
+            {/* <form
+              onSubmit={handleBookingSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
-              Reset
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save & Next"}
-            </button>
-          </div>
-        </form>
-      </>
-    ) : (
+              <InputField
+                label="First Name *"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+                error={errors.firstName}
+              />
+              <InputField
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+              />
+              <InputField
+                label="Email *"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                error={errors.email}
+              />
+              <InputField
+                label="Mobile No."
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                error={errors.phone}
+              />
+              <InputField
+                label="Preferred Move-In Date"
+                name="moveInDate"
+                type="date"
+                value={formData.moveInDate}
+                onChange={handleInputChange}
+                error={errors.moveInDate}
+                className="md:col-span-2"
+              />
+              <InputField
+                label="Message (optional)"
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                textarea
+                className="md:col-span-2 h-40" // Increased height here
+              /> */}
+
+              {/* Buttons */}
+              {/* <div className="md:col-span-2 flex justify-end gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 text-sm"
+                >
+                  Reset
+                </button>
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save & Next"}
+                </button>
+              </div>
+            </form> */}
+
+            <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <InputField
+    label="First Name *"
+    name="firstName"
+    value={formData.firstName}
+    onChange={handleInputChange}
+    error={errors.firstName}
+  />
+  <InputField
+    label="Last Name"
+    name="lastName"
+    value={formData.lastName}
+    onChange={handleInputChange}
+  />
+  <InputField
+    label="Email *"
+    name="email"
+    value={formData.email}
+    onChange={handleInputChange}
+    error={errors.email}
+  />
+  <InputField
+    label="Mobile No."
+    name="phone"
+    value={formData.phone}
+    onChange={handleInputChange}
+    error={errors.phone}
+  />
+  <InputField
+    label="Preferred Move-In Date"
+    name="moveInDate"
+    type="date"
+    value={formData.moveInDate}
+    onChange={handleInputChange}
+    error={errors.moveInDate}
+    className="md:col-span-2"
+  />
+</form>
+
+{/* Message Field (outside the grid, above buttons) */}
+<div className="mt-4 sm:w-[40vw]">
+  <Inputfield
+    label="Message (optional)"
+    name="message"
+    value={formData.message}
+    onChange={handleInputChange}
+    textarea
+    className="sm:h-[70px]" // Increased height from 10vh to 20vh
+  />
+</div>
+
+
+{/* Buttons */}
+<div className="flex justify-end gap-3 mt-4">
+  <button
+    type="button"
+    onClick={handleReset}
+    className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 text-sm"
+  >
+    Reset
+  </button>
+  <button
+    type="submit"
+    className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-900 cursor-pointer text-sm"
+    disabled={loading}
+  >
+    {loading ? "Saving..." : "Save & Next"}
+  </button>
+</div>
+
+          </>
+        ) : (
           <>
             <h2 className="text-2xl font-semibold mb-4">Payment</h2>
             <form onSubmit={handlePaymentSubmit}>
@@ -634,8 +719,15 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
                 />
                 {cardError && <p className="text-red-600 mt-2">{cardError}</p>}
               </div>
-              <p className="mb-4">Amount to pay: <strong>Rs. {hostelPrice.toLocaleString()}</strong></p>
-              <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50" disabled={loading}>
+              <p className="mb-4">
+                Amount to pay:{" "}
+                <strong>Rs. {hostelPrice.toLocaleString()}</strong>
+              </p>
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                disabled={loading}
+              >
                 {loading ? "Processing..." : "Pay Now"}
               </button>
               {error && <p className="text-red-600 mt-2">{error}</p>}
@@ -648,12 +740,3 @@ function Booking({ isOpen, onClose, hostelId: propHostelId, hostelPrice = 25000 
 }
 
 export default Booking;
-
-
-
-
-
-
-
-
-

@@ -444,8 +444,157 @@
 //         setIsCompareOpen={setIsCompareOpen}
 //       />
 
+//       {isCompareOpen && <Comparison selectedHostels={selectedHostels} onClose={() => setIsCompareOpen(false)} />}
+//     </div>
+//   );
+// }
+
+// export default Hostels;
+// import React, { useEffect, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchAllHostels } from "../Features/hostelSlice";
+// import { Link } from "react-router-dom";
+// import Pagination from "./Pagination";
+// import Comparison from "./Comparison";
+
+// function Hostels({
+//   selectedHostels = [],
+//   setSelectedHostels = () => {},
+//   isCompareOpen = false,
+//   setIsCompareOpen = () => {},
+//   filters = {},
+// }) {
+//   const dispatch = useDispatch();
+//   const { hostels = [], loading, error } = useSelector((state) => state.hostel);
+//   const [currentPage, setCurrentPage] = useState(1);
+
+//   useEffect(() => {
+//     dispatch(fetchAllHostels());
+//   }, [dispatch]);
+
+//   const hostelsPerPage = 5;
+
+//   const filteredHostels = hostels.filter((hostel) => {
+//     const matchesInstitution =
+//       !filters.institution ||
+//       hostel.institution?.toLowerCase().includes(filters.institution.toLowerCase());
+//     const matchesRadius = !filters.radius || hostel.radius === filters.radius;
+//     const matchesLocation = !filters.location || hostel.location === filters.location;
+
+//     return matchesInstitution && matchesRadius && matchesLocation;
+//   });
+
+//   const indexOfLast = currentPage * hostelsPerPage;
+//   const indexOfFirst = indexOfLast - hostelsPerPage;
+//   const currentHostels = filteredHostels?.slice(indexOfFirst, indexOfLast) || [];
+
+//   const handleCheckboxChange = (hostel) => {
+//     setSelectedHostels((prev) => {
+//       const isSelected = prev.some((h) => h._id === hostel._id);
+//       if (isSelected) return prev.filter((h) => h._id !== hostel._id);
+//       if (prev.length < 2) return [...prev, hostel];
+//       return prev;
+//     });
+//   };
+
+//   if (loading) return <p className="text-center mt-10">Loading hostels...</p>;
+//   if (error) return <p className="text-center text-red-600 mt-10">Error: {error.message || error}</p>;
+//   if (!hostels || hostels.length === 0)
+//     return <p className="text-center mt-10">No hostels found.</p>;
+
+//   return (
+//     <div className="flex-1 max-w-full px-4 md:max-w-[70vw] p-4 rounded-lg shadow-lg">
+//       <h2 className="text-lg text-blue-600 font-semibold mb-3 text-center md:text-left">
+//         {filteredHostels.length} Hostels Found
+//       </h2>
+
+//       <div className="space-y-4">
+//         {currentHostels.map((hostel) => (
+//           <div
+//             key={hostel._id}
+//             className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow"
+//           >
+//             <div className="w-full md:w-40 h-40 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
+//               {hostel.imageUrl ? (
+//                 <img
+//                   src={hostel.imageUrl}
+//                   alt={hostel.name}
+//                   className="w-full h-full object-cover"
+//                 />
+//               ) : (
+//                 <span className="text-gray-500">No Image</span>
+//               )}
+//             </div>
+
+//             <div className="flex-1">
+//               <div className="flex gap-2 items-center">
+//                 <input
+//                   type="checkbox"
+//                   aria-label={`Select ${hostel.name}`}
+//                   checked={selectedHostels.some((h) => h._id === hostel._id)}
+//                   onChange={() => handleCheckboxChange(hostel)}
+//                   disabled={
+//                     !selectedHostels.some((h) => h._id === hostel._id) &&
+//                     selectedHostels.length >= 2
+//                   }
+//                 />
+//                 <h1 className="font-semibold text-blue-600 text-lg">
+//                   {hostel.name}
+//                 </h1>
+//               </div>
+
+//               <p className="text-gray-500 text-sm mt-3 mb-3">
+//                 {hostel.description || "No description available."}
+//               </p>
+
+//               <p className="text-gray-600 text-sm mb-1">
+//                 Location:{" "}
+//                 <strong>{hostel.location?.address || "N/A"}</strong> | Price:{" "}
+//                 <strong>
+//                   {hostel.pricePerMonth ? `${hostel.pricePerMonth} PKR` : "N/A"}
+//                 </strong>
+//               </p>
+
+//               <p className="text-gray-600 text-sm mb-2">
+//                 <strong>Ratings:</strong>{" "}
+//                 {hostel.averageRating || "No ratings"}
+//               </p>
+
+//               <p className="text-blue-600 text-sm flex gap-2">
+//                 <a
+//                   href={`tel:${hostel.ownerContact || ""}`}
+//                   className="hover:underline"
+//                 >
+//                   Call Owner
+//                 </a>
+//                 |
+//                 <Link
+//                   to={`/Details/${hostel._id}`}
+//                   className="hover:underline"
+//                 >
+//                   More Details
+//                 </Link>
+//               </p>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       <Pagination
+//         hostels={hostels}
+//         totalPages={Math.ceil(filteredHostels.length / hostelsPerPage)}
+//         currentPage={currentPage}
+//         setCurrentPage={setCurrentPage}
+//         selectedHostels={selectedHostels}
+//         setSelectedHostels={setSelectedHostels}
+//         setIsCompareOpen={setIsCompareOpen}
+//       />
+
 //       {isCompareOpen && (
-//         <Comparison selectedHostels={selectedHostels} onClose={() => setIsCompareOpen(false)} />
+//         <Comparison
+//           selectedHostels={selectedHostels}
+//           onClose={() => setIsCompareOpen(false)}
+//         />
 //       )}
 //     </div>
 //   );
@@ -458,30 +607,77 @@ import { fetchAllHostels } from "../Features/hostelSlice";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
 import Comparison from "./Comparison";
+import { useLocation } from "react-router-dom";
 
-function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsCompareOpen, filters }) {
+
+
+function Hostels({
+  selectedHostels = [],
+  setSelectedHostels = () => {},
+  isCompareOpen = false,
+  setIsCompareOpen = () => {},
+  
+}) {
+
   const dispatch = useDispatch();
-  const { hostels = [], filteredHostels = [], loading, error } = useSelector((state) => state.hostel);
+  const { hostels = [], loading, error } = useSelector((state) => state.hostel);
+  const searchFilters = useSelector((state) => state.search);
+  const filters = useSelector((state) => state.search.filters);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const hostelsPerPage = 5;
+   const location = useLocation();
+  const results = location.state?.results || [];
 
   useEffect(() => {
     dispatch(fetchAllHostels());
   }, [dispatch]);
 
-  // Use filteredHostels if available, else fall back to hostels
-  const hostelsToDisplay = filteredHostels.length > 0 ? filteredHostels : hostels;
+  const hostelsPerPage = 5;
 
-  // Optional: if you want client-side filtering on top of filteredHostels, do it here.
-  // But usually backend filteredHostels is enough.
+ const haversineDistance = (coords1, coords2) => {
+  const toRad = (value) => (value * Math.PI) / 180;
+  const R = 6371; // Earth radius in km
 
-  // Pagination slicing
+  const dLat = toRad(coords2.lat - coords1.lat);
+  const dLon = toRad(coords2.lng - coords1.lng);
+
+  const lat1 = toRad(coords1.lat);
+  const lat2 = toRad(coords2.lat);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.sin(dLon / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+};
+const filteredHostels = hostels.filter((hostel) => {
+  if (!hostel) return false;
+
+  const matchesInstitution =
+    !filters?.institution ||
+    (hostel.institution &&
+      hostel.institution.toLowerCase().includes(filters.institution.toLowerCase()));
+
+  let matchesLocation = true;
+  if (filters?.coordinates && hostel.coordinates) {
+    const distance = haversineDistance(filters.coordinates, {
+      lat: hostel.coordinates.lat,
+      lng: hostel.coordinates.lng,
+    });
+    matchesLocation = distance <= (filters?.radius || 5);
+  }
+
+  return matchesInstitution && matchesLocation;
+});
+
+
+
+
   const indexOfLast = currentPage * hostelsPerPage;
   const indexOfFirst = indexOfLast - hostelsPerPage;
-  const currentHostels = hostelsToDisplay.slice(indexOfFirst, indexOfLast);
+  const currentHostels = filteredHostels?.slice(indexOfFirst, indexOfLast) || [];
 
-  // Handle selection checkbox toggling
   const handleCheckboxChange = (hostel) => {
     setSelectedHostels((prev) => {
       const isSelected = prev.some((h) => h._id === hostel._id);
@@ -497,24 +693,33 @@ function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsComp
 
   if (loading) return <p className="text-center mt-10">Loading hostels...</p>;
   if (error) return <p className="text-center text-red-600 mt-10">Error: {error.message || error}</p>;
-  if (!hostelsToDisplay.length) return <p className="text-center mt-10">No hostels found.</p>;
+  if (!hostels || hostels.length === 0)
+    return <p className="text-center mt-10">No hostels found.</p>;
 
   return (
     <div className="flex-1 max-w-full px-4 md:max-w-[70vw] p-4 rounded-lg shadow-lg">
       <h2 className="text-lg text-blue-600 font-semibold mb-3 text-center md:text-left">
-        {hostelsToDisplay.length} Hostels Found
+        {filteredHostels.length} Hostels Found
       </h2>
 
       <div className="space-y-4">
-        {currentHostels.map((hostel) => (
-          <div key={hostel._id} className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow">
+        {results.map((hostel) => (
+          <div
+            key={hostel._id}
+            className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow"
+          >
             <div className="w-full md:w-40 h-40 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
               {hostel.imageUrl ? (
-                <img src={hostel.imageUrl} alt={hostel.name} className="w-full h-full object-cover" />
+                <img
+                  src={hostel.imageUrl}
+                  alt={hostel.name}
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <span className="text-gray-500">No Image</span>
               )}
             </div>
+
             <div className="flex-1">
               <div className="flex gap-2 items-center">
                 <input
@@ -523,25 +728,44 @@ function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsComp
                   checked={selectedHostels.some((h) => h._id === hostel._id)}
                   onChange={() => handleCheckboxChange(hostel)}
                   disabled={
-                    !selectedHostels.some((h) => h._id === hostel._id) && selectedHostels.length >= 2
+                    !selectedHostels.some((h) => h._id === hostel._id) &&
+                    selectedHostels.length >= 2
                   }
                 />
-                <h1 className="font-semibold text-blue-600 text-lg">{hostel.name}</h1>
+                <h1 className="font-semibold text-blue-600 text-lg">
+                  {hostel.name}
+                </h1>
               </div>
-              <p className="text-gray-500 text-sm mt-3 mb-3">{hostel.description || "No description available."}</p>
+
+              <p className="text-gray-500 text-sm mt-3 mb-3">
+                {hostel.description || "No description available."}
+              </p>
+
               <p className="text-gray-600 text-sm mb-1">
-                Location: <strong>{hostel.location?.address || "N/A"}</strong> | Price:{" "}
-                <strong>{hostel.pricePerMonth ? `${hostel.pricePerMonth} PKR` : "N/A"}</strong>
+                Location:{" "}
+                <strong>{hostel.location?.address || "N/A"}</strong> | Price:{" "}
+                <strong>
+                  {hostel.pricePerMonth ? `${hostel.pricePerMonth} PKR` : "N/A"}
+                </strong>
               </p>
+
               <p className="text-gray-600 text-sm mb-2">
-                <strong>Ratings:</strong> {hostel.averageRating || "No ratings"}
+                <strong>Ratings:</strong>{" "}
+                {hostel.averageRating || "No ratings"}
               </p>
+
               <p className="text-blue-600 text-sm flex gap-2">
-                <a href={`tel:${hostel.ownerContact || ""}`} className="hover:underline">
+                <a
+                  href={`tel:${hostel.ownerContact || ""}`}
+                  className="hover:underline"
+                >
                   Call Owner
                 </a>
                 |
-                <Link to={`/Details/${hostel._id}`} className="hover:underline">
+                <Link
+                  to={`/Details/${hostel._id}`}
+                  className="hover:underline"
+                >
                   More Details
                 </Link>
               </p>
@@ -551,8 +775,8 @@ function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsComp
       </div>
 
       <Pagination
-        hostels={hostelsToDisplay}
-        totalPages={Math.ceil(hostelsToDisplay.length / hostelsPerPage)}
+        hostels={hostels}
+        totalPages={Math.ceil(filteredHostels.length / hostelsPerPage)}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         selectedHostels={selectedHostels} 
@@ -561,7 +785,10 @@ function Hostels({ selectedHostels, setSelectedHostels, isCompareOpen, setIsComp
       />
 
       {isCompareOpen && (
-        <Comparison selectedHostels={selectedHostels} onClose={() => setIsCompareOpen(false)} />
+        <Comparison
+          selectedHostels={selectedHostels}
+          onClose={() => setIsCompareOpen(false)}
+        />
       )}
     </div>
   );

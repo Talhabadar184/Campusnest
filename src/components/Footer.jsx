@@ -8,7 +8,7 @@ import youtube from "../assets/Footer/youtube.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-blue-800 flex flex-col md:flex-row text-white py-2 mt-auto items-center md:items-start px-4 md:px-8 lg:px-16">
+    <footer className="bg-blue-900 flex flex-col md:flex-row text-white py-2 mt-auto items-center md:items-start px-4 md:px-8 lg:px-16">
       {/* Left Section: Logo & Copyright */}
       <div className="flex flex-col items-center md:items-start text-center md:text-left mb-4 md:mb-0  md:w-1/3">
         <img src={logo} alt="CampusNest Logo" className="h-12 mb-2" />
