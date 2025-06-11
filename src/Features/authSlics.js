@@ -516,7 +516,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Set base URL for axios
 axios.defaults.baseURL = 'http://localhost:8000/api';
 
 // Register User
@@ -532,16 +531,10 @@ export const registerUser = createAsyncThunk(
         mobileNo: userData.mobileNo,
         gender: userData.gender,
         userType: userData.userType,
-        address: {
-          street: userData.street,
-          city: userData.city,
-          district: userData.district,
-          state: userData.state,
-          postalCode: userData.postalCode,
-        },
+        address: userData.address,
       };
       const response = await axios.post('/register', payload);
-      return response.data; // assuming response.data is user object
+      return response.data;
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {
         console.error(err);
@@ -557,7 +550,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post('/login', credentials);
-      return response.data; // assuming response.data = { user, accessToken, refreshToken }
+      return response.data;
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {
         console.error(err);
@@ -657,10 +650,13 @@ const authSlice = createSlice({
       state.error = null;
       state.resetStatus = null;
     },
+    clearError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
-    // Register
     builder
+      // Register
       .addCase(registerUser.pending, (state) => {
         state.loadingRegister = true;
         state.error = null;
@@ -672,10 +668,8 @@ const authSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loadingRegister = false;
         state.error = action.payload;
-      });
-
-    // Login
-    builder
+      })
+      // Login
       .addCase(loginUser.pending, (state) => {
         state.loadingLogin = true;
         state.error = null;
@@ -689,10 +683,8 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loadingLogin = false;
         state.error = action.payload;
-      });
-
-    // Forgot Password
-    builder
+      })
+      // Forgot Password
       .addCase(forgotPassword.pending, (state) => {
         state.loadingForgotPassword = true;
         state.error = null;
@@ -706,10 +698,8 @@ const authSlice = createSlice({
         state.loadingForgotPassword = false;
         state.error = action.payload;
         state.resetStatus = null;
-      });
-
-    // Verify Reset Code
-    builder
+      })
+      // Verify Reset Code
       .addCase(verifyResetCode.pending, (state) => {
         state.loadingVerifyCode = true;
         state.error = null;
@@ -723,10 +713,8 @@ const authSlice = createSlice({
         state.loadingVerifyCode = false;
         state.error = action.payload;
         state.resetStatus = null;
-      });
-
-    // Reset Password
-    builder
+      })
+      // Reset Password
       .addCase(resetPassword.pending, (state) => {
         state.loadingResetPassword = true;
         state.error = null;
@@ -740,10 +728,8 @@ const authSlice = createSlice({
         state.loadingResetPassword = false;
         state.error = action.payload;
         state.resetStatus = null;
-      });
-
-    // Get User Profile
-    builder
+      })
+      // Get User Profile
       .addCase(getUserProfile.pending, (state) => {
         state.loadingProfile = true;
         state.error = null;
@@ -759,6 +745,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
+
 

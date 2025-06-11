@@ -125,19 +125,19 @@ const hostelSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Filtered hostels fetch (from filter form)
-      .addCase(fetchHostels.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchHostels.fulfilled, (state, action) => {
-        state.loading = false;
-        state.filteredHostels = action.payload || [];
-      })
-      .addCase(fetchHostels.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || 'Unknown error';
-      });
+      // // ✅ Filtered hostels fetch (from filter form)
+      // .addCase(fetchHostels.pending, (state) => {
+      //   state.loading = true;
+      //   state.error = null;
+      // })
+      // .addCase(fetchHostels.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.filteredHostels = action.payload || [];
+      // })
+      // .addCase(fetchHostels.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.payload || 'Unknown error';
+      // });
   },
 });
 

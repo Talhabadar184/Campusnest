@@ -281,6 +281,285 @@
 
 // export default Register;
 
+// import React, { useState, useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import Field from "../components/Inputfield";
+// import Selectfield from "../components/Selectfield";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+// import { registerUser } from "../Features/authSlics";
+
+// const Register = () => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+
+//   const { loading, error, user } = useSelector((state) => state.auth);
+
+//   const [formData, setFormData] = useState({
+//     firstName: "",
+//     lastName: "",
+//     email: "",
+//     password: "",
+//     mobileNo: "",
+//     gender: "",
+//     userType:"",
+//     address: {
+//       street: "",
+//       city: "",
+//       district: "",
+//       state: "",
+//       postalCode: "",
+//     },
+//   });
+
+//   const [errors, setErrors] = useState({});
+
+//   // For normal fields
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     if (name in formData) {
+//       setFormData((prev) => ({ ...prev, [name]: value }));
+//       setErrors((prev) => ({ ...prev, [name]: "" }));
+//     }
+//   };
+
+//   // For address fields (nested)
+//   const handleAddressChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       address: { ...prev.address, [name]: value },
+//     }));
+//     setErrors((prev) => ({ ...prev, [name]: "" }));
+//   };
+
+//   const validateForm = (data) => {
+//     let newErrors = {};
+//     if (!data.firstName.trim()) newErrors.firstName = "First Name is required";
+//     if (!data.lastName.trim()) newErrors.lastName = "Last Name is required";
+//     if (!data.email.trim()) newErrors.email = "Email is required";
+//     if (!data.password.trim()) newErrors.password = "Password is required";
+//     else if (data.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+//     if (!data.mobileNo.trim()) newErrors.mobileNo = "Mobile Number is required";
+//     if (!data.gender) newErrors.gender = "Gender is required";
+//     // if (!data.userType) newErrors.userType = "user type is required";
+//     const addr = data.address;
+//     if (!addr.street.trim()) newErrors.street = "Street is required";
+//     if (!addr.city.trim()) newErrors.city = "City is required";
+//     if (!addr.district.trim()) newErrors.district = "District is required";
+//     if (!addr.state.trim()) newErrors.state = "State is required";
+//     if (!addr.postalCode.trim()) newErrors.postalCode = "Postal Code is required";
+
+//     return newErrors;
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     const validationErrors = validateForm(formData);
+//     if (Object.keys(validationErrors).length > 0) {
+//       setErrors(validationErrors);
+//       return;
+//     }
+//     setErrors({});
+
+//     const payload = { ...formData }; 
+//     dispatch(registerUser(payload));
+//   };
+
+//   useEffect(() => {
+//     if (user) {
+//       alert("Profile saved successfully!");
+//       navigate("/SignIn");
+//     }
+//   }, [user, navigate]);
+
+//   return (
+//     <>
+//       <Navbar />
+//       <div className="min-h-screen bg-gray-100 flex flex-col px-4 md:px-0">
+//         <div className="pt-7 flex justify-center md:justify-start md:pl-36">
+          
+//         </div>
+
+//         <div className="flex justify-center items-center pt-7 mb-16">
+//           <div className="w-full max-w-4xl bg-white border-2 border-gray-300 p-6 md:p-8 rounded-lg shadow-lg">
+//             <h2 className="text-2xl flex  font-semibold text-blue-700 text-left mb-6">
+//             Sign Up
+//           </h2>
+//             <form onSubmit={handleSubmit}>
+//               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//                 <div>
+//                   <Field
+//                     label="First Name"
+//                     name="firstName"
+//                     placeholder="Enter your first name"
+//                     value={formData.firstName}
+//                     onChange={handleChange}
+//                   />
+//                   {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+//                 </div>
+
+//                 <div>
+//                   <Field
+//                     label="Last Name"
+//                     name="lastName"
+//                     placeholder="Enter your last name"
+//                     value={formData.lastName}
+//                     onChange={handleChange}
+//                   />
+//                   {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
+//                 </div>
+
+//                 <div>
+//                   <Field
+//                     label="Email"
+//                     name="email"
+//                     type="email"
+//                     placeholder="Enter your email"
+//                     value={formData.email}
+//                     onChange={handleChange}
+//                   />
+//                   {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+//                 </div>
+
+//                 <div>
+//                   <Field
+//                     label="Password"
+//                     name="password"
+//                     type="password"
+//                     placeholder="Enter your password"
+//                     value={formData.password}
+//                     onChange={handleChange}
+//                   />
+//                   {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+//                 </div>
+
+//                 <div>
+//                   <Field
+//                     label="Mobile Number"
+//                     name="mobileNo"
+//                     placeholder="Enter your mobile number"
+//                     value={formData.mobileNo}
+//                     onChange={handleChange}
+//                   />
+//                   {errors.mobileNo && <p className="text-red-500 text-sm">{errors.mobileNo}</p>}
+//                 </div>
+
+//                 {/* <Selectfield
+//                   label="Gender"
+//                   name="gender"
+//                   options={["male", "female", "other"]}
+//                   value={formData.gender}
+//                   onChange={handleChange}
+//                 />
+//                 {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>} */}
+
+//                 <Selectfield
+//                   label="User Type"
+//                     name="userType"
+//                 options={["tenant", "owner"]}
+//                 value={formData.userType}
+//                 onChange={handleChange}
+//                   />
+
+//                 {errors.userType && <p className="text-red-500 text-sm">{errors.userType}</p>}
+
+//                 {/* Address Fields */}
+//                 {/* <Field
+//                   label="Street"
+//                   name="street"
+//                   placeholder="Enter your street"
+//                   value={formData.address.street}
+//                   onChange={handleAddressChange}
+//                 />
+//                 {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>} */}
+
+//                 {/* <Field
+//                   label="City"
+//                   name="city"
+//                   placeholder="Enter your city"
+//                   value={formData.address.city}
+//                   onChange={handleAddressChange}
+//                 />
+//                 {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>} */}
+
+//                 {/* <Field
+//                   label="District"
+//                   name="district"
+//                   placeholder="Enter your district"
+//                   value={formData.address.district}
+//                   onChange={handleAddressChange}
+//                 />
+//                 {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>} */}
+
+//                 {/* <Field
+//                   label="State"
+//                   name="state"
+//                   placeholder="Enter your state"
+//                   value={formData.address.state}
+//                   onChange={handleAddressChange}
+//                 />
+//                 {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>} */}
+
+//                 {/* <Field
+//                   label="Postal Code"
+//                   name="postalCode"
+//                   placeholder="Enter your postal code"
+//                   value={formData.address.postalCode}
+//                   onChange={handleAddressChange}
+//                 />
+//                 {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>} */}
+//               </div>
+
+//               <div className="flex justify-center mt-6 gap-4">
+//                 {/* <button
+//                   type="button"
+//                   onClick={() =>
+//                     setFormData({
+//                       firstName: "",
+//                       lastName: "",
+//                       email: "",
+//                       password: "",
+//                       mobileNo: "",
+//                       gender: "",
+//                       userType:"",
+//                       address: {
+//                         street: "",
+//                         city: "",
+//                         district: "",
+//                         state: "",
+//                         postalCode: "",
+//                       },
+//                     })
+//                   }
+//                   className="border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-100 transition"
+//                 >
+//                   Reset
+//                 </button> */}
+//                 <button
+//                   type="submit"
+//                   disabled={loading}
+//                   className="bg-blue-900 text-white px-28 py-2 rounded-md hover:bg-blue-900 transition flex justify-center"
+//                 >
+//                   {loading ? "Submitting..." : "Sign Up"}
+//                 </button>
+//               </div>
+//               {error && <p className="text-red-500 mt-2">{error}</p>}
+//             </form>
+//           </div>
+//         </div>
+
+//         <div className="flex-grow bg-gray-100" />
+//       </div>
+//       <Footer />
+//     </>
+//   );
+// };
+
+// export default Register;
+
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -288,13 +567,13 @@ import Field from "../components/Inputfield";
 import Selectfield from "../components/Selectfield";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { registerUser } from "../Features/authSlics";
+import { registerUser, clearError } from "../Features/authSlics";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error, user } = useSelector((state) => state.auth);
+  const { loadingRegister, error, user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -303,34 +582,15 @@ const Register = () => {
     password: "",
     mobileNo: "",
     gender: "",
-    userType:"",
-    address: {
-      street: "",
-      city: "",
-      district: "",
-      state: "",
-      postalCode: "",
-    },
+    userType: "",
+    address: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  // For normal fields
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name in formData) {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-      setErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-  };
-
-  // For address fields (nested)
-  const handleAddressChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      address: { ...prev.address, [name]: value },
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -343,13 +603,8 @@ const Register = () => {
     else if (data.password.length < 6) newErrors.password = "Password must be at least 6 characters";
     if (!data.mobileNo.trim()) newErrors.mobileNo = "Mobile Number is required";
     if (!data.gender) newErrors.gender = "Gender is required";
-    // if (!data.userType) newErrors.userType = "user type is required";
-    const addr = data.address;
-    if (!addr.street.trim()) newErrors.street = "Street is required";
-    if (!addr.city.trim()) newErrors.city = "City is required";
-    if (!addr.district.trim()) newErrors.district = "District is required";
-    if (!addr.state.trim()) newErrors.state = "State is required";
-    if (!addr.postalCode.trim()) newErrors.postalCode = "Postal Code is required";
+    if (!data.userType) newErrors.userType = "User type is required";
+    if (!data.address.trim()) newErrors.address = "Address is required";
 
     return newErrors;
   };
@@ -362,9 +617,7 @@ const Register = () => {
       return;
     }
     setErrors({});
-
-    const payload = { ...formData }; 
-    dispatch(registerUser(payload));
+    dispatch(registerUser(formData));
   };
 
   useEffect(() => {
@@ -372,185 +625,54 @@ const Register = () => {
       alert("Profile saved successfully!");
       navigate("/SignIn");
     }
-  }, [user, navigate]);
+    return () => {
+      dispatch(clearError());
+    };
+  }, [user, navigate, dispatch]);
 
   return (
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-100 flex flex-col px-4 md:px-0">
-        <div className="pt-7 flex justify-center md:justify-start md:pl-36">
-          
-        </div>
-
         <div className="flex justify-center items-center pt-7 mb-16">
           <div className="w-full max-w-4xl bg-white border-2 border-gray-300 p-6 md:p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl flex  font-semibold text-blue-700 text-left mb-6">
-            Sign Up
-          </h2>
+            <h2 className="text-2xl font-semibold text-blue-700 mb-6">Sign Up</h2>
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Field
-                    label="First Name"
-                    name="firstName"
-                    placeholder="Enter your first name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                  />
-                  {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
-                </div>
+                <Field label="First Name" name="firstName" placeholder="Enter your first name" value={formData.firstName} onChange={handleChange} />
+                {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
 
-                <div>
-                  <Field
-                    label="Last Name"
-                    name="lastName"
-                    placeholder="Enter your last name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                  />
-                  {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
-                </div>
+                <Field label="Last Name" name="lastName" placeholder="Enter your last name" value={formData.lastName} onChange={handleChange} />
+                {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName}</p>}
 
-                <div>
-                  <Field
-                    label="Email"
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                  {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                </div>
+                <Field label="Email" name="email" type="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} />
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
-                <div>
-                  <Field
-                    label="Password"
-                    name="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                  {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                </div>
+                <Field label="Password" name="password" type="password" placeholder="Enter your password" value={formData.password} onChange={handleChange} />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
 
-                <div>
-                  <Field
-                    label="Mobile Number"
-                    name="mobileNo"
-                    placeholder="Enter your mobile number"
-                    value={formData.mobileNo}
-                    onChange={handleChange}
-                  />
-                  {errors.mobileNo && <p className="text-red-500 text-sm">{errors.mobileNo}</p>}
-                </div>
+                <Field label="Mobile Number" name="mobileNo" placeholder="Enter your mobile number" value={formData.mobileNo} onChange={handleChange} />
+                {errors.mobileNo && <p className="text-red-500 text-sm">{errors.mobileNo}</p>}
 
-                {/* <Selectfield
-                  label="Gender"
-                  name="gender"
-                  options={["male", "female", "other"]}
-                  value={formData.gender}
-                  onChange={handleChange}
-                />
-                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>} */}
-
-                <Selectfield
-                  label="User Type"
-                    name="userType"
-                options={["tenant", "owner"]}
-                value={formData.userType}
-                onChange={handleChange}
-                  />
-
+                <Selectfield label="User Type" name="userType" options={["tenant", "owner"]} value={formData.userType} onChange={handleChange} />
                 {errors.userType && <p className="text-red-500 text-sm">{errors.userType}</p>}
 
-                {/* Address Fields */}
-                {/* <Field
-                  label="Street"
-                  name="street"
-                  placeholder="Enter your street"
-                  value={formData.address.street}
-                  onChange={handleAddressChange}
-                />
-                {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>} */}
+                <Selectfield label="Gender" name="gender" options={["male", "female", "other"]} value={formData.gender} onChange={handleChange} />
+                {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
 
-                {/* <Field
-                  label="City"
-                  name="city"
-                  placeholder="Enter your city"
-                  value={formData.address.city}
-                  onChange={handleAddressChange}
-                />
-                {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>} */}
-
-                {/* <Field
-                  label="District"
-                  name="district"
-                  placeholder="Enter your district"
-                  value={formData.address.district}
-                  onChange={handleAddressChange}
-                />
-                {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>} */}
-
-                {/* <Field
-                  label="State"
-                  name="state"
-                  placeholder="Enter your state"
-                  value={formData.address.state}
-                  onChange={handleAddressChange}
-                />
-                {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>} */}
-
-                {/* <Field
-                  label="Postal Code"
-                  name="postalCode"
-                  placeholder="Enter your postal code"
-                  value={formData.address.postalCode}
-                  onChange={handleAddressChange}
-                />
-                {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>} */}
+                <Field label="Address" name="address" placeholder="Enter your address" value={formData.address} onChange={handleChange} />
+                {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
               </div>
 
               <div className="flex justify-center mt-6 gap-4">
-                {/* <button
-                  type="button"
-                  onClick={() =>
-                    setFormData({
-                      firstName: "",
-                      lastName: "",
-                      email: "",
-                      password: "",
-                      mobileNo: "",
-                      gender: "",
-                      userType:"",
-                      address: {
-                        street: "",
-                        city: "",
-                        district: "",
-                        state: "",
-                        postalCode: "",
-                      },
-                    })
-                  }
-                  className="border border-blue-500 text-blue-500 px-4 py-2 rounded-md hover:bg-blue-100 transition"
-                >
-                  Reset
-                </button> */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-blue-900 text-white px-28 py-2 rounded-md hover:bg-blue-900 transition flex justify-center"
-                >
-                  {loading ? "Submitting..." : "Sign Up"}
+                <button type="submit" disabled={loadingRegister} className="bg-blue-900 text-white px-28 py-2 rounded-md hover:bg-blue-800 transition">
+                  {loadingRegister ? "Submitting..." : "Sign Up"}
                 </button>
               </div>
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
           </div>
         </div>
-
-        <div className="flex-grow bg-gray-100" />
       </div>
       <Footer />
     </>
