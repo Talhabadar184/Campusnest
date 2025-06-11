@@ -626,6 +626,27 @@ export const getUserProfile = createAsyncThunk(
     }
   }
 );
+// Update User Profile
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (updatedData, { getState, rejectWithValue }) => {
+    try {
+      const { accessToken } = getState().auth;
+      const response = await axios.put('/profile', updatedData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error(err);
+      }
+      return rejectWithValue(err.response?.data?.message || 'Failed to update profile');
+    }
+  }
+);
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -729,6 +750,20 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.resetStatus = null;
       })
+      // Update User Profile
+.addCase(updateUserProfile.pending, (state) => {
+  state.loadingProfile = true;
+  state.error = null;
+})
+.addCase(updateUserProfile.fulfilled, (state, action) => {
+  state.loadingProfile = false;
+  state.user = action.payload;
+})
+.addCase(updateUserProfile.rejected, (state, action) => {
+  state.loadingProfile = false;
+  state.error = action.payload;
+})
+
       // Get User Profile
       .addCase(getUserProfile.pending, (state) => {
         state.loadingProfile = true;
@@ -742,6 +777,7 @@ const authSlice = createSlice({
         state.loadingProfile = false;
         state.error = action.payload;
       });
+      
   },
 });
 
