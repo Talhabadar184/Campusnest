@@ -403,7 +403,7 @@ console.log(feedbackList,totalReviews,averageRating);
   {averageRating.toFixed(1)}/5 from {totalReviews} reviews
 </p>
 
-{feedbackList.length > 0 ? (
+              {feedbackList.length > 0 ? (
   <div className="border border-gray-300 sm:w-3xl align-m bg-white flex flex-col justify-center  p-4 mt-4 text-center rounded-lg">
     <p className="text-gray-700">"{feedbackList[0]?.comment}"</p>
     <p className="mt-2 text-gray-600">- {feedbackList[0]?.userName}</p>

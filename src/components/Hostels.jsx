@@ -475,14 +475,19 @@ function Hostels({
   const hostelsPerPage = 5;
 
   const filteredHostels = hostels.filter((hostel) => {
-    const matchesInstitution =
-      !filters.institution ||
-      hostel.institution?.toLowerCase().includes(filters.institution.toLowerCase());
-    const matchesRadius = !filters.radius || hostel.radius === filters.radius;
-    const matchesLocation = !filters.location || hostel.location === filters.location;
-
-    return matchesInstitution && matchesRadius && matchesLocation;
+    const matchesLocation =
+      !filters.location ||
+      hostel.location?.address?.toLowerCase().includes(filters.location.toLowerCase());
+  
+    const matchesPrice =
+      !filters.price ||
+      parseInt(hostel.pricePerMonth || "0") <= parseInt(filters.price);
+  
+    return matchesLocation && matchesPrice;
   });
+  
+  
+  
 
   const indexOfLast = currentPage * hostelsPerPage;
   const indexOfFirst = indexOfLast - hostelsPerPage;
