@@ -380,8 +380,7 @@ const Ratings = () => {
 
   const { loading, error, success } = useSelector((state) => state.ratings);
   const token = useSelector((state) => state.auth.accessToken);
-  const userInfo = useSelector((state) => state.auth.user.firstName + " " + state.auth.user.lastName);
-  console.log("User Info:", userInfo);
+ 
   console.log(token,hostelId);
   useEffect(() => {
     if (hostelId) {
@@ -401,7 +400,7 @@ const Ratings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!token) {
       alert("You must be logged in to submit feedback.");
       return;
@@ -414,13 +413,13 @@ const Ratings = () => {
       alert("Please fill in all feedback fields.");
       return;
     }
-
+  
     try {
       await dispatch(
         submitFeedback({
           payload: {
             ratings: Number(rating),
-            recommended: recommend === "Yes",
+            recommended: recommend === "Yes" ? "yes" : "no", // ✅ FIXED HERE
             comment: feedback,
           },
           hostelId,
@@ -430,6 +429,7 @@ const Ratings = () => {
       console.error("Feedback error:", err);
     }
   };
+  
 
   const totalPages = Math.ceil(feedbackList.length / reviewsPerPage);
   const startIndex = (currentPage - 1) * reviewsPerPage;
@@ -458,7 +458,12 @@ const Ratings = () => {
             <h3 className="text-xl font-semibold mb-6 text-center">User Reviews</h3>
 
             {loading && <p className="text-center">Loading reviews...</p>}
-            {error && <p className="text-center text-red-600">Error: {error}</p>}
+            {error && (
+  <p className="text-center text-red-600">
+    Error: {typeof error === "string" ? error : error?.error || "An unexpected error occurred"}
+  </p>
+)}
+
 
             {!loading && currentReviews.length === 0 && (
               <p className="text-center">No reviews available for this hostel.</p>
@@ -473,7 +478,7 @@ const Ratings = () => {
                     className="w-12 h-12 border border-black rounded-full"
                   />
                   <div>
-                    <h4 className="font-semibold">{userInfo || "Anonymous"}</h4>
+                  <h4 className="font-semibold">{review.userName || "Anonymous"}</h4>
                     <p className="text-sm text-gray-500">{review.role || "Guest"}</p>
                     <p className="text-sm">
                       {"⭐".repeat(Math.round(review.ratings || 0))}

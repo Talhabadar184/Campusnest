@@ -220,12 +220,16 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Booking from "../Booking Forms/Booking";
 import BookingWrapper from "../BookingWrapper";
+import { fetchFeedbackByHostelId } from "../Features/ratingSlice";
 const Details = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
     const user = useSelector((state) => state.auth.user);
       const feedbackList = useSelector((state) => state.ratings?.feedbackList || []);
+      const totalReviews = useSelector((state) => state.ratings?.totalReviews || 0);
+const averageRating = useSelector((state) => state.ratings?.averageRating || 0);
+console.log(feedbackList,totalReviews,averageRating);
     console.log("user",feedbackList)
   
 
@@ -237,8 +241,12 @@ const Details = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   useEffect(() => {
-    if (id) dispatch(fetchHostelById(id));
+    if (id) {
+      dispatch(fetchHostelById(id));
+      dispatch(fetchFeedbackByHostelId(id));
+    }
   }, [id, dispatch]);
+  
 
   if (loading)
     return <p className="text-center mt-10">Loading hostel details...</p>;
@@ -392,19 +400,18 @@ const Details = () => {
                 User Reviews
               </h2>
               <p className="text-black text-center font-semibold">
-                {hostel.averageRating || hostel.ratings || "4.5"}/5 from{" "}
-                {hostel.reviewsCount || 100} reviews
-              </p>
-              <div className="border border-gray-300 sm:w-3xl align-m bg-white flex flex-col justify-center  p-4 mt-4 text-center rounded-lg">
-                <p className="text-gray-700">
-                  "
-                  {hostel.review || "This hostel exceeded all my expectations!"}
-                  "
-                </p>
-                <p className="mt-2 text-gray-600">
-                  - {hostel.reviewer || "Saad Raza, UMT Lahore Student"}
-                </p>
-              </div>
+  {averageRating.toFixed(1)}/5 from {totalReviews} reviews
+</p>
+
+{feedbackList.length > 0 ? (
+  <div className="border border-gray-300 sm:w-3xl align-m bg-white flex flex-col justify-center  p-4 mt-4 text-center rounded-lg">
+    <p className="text-gray-700">"{feedbackList[0]?.comment}"</p>
+    <p className="mt-2 text-gray-600">- {feedbackList[0]?.userName}</p>
+  </div>
+) : (
+  <p className="text-center text-gray-500 mt-2">No reviews yet.</p>
+)}
+
               <Link
                 key={hostel._id}
                 to={`/Ratings/${hostel._id}`}
