@@ -759,12 +759,19 @@ const filteredHostels = hostels.filter((hostel) => {
               </p>
 
               <p className="text-blue-600 text-sm flex gap-2">
-                <a
-                  href={`tel:${hostel.ownerContact || ""}`}
-                  className="hover:underline"
-                >
-                  Call Owner
-                </a>
+                <a href="">
+               <Link
+                 to={`/Inbox/${hostel._id}`} // or use `hostel.ownerId` if that's the ID needed
+                 state={{
+                   role: "tenant",
+                   hostelName: hostel.name,
+                   tenantName: hostel.tenantName || "Tenant",
+                   ownerName: hostel.ownerName || "Owner",
+                 }}                               >
+                                 call owner
+                               </Link>
+                               </a>
+                
                 |
                 <Link
                   to={`/Details/${hostel._id}`}

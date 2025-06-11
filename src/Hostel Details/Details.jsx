@@ -225,6 +225,8 @@ const Details = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
     const user = useSelector((state) => state.auth.user);
+      const feedbackList = useSelector((state) => state.ratings?.feedbackList || []);
+    console.log("user",feedbackList)
   
 
   const {

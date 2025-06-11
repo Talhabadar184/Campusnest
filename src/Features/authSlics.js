@@ -811,7 +811,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Forgot Password
+// Forgot  //updated
 export const forgotPassword = createAsyncThunk(
   'auth/forgotPassword',
   async (email, { rejectWithValue }) => {
@@ -866,7 +866,7 @@ export const getUserProfile = createAsyncThunk(
     try {
       const { accessToken } = getState().auth;
       const response = await axios.get('/profile', {
-        headers: {` Authorization: Bearer ${accessToken} `},
+        headers: { Authorization: `Bearer ${accessToken} `},
       });
       return response.data;
     } catch (err) {

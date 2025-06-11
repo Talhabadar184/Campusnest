@@ -204,7 +204,7 @@ function MyProfile() {
   // Get user profile from Redux
   const { user, loading, error } = useSelector((state) => state.auth);
   const booking = useSelector((state) => state.booking.booking); // Adjust path based on your store
-
+ console.log("address",user.address);
 
   const [editableProfile, setEditableProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -234,7 +234,15 @@ function MyProfile() {
     setIsEditing(!isEditing);
   };
 
-  useEffect(() => {
+  const handleChange = (e) => {
+  const { name, value } = e.target;
+  setEditableProfile((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+ useEffect(() => {
   if (user) {
     setEditableProfile({
       ...user,
@@ -242,6 +250,7 @@ function MyProfile() {
     });
   }
 }, [user]);
+
 
 console.log("Editable Profile:", editableProfile);
 

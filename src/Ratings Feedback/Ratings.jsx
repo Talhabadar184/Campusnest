@@ -361,6 +361,8 @@ import {
   resetFeedbackState,
   fetchFeedbackByHostelId,
 } from "../Features/ratingSlice";
+
+
 import { Hotel } from "lucide-react";
 
 const Ratings = () => {
@@ -378,7 +380,8 @@ const Ratings = () => {
 
   const { loading, error, success } = useSelector((state) => state.ratings);
   const token = useSelector((state) => state.auth.accessToken);
-  const userInfo = useSelector((state) => state.auth.userInfo);
+  const userInfo = useSelector((state) => state.auth.user.firstName + " " + state.auth.user.lastName);
+  console.log("User Info:", userInfo);
   console.log(token,hostelId);
   useEffect(() => {
     if (hostelId) {
@@ -470,7 +473,7 @@ const Ratings = () => {
                     className="w-12 h-12 border border-black rounded-full"
                   />
                   <div>
-                    <h4 className="font-semibold">{review.name || "Anonymous"}</h4>
+                    <h4 className="font-semibold">{userInfo || "Anonymous"}</h4>
                     <p className="text-sm text-gray-500">{review.role || "Guest"}</p>
                     <p className="text-sm">
                       {"⭐".repeat(Math.round(review.ratings || 0))}
