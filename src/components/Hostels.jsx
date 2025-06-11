@@ -515,16 +515,23 @@ function Hostels({
             className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow"
           >
             <div className="w-full md:w-40 h-40 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
-              {hostel.imageUrl ? (
-                <img
-                  src={hostel.imageUrl}
-                  alt={hostel.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-gray-500">No Image</span>
-              )}
-            </div>
+  {hostel.virtualTour ? (
+    <video
+      src={hostel.virtualTour}
+      controls
+      className="w-full h-full object-cover"
+    />
+  ) : hostel.imageUrl ? (
+    <img
+      src={hostel.imageUrl}
+      alt={hostel.name}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <span className="text-gray-500">No Image</span>
+  )}
+</div>
+
 
             <div className="flex-1">
               <div className="flex gap-2 items-center">
@@ -565,7 +572,18 @@ function Hostels({
                   href={`tel:${hostel.ownerContact || ""}`}
                   className="hover:underline"
                 >
-                  Call Owner
+                   <Link
+                    to={`/Inbox/${hostel._id}`} // or use `hostel.ownerId` if that's the ID needed
+                    state={{
+                      role: "tenant",
+                      hostelName: hostel.name,
+                      tenantName: hostel.tenantName || "Tenant",
+                      ownerName: hostel.ownerName || "Owner",
+                    }}
+                  
+                                  >
+                                    Chat with Owner
+                                  </Link>
                 </a>
                 |
                 <Link

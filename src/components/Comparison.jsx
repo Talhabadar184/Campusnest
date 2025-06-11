@@ -29,11 +29,22 @@ const Comparison = ({ open, onClose, hostels }) => {
                 >
                   <h2 className="text-center text-blue-700">{hostel.name}</h2>
                   <div className="w-full h-40 bg-gray-200 flex justify-center items-center mb-2">
-                    <img
-                      src={hostel.image || "placeholder.jpg"}
-                      alt="Hostel"
-                      className="max-w-full max-h-full object-cover"
-                    />
+                    <div className="w-full h-40 bg-gray-200 flex justify-center items-center mb-2 rounded-md overflow-hidden">
+  {hostel.virtualTour ? (
+    <video
+      src={hostel.virtualTour}
+      controls
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <img
+      src={hostel.image || "placeholder.jpg"}
+      alt="Hostel"
+      className="w-full h-full object-cover"
+    />
+  )}
+</div>
+
                   </div>
                   <p>
                     <strong>Location:</strong> {hostel.location?.address || "N/A"}
