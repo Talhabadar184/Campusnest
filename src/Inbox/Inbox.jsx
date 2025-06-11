@@ -252,16 +252,150 @@
 // };
 
 // export default Inbox;
+// import React, { useState, useEffect, useRef } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import EmojiPicker from "emoji-picker-react";
+// import { getMessages, sendMessage } from "../Features/chatSlice";
+// import cross from "../assets/Chats/cross.png";
+// import { useNavigate } from "react-router-dom"; // <-- Add this line
+// import { useParams } from "react-router-dom"; // <-- Add this line
+
+
+
+// import gifts from "../assets/Chats/gifts.png";
+// import emojis from "../assets/Chats/emojis.png";
+// import attachments from "../assets/Chats/attachments.png";
+
+// const Inbox = () => {
+//   const dispatch = useDispatch();
+//   const fileInputRef = useRef(null);
+
+//   const { accessToken } = useSelector((state) => state.auth);
+//   const userInfo = useSelector((state) => state.auth.user);
+//   const ownerId = useSelector((state) => state.hostel);
+//   console.log(ownerId);
+
+//   const { messages } = useSelector((state) => state.chat);
+
+//   const [newMessage, setNewMessage] = useState("");
+//   const [showEmojis, setShowEmojis] = useState(false);
+//    const { id } = useParams();
+
+//   const roomId = userInfo && ownerId ? `${userInfo._id}_${ownerId}` : "";
+//   const navigate = useNavigate(); // <-- Add this line
+
+//   useEffect(() => {
+//     if (accessToken && roomId) {
+//       dispatch(getMessages(roomId));
+//     }
+//   }, [accessToken, dispatch, roomId]);
+
+//   const handleSendMessage = () => {
+//     if (!newMessage.trim() || !userInfo || !ownerId) return;
+
+//     const messagePayload = {
+//       senderId: userInfo._id,
+//       receiverId: ownerId,
+//       message: newMessage.trim(),
+//     };
+
+//     dispatch(sendMessage({ roomId, messageData: messagePayload }));
+//     setNewMessage("");
+//   };
+
+//   const handleFileUpload = (file) => {
+//     console.log("File uploaded:", file);
+//     // Future: handle file sending
+//   };
+//    const handleClose = () => {
+//   navigate(`/Details/${id}`); // Navigates to the specific hostel details page
+// };
+
+//   if (!userInfo || !ownerId) return <div>Loading chat...</div>;
+
+//   return (
+//     <div className="w-full h-screen flex flex-col bg-gray-100">
+//       <div className="bg-blue-900 flex justify-between text-white px-4 py-3">
+//         <span className="font-semibold">Chat with Owner</span>
+//         <button onClick={handleClose} className="hover:"><img src={cross} className="h-6 w-6" alt="" /></button>
+     
+//       </div>
+
+//       <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-150px)]">
+//         {Array.isArray(messages) && messages.map((msg, index) => (
+//           <div
+//             key={index}
+//             className={`flex flex-col ${msg.senderId === userInfo._id ? "items-end" : "items-start"}`}
+//           >
+//             <div
+//               className={`px-3 py-2 rounded-lg max-w-[70%] w-fit ${
+//                 msg.senderId === userInfo._id ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+//               }`}
+//             >
+//               <p>{msg.message}</p>
+//             </div>
+//             <span className="text-xs text-gray-500">
+//               {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+//             </span>
+//           </div>
+//         ))}
+//       </div>
+
+//       <div className="flex flex-wrap items-center px-3 py-2 border-t relative w-full">
+//         <input
+//           type="text"
+//           placeholder="Type a message..."
+//           className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none"
+//           value={newMessage}
+//           onChange={(e) => setNewMessage(e.target.value)}
+//           onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+//         />
+
+//         <div className="flex gap-3 items-center flex-wrap">
+//           <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
+//           <img
+//             src={emojis}
+//             alt="emoji"
+//             className="w-6 h-6 cursor-pointer"
+//             onClick={() => setShowEmojis(!showEmojis)}
+//           />
+//           <img
+//             src={attachments}
+//             alt="attachment"
+//             className="w-6 h-6 cursor-pointer"
+//             onClick={() => fileInputRef.current.click()}
+//           />
+//           <input
+//             type="file"
+//             ref={fileInputRef}
+//             className="hidden"
+//             onChange={(e) => handleFileUpload(e.target.files[0])}
+//           />
+//         </div>
+
+//         {showEmojis && (
+//           <div className="absolute bottom-12 right-3 z-50">
+//             <EmojiPicker
+//               onEmojiClick={(emojiObject) => {
+//                 setNewMessage((prev) => prev + emojiObject.emoji);
+//                 setShowEmojis(false);
+//               }}
+//             />
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Inbox;
+
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EmojiPicker from "emoji-picker-react";
 import { getMessages, sendMessage } from "../Features/chatSlice";
 import cross from "../assets/Chats/cross.png";
-import { useNavigate } from "react-router-dom"; // <-- Add this line
-import { useParams } from "react-router-dom"; // <-- Add this line
-
-
-
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import gifts from "../assets/Chats/gifts.png";
 import emojis from "../assets/Chats/emojis.png";
 import attachments from "../assets/Chats/attachments.png";
@@ -269,29 +403,41 @@ import attachments from "../assets/Chats/attachments.png";
 const Inbox = () => {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+  const { id } = useParams(); // This is the hostel ID
+  const location = useLocation();
 
   const { accessToken } = useSelector((state) => state.auth);
   const userInfo = useSelector((state) => state.auth.user);
-  const ownerId = useSelector((state) => state.hostel);
-  console.log(ownerId);
-
-  const { messages } = useSelector((state) => state.chat);
+  const { selectedHostel } = useSelector((state) => state.hostel);
+  const { chat, loading, error } = useSelector((state) => state.chat);
 
   const [newMessage, setNewMessage] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
-   const { id } = useParams();
 
+  // Get owner ID from the selected hostel or location state
+  const ownerId = selectedHostel?.ownerId || selectedHostel?.owner?._id || location.state?.ownerId;
+  
+  // Create room ID - ensure consistent format
   const roomId = userInfo && ownerId ? `${userInfo._id}_${ownerId}` : "";
-  const navigate = useNavigate(); // <-- Add this line
+
+  console.log("User Info:", userInfo);
+  console.log("Owner ID:", ownerId);
+  console.log("Room ID:", roomId);
+  console.log("Chat:", chat);
 
   useEffect(() => {
     if (accessToken && roomId) {
+      console.log("Fetching messages for room:", roomId);
       dispatch(getMessages(roomId));
     }
   }, [accessToken, dispatch, roomId]);
 
   const handleSendMessage = () => {
-    if (!newMessage.trim() || !userInfo || !ownerId) return;
+    if (!newMessage.trim() || !userInfo || !ownerId) {
+      console.log("Cannot send message - missing data:", { newMessage, userInfo, ownerId });
+      return;
+    }
 
     const messagePayload = {
       senderId: userInfo._id,
@@ -299,6 +445,7 @@ const Inbox = () => {
       message: newMessage.trim(),
     };
 
+    console.log("Sending message:", messagePayload);
     dispatch(sendMessage({ roomId, messageData: messagePayload }));
     setNewMessage("");
   };
@@ -307,72 +454,130 @@ const Inbox = () => {
     console.log("File uploaded:", file);
     // Future: handle file sending
   };
-   const handleClose = () => {
-  navigate(`/Details/${id}`); // Navigates to the specific hostel details page
-};
 
-  if (!userInfo || !ownerId) return <div>Loading chat...</div>;
+  const handleClose = () => {
+    navigate(`/Details/${id}`);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
+  // Get messages array from chat object
+  const messages = chat?.messages || [];
+
+  if (!userInfo) {
+    return <div className="flex justify-center items-center h-screen">Please log in to chat</div>;
+  }
+
+  if (!ownerId) {
+    return <div className="flex justify-center items-center h-screen">Owner information not available</div>;
+  }
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen">Loading chat...</div>;
+  }
 
   return (
     <div className="w-full h-screen flex flex-col bg-gray-100">
+      {/* Header */}
       <div className="bg-blue-900 flex justify-between text-white px-4 py-3">
-        <span className="font-semibold">Chat with Owner</span>
-        <button onClick={handleClose} className="hover:"><img src={cross} className="h-6 w-6" alt="" /></button>
-     
+        <span className="font-semibold">
+          Chat with Owner {location.state?.ownerName && `- ${location.state.ownerName}`}
+        </span>
+        <button onClick={handleClose} className="hover:opacity-75">
+          <img src={cross} className="h-6 w-6" alt="Close" />
+        </button>
       </div>
 
+      {/* Error Display */}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mx-4 mt-2 rounded">
+          Error: {typeof error === 'string' ? error : JSON.stringify(error)}
+        </div>
+      )}
+
+      {/* Messages Container */}
       <div className="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-150px)]">
-        {Array.isArray(messages) && messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex flex-col ${msg.senderId === userInfo._id ? "items-end" : "items-start"}`}
-          >
+        {messages.length === 0 ? (
+          <div className="text-center text-gray-500 mt-10">
+            No messages yet. Start the conversation!
+          </div>
+        ) : (
+          messages.map((msg, index) => (
             <div
-              className={`px-3 py-2 rounded-lg max-w-[70%] w-fit ${
-                msg.senderId === userInfo._id ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+              key={index}
+              className={`flex flex-col ${
+                msg.senderId === userInfo._id ? "items-end" : "items-start"
               }`}
             >
-              <p>{msg.message}</p>
+              <div
+                className={`px-3 py-2 rounded-lg max-w-[70%] w-fit ${
+                  msg.senderId === userInfo._id
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-black"
+                }`}
+              >
+                <p>{msg.message}</p>
+              </div>
+              <span className="text-xs text-gray-500 mt-1">
+                {new Date(msg.timestamp).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
-            <span className="text-xs text-gray-500">
-              {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-            </span>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
-      <div className="flex flex-wrap items-center px-3 py-2 border-t relative w-full">
+      {/* Input Container */}
+      <div className="flex flex-wrap items-center px-3 py-2 border-t bg-white relative w-full">
         <input
           type="text"
           placeholder="Type a message..."
-          className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none"
+          className="w-full sm:flex-1 min-w-[200px] px-3 py-2 mb-2 sm:mb-0 sm:mr-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+          onKeyDown={handleKeyPress}
         />
 
         <div className="flex gap-3 items-center flex-wrap">
-          <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer" />
+          <button
+            onClick={handleSendMessage}
+            disabled={!newMessage.trim()}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          >
+            Send
+          </button>
+          
+          <img src={gifts} alt="gift" className="w-6 h-6 cursor-pointer hover:opacity-75" />
+          
           <img
             src={emojis}
             alt="emoji"
-            className="w-6 h-6 cursor-pointer"
+            className="w-6 h-6 cursor-pointer hover:opacity-75"
             onClick={() => setShowEmojis(!showEmojis)}
           />
+          
           <img
             src={attachments}
             alt="attachment"
-            className="w-6 h-6 cursor-pointer"
-            onClick={() => fileInputRef.current.click()}
+            className="w-6 h-6 cursor-pointer hover:opacity-75"
+            onClick={() => fileInputRef.current?.click()}
           />
+          
           <input
             type="file"
             ref={fileInputRef}
             className="hidden"
-            onChange={(e) => handleFileUpload(e.target.files[0])}
+            onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
           />
         </div>
 
+        {/* Emoji Picker */}
         {showEmojis && (
           <div className="absolute bottom-12 right-3 z-50">
             <EmojiPicker
@@ -389,4 +594,3 @@ const Inbox = () => {
 };
 
 export default Inbox;
-
