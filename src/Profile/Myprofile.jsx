@@ -477,7 +477,7 @@ console.log("Editable Profile:", editableProfile);
   return (
     <>
       <Navbar />
-      <div className="w-full bg-blue-800 text-white pl-28 h-8">
+      {/* <div className="w-full bg-blue-800 text-white pl-28 h-8">
         <p className="hover:cursor-pointer">
           <span onClick={handleDashboardClick}>Dashboard</span> |{" "}
           <Link to="/Myprofile" className="ml-2">
@@ -485,7 +485,7 @@ console.log("Editable Profile:", editableProfile);
           </Link>{" "}
           | <Link to={"/Notifications"}>Notifications</Link>
         </p>
-      </div>
+      </div> */}
       <div className="bg-gray-100 min-h-screen">
         <div className="flex w-[40vw] justify-center items-start">
           <h1 className="text-xl sm:text-2xl text-blue-600 font-semibold mt-10 mb-4 px-4">

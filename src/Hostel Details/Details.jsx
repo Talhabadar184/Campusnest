@@ -247,7 +247,7 @@ console.log(feedbackList,totalReviews,averageRating);
     }
   }, [id, dispatch]);
   
-
+const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; // Replace with actual virtual tour link
   if (loading)
     return <p className="text-center mt-10">Loading hostel details...</p>;
   if (error)
@@ -347,13 +347,22 @@ console.log(feedbackList,totalReviews,averageRating);
                 </Link>
               </div>
 
-              <img
-                src={
-                  hostel.imageUrl || hostel.image || "/images/hostel-main.jpg"
-                }
-                alt="Hostel"
-                className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
-              />
+              {hostel?.virtualTour ? (
+  <video
+    controls
+    className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
+  >
+    <source src={hostel.virtualTour} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+) : (
+  <img
+    src={hostel.imageUrl || hostel.image || "/images/hostel-main.jpg"}
+    alt="Hostel"
+    className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
+  />
+)}
+
             </div>
           </div>
 
