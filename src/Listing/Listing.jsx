@@ -522,7 +522,7 @@ function Listing() {
       )}
 
       {/* Search Filters (Quick Filters) */}
-      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6 mt-6 border border-blue-400">
+      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6  border border-blue-400">
         <div className="flex flex-wrap justify-center gap-4 rounded-lg shadow-lg">
           <select
             className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[220px]"

@@ -379,11 +379,15 @@ function Hostels({
   const dispatch = useDispatch();
   const { hostels = [], loading, error } = useSelector((state) => state.hostel);
   const searchFilters = useSelector((state) => state.search);
-  const filters = useSelector((state) => state.search.filters);
+  // const filters = useSelector((state) => state.search.filters);
 
   const [currentPage, setCurrentPage] = useState(1);
    const location = useLocation();
   const results = location.state?.results || [];
+const navigationFilters = location.state?.filters;
+const filters = navigationFilters || useSelector((state) => state.search.filters);
+
+
 
   useEffect(() => {
     dispatch(fetchAllHostels());
@@ -456,7 +460,7 @@ const filteredHostels = hostels.filter((hostel) => {
       </h2>
 
       <div className="space-y-4">
-        {results.map((hostel) => (
+        {currentHostels.map((hostel) => (
           <div
             key={hostel._id}
             className="flex flex-col md:flex-row gap-4 p-4 rounded-lg bg-white shadow"

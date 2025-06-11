@@ -234,12 +234,16 @@ function MyProfile() {
     setIsEditing(!isEditing);
   };
 
-  const handleChange = (e) => {
+  useEffect(() => {
+  if (user) {
     setEditableProfile({
-      ...editableProfile,
-      [e.target.name]: e.target.value,
+      ...user,
+      address: user.address || { street: "", city: "" },
     });
-  };
+  }
+}, [user]);
+
+console.log("Editable Profile:", editableProfile);
 
   const handleSave = () => {
     // NOTE: You would normally dispatch an update profile API here
@@ -361,8 +365,8 @@ function MyProfile() {
                     {editableProfile.address?.city || "City"}
                   </p>
                 )}
-
-                <p className="mt-8 text-lg font-semibold text-blue-600">Booking History</p>
+  
+                {/* <p className="mt-8 text-lg font-semibold text-blue-600">Booking History</p>
                 {booking ? (
                   <div className="space-y-2 mt-2 text-gray-800">
                     <p>
@@ -377,7 +381,7 @@ function MyProfile() {
                   </div>
                 ) : (
                   <p className="text-gray-500 mt-2">No bookings found.</p>
-                )}
+                )} */}
               </div>
 
               {isEditing && (
