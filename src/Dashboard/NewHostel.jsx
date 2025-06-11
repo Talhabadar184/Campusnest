@@ -268,39 +268,44 @@ const NewHostel = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-
+  
     try {
       const geocodeRes = await axios.get(`http://localhost:8000/api/geocode`, {
         params: { address: formData.location },
       });
-console.log("GOOGLE GEOCODE RESPONSE:", geocodeRes.data);
-
-
-      const { latitude, longitude, address } = geocodeRes.data;
-
+  
+      console.log("GOOGLE GEOCODE RESPONSE:", geocodeRes.data);
+      const { latitude, longitude, address, city, state, country } = geocodeRes.data;
+  
       const data = new FormData();
       data.append("name", formData.hostelName);
-      data.append("location", JSON.stringify({
-        latitude,
-        longitude,
-        address,
-        city: "Lahore",
-        state: "Punjab",
-        country: "Pakistan",
-      }));
+      data.append(
+        "location",
+        JSON.stringify({
+          latitude,
+          longitude,
+          address,
+          city,   // ✅ now dynamic
+          state,  // ✅ now dynamic
+          country // ✅ now dynamic
+        })
+      );
       data.append("contactNumber", formData.contact);
       data.append("pricePerMonth", formData.price);
-      data.append("amenities", JSON.stringify(formData.amenities.split(",").map(item => item.trim())));
+      data.append(
+        "amenities",
+        JSON.stringify(formData.amenities.split(",").map((item) => item.trim()))
+      );
       data.append("description", formData.description);
       data.append("virtualTour", formData.virtualTour);
-
+  
       dispatch(registerHostel({ formData: data, token: accessToken }));
-
     } catch (err) {
       console.error("Geocode error:", err);
       setErrors({ location: "Failed to fetch location coordinates." });
     }
   };
+  
 
   const handleReset = () => {
     setFormData({
