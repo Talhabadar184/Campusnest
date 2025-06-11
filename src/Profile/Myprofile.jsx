@@ -415,7 +415,6 @@ function MyProfile() {
 
   const { user, loading, error } = useSelector((state) => state.auth);
   const booking = useSelector((state) => state.booking.booking); // Adjust path based on your store
- console.log("address",user.address);
 
   const [editableProfile, setEditableProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -446,7 +445,7 @@ function MyProfile() {
   if (user) {
     setEditableProfile({
       ...user,
-      address: user.address || { street: "", city: "" },
+      address: user.address,
     });
   }
 }, [user]);
