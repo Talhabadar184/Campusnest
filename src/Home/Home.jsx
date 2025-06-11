@@ -77,15 +77,17 @@ function Home() {
 
    // 🔍 Search Logic
 const searchHostels = () => {
-  const filtered = hostels.filter((hostel) => {
-    return (
-      (institution ? hostel.institution === institution : true) &&
-      (location ? hostel.location === location : true)
-    );
+  navigate("/listing", {
+    state: {
+      filters: {
+        institution,
+        location,
+        radius: parseInt(radius) || 5, // ensure it's a number
+      },
+    },
   });
-
-  navigate("/listing", { state: { results: filtered } });
 };
+
 
   return (
     <div className="bg-gray-100">

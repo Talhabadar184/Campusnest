@@ -414,9 +414,8 @@ function MyProfile() {
   const navigate = useNavigate();
 
   const { user, loading, error } = useSelector((state) => state.auth);
-  const {address}=useSelector((state)=> state.auth.user);
-  console.log(address);
-  const booking = useSelector((state) => state.booking.booking);
+  const booking = useSelector((state) => state.booking.booking); // Adjust path based on your store
+ console.log("address",user.address);
 
   const [editableProfile, setEditableProfile] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -436,11 +435,24 @@ function MyProfile() {
   };
 
   const handleChange = (e) => {
+  const { name, value } = e.target;
+  setEditableProfile((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+ useEffect(() => {
+  if (user) {
     setEditableProfile({
-      ...editableProfile,
-      [e.target.name]: e.target.value,
+      ...user,
+      address: user.address || { street: "", city: "" },
     });
-  };
+  }
+}, [user]);
+
+
+console.log("Editable Profile:", editableProfile);
 
   const handleSave = () => {
     dispatch(updateUserProfile(editableProfile))
@@ -552,8 +564,8 @@ function MyProfile() {
                 ) : (
                   <p className="text-gray-700 mt-2">{editableProfile.address || "No Address Provided"}</p>
                 )}
-
-                <p className="mt-8 text-lg font-semibold text-blue-600">Booking History</p>
+  
+                {/* <p className="mt-8 text-lg font-semibold text-blue-600">Booking History</p>
                 {booking ? (
                   <div className="space-y-2 mt-2 text-gray-800">
                     <p>
@@ -568,7 +580,7 @@ function MyProfile() {
                   </div>
                 ) : (
                   <p className="text-gray-500 mt-2">No bookings found.</p>
-                )}
+                )} */}
               </div>
 
               {isEditing && (

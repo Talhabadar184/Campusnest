@@ -551,8 +551,8 @@ function Listing() {
         </div>
       )}
 
-      {/* Search Filters */}
-      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6 mt-6 border border-blue-400">
+      {/* Search Filters (Quick Filters) */}
+      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6  border border-blue-400">
         <div className="flex flex-wrap justify-center gap-4 rounded-lg shadow-lg">
           <select
             className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[220px]"
@@ -603,9 +603,10 @@ function Listing() {
       </div>
 
       {/* Body */}
-      <div className="flex flex-col lg:flex-row lg:justify-center items-center justify-center mt-7 gap-6 px-4 lg:px-8">
+      <div className="flex flex-col lg:flex-row lg:justify-center  justify-center mt-7 gap-6 px-4 lg:px-8">
         {/* Filter Column */}
-        <div className="w-[300px] lg:w-[300px] bg-white p-4 rounded-lg shadow-lg">
+        <div className="flex flex-col mt-0 pt-0">
+        <div className="w-[300px] lg:w-[300px] mt-0 pt-0 bg-white p-4 rounded-lg shadow-lg">
           <h2 className="text-lg font-semibold mb-4 text-blue-600">Filters</h2>
 
           {/* Location Filter */}
@@ -647,12 +648,12 @@ function Listing() {
                 <input type="checkbox" className="mr-2" /> Free Wi-Fi
               </label>
               <label>
-                <input type="checkbox" className="mr-2" /> Private or Ensuite Bathrooms
+                <input type="checkbox" className="mr-2" /> Kitchen
               </label>
               <label>
-                <input type="checkbox" className="mr-2" /> Laundry Services
+                <input type="checkbox" className="mr-2" />Parking
               </label>
-              <label>
+              {/* <label>
                 <input type="checkbox" className="mr-2" /> Luggage Storage
               </label>
               <label>
@@ -672,11 +673,11 @@ function Listing() {
               </label>
               <label>
                 <input type="checkbox" className="mr-2" /> Study Rooms
-              </label>
+              </label> */}
             </div>
           </div>
 
-          {/* Hostel Type */}
+          {/* Hostel Type
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Hostel Type:
@@ -689,7 +690,7 @@ function Listing() {
           </div>
 
           {/* Room Type */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h3 className="text-sm font-medium text-gray-700">Room Type:</h3>
             <div className="flex gap-4 text-sm text-gray-600">
               <label>
@@ -699,7 +700,7 @@ function Listing() {
                 <input type="radio" name="roomType" className="mr-2" /> Shared
               </label>
             </div>
-          </div>
+          </div>  */}
 
           {/* Radius Filter */}
           <div className="mb-4">
@@ -715,15 +716,16 @@ function Listing() {
           </div>
 
           {/* Availability Checkbox */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="flex items-center text-sm text-gray-700">
               <input type="checkbox" className="mr-2" /> Only available hostels
             </label>
-          </div>
+          </div> */}
 
-          <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+          <button className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-900 hover:cursor-pointer">
             Apply Filters
           </button>
+        </div>
         </div>
 
         {/* Hostels Section */}

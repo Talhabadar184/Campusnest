@@ -357,7 +357,6 @@ import {
 import InputField from "../components/Inputfield";
 import crossIcon from "../assets/Listing/cross.png";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import Inputfield from "../components/Inputfield";
 
 function Booking({
   isOpen,
@@ -560,7 +559,7 @@ function Booking({
               Please fill out the form below, all fields are mandatory!
             </p>
 
-            {/* <form
+            <form
               onSubmit={handleBookingSubmit}
               className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
@@ -607,10 +606,10 @@ function Booking({
                 onChange={handleInputChange}
                 textarea
                 className="md:col-span-2 h-40" // Increased height here
-              /> */}
+              />
 
               {/* Buttons */}
-              {/* <div className="md:col-span-2 flex justify-end gap-3 mt-4">
+              <div className="md:col-span-2 flex justify-end gap-3 mt-4">
                 <button
                   type="button"
                   onClick={handleReset}
@@ -620,84 +619,13 @@ function Booking({
                 </button>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+                  className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-900 text-sm"
                   disabled={loading}
                 >
                   {loading ? "Saving..." : "Save & Next"}
                 </button>
               </div>
-            </form> */}
-
-            <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <InputField
-    label="First Name *"
-    name="firstName"
-    value={formData.firstName}
-    onChange={handleInputChange}
-    error={errors.firstName}
-  />
-  <InputField
-    label="Last Name"
-    name="lastName"
-    value={formData.lastName}
-    onChange={handleInputChange}
-  />
-  <InputField
-    label="Email *"
-    name="email"
-    value={formData.email}
-    onChange={handleInputChange}
-    error={errors.email}
-  />
-  <InputField
-    label="Mobile No."
-    name="phone"
-    value={formData.phone}
-    onChange={handleInputChange}
-    error={errors.phone}
-  />
-  <InputField
-    label="Preferred Move-In Date"
-    name="moveInDate"
-    type="date"
-    value={formData.moveInDate}
-    onChange={handleInputChange}
-    error={errors.moveInDate}
-    className="md:col-span-2"
-  />
-</form>
-
-{/* Message Field (outside the grid, above buttons) */}
-<div className="mt-4 sm:w-[40vw]">
-  <Inputfield
-    label="Message (optional)"
-    name="message"
-    value={formData.message}
-    onChange={handleInputChange}
-    textarea
-    className="sm:h-[70px]" // Increased height from 10vh to 20vh
-  />
-</div>
-
-
-{/* Buttons */}
-<div className="flex justify-end gap-3 mt-4">
-  <button
-    type="button"
-    onClick={handleReset}
-    className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-100 text-sm"
-  >
-    Reset
-  </button>
-  <button
-    type="submit"
-    className="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-900 cursor-pointer text-sm"
-    disabled={loading}
-  >
-    {loading ? "Saving..." : "Save & Next"}
-  </button>
-</div>
-
+            </form>
           </>
         ) : (
           <>
