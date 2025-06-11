@@ -370,9 +370,13 @@
 //   useEffect(() => {
 //     if (user) {
 //       alert("Profile saved successfully!");
+<<<<<<< HEAD
 //        alert("Verify ur email!");
 //       navigate("/SignIn");
      
+=======
+//       navigate("/SignIn");
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //     }
 //   }, [user, navigate]);
 
@@ -448,14 +452,22 @@
 //                   {errors.mobileNo && <p className="text-red-500 text-sm">{errors.mobileNo}</p>}
 //                 </div>
 
+<<<<<<< HEAD
 //                 <Selectfield
+=======
+//                 {/* <Selectfield
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="Gender"
 //                   name="gender"
 //                   options={["male", "female", "other"]}
 //                   value={formData.gender}
 //                   onChange={handleChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
+=======
+//                 {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>} */}
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 
 //                 <Selectfield
 //                   label="User Type"
@@ -468,50 +480,82 @@
 //                 {errors.userType && <p className="text-red-500 text-sm">{errors.userType}</p>}
 
 //                 {/* Address Fields */}
+<<<<<<< HEAD
 //                 <Field
+=======
+//                 {/* <Field
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="Street"
 //                   name="street"
 //                   placeholder="Enter your street"
 //                   value={formData.address.street}
 //                   onChange={handleAddressChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>}
 
 //                 <Field
+=======
+//                 {errors.street && <p className="text-red-500 text-sm">{errors.street}</p>} */}
+
+//                 {/* <Field
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="City"
 //                   name="city"
 //                   placeholder="Enter your city"
 //                   value={formData.address.city}
 //                   onChange={handleAddressChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
 
 //                 <Field
+=======
+//                 {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>} */}
+
+//                 {/* <Field
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="District"
 //                   name="district"
 //                   placeholder="Enter your district"
 //                   value={formData.address.district}
 //                   onChange={handleAddressChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>}
 
 //                 <Field
+=======
+//                 {errors.district && <p className="text-red-500 text-sm">{errors.district}</p>} */}
+
+//                 {/* <Field
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="State"
 //                   name="state"
 //                   placeholder="Enter your state"
 //                   value={formData.address.state}
 //                   onChange={handleAddressChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
 
 //                 <Field
+=======
+//                 {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>} */}
+
+//                 {/* <Field
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //                   label="Postal Code"
 //                   name="postalCode"
 //                   placeholder="Enter your postal code"
 //                   value={formData.address.postalCode}
 //                   onChange={handleAddressChange}
 //                 />
+<<<<<<< HEAD
 //                 {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>}
+=======
+//                 {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode}</p>} */}
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 //               </div>
 
 //               <div className="flex justify-center mt-6 gap-4">
@@ -560,6 +604,11 @@
 // };
 
 // export default Register;
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7618c08ef64d623546da5686aafc61f26aeb6107
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
