@@ -623,6 +623,7 @@ const Register = () => {
   useEffect(() => {
     if (user) {
       alert("Profile saved successfully!");
+      alert("Verify ur email !");
       navigate("/SignIn");
     }
     return () => {
