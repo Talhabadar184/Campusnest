@@ -288,44 +288,40 @@ const Details = () => {
                 <strong>Location:</strong>{" "}
                 {hostel.location?.address || "Not Available"}
               </p>
-              <p className="text-gray-600">
+              {/* <p className="text-gray-600">
                 <strong>Type:</strong> {hostel.type || "Budget-friendly hostel"}
-              </p>
+              </p> */}
               <p className="text-gray-600">
                 <strong>Rating:</strong> ⭐⭐⭐⭐⭐ (
-                {hostel.averageRating || hostel.rating || "4.5"}/5)
+                {averageRating.toFixed(1)}/5 from {totalReviews} reviews
               </p>
               <p className="text-gray-600">
                 <strong>Price:</strong>{" "}
                 {hostel.pricePerMonth || hostel.price || "15,500/-"} per person
               </p>
-              <p
+              {/* <p
                 className={`font-semibold ${
                   hostel.availability ? "text-green-600" : "text-red-600"
                 }`}
               >
                 <strong>Availability:</strong>{" "}
                 {hostel.availability ? "Available" : "Not Available"}
-              </p>
+              </p> */}
               <p className="text-gray-700 mt-4">
                 <strong>Description:</strong> {hostel.description || "N/A"}
               </p>
-              <h2 className="text-xl font-bold">Key Amenities</h2>
-              <ul className="list-disc pl-6 text-gray-700">
-                <li>
-                  <strong>Room Types:</strong> Dorms, Private Rooms, and Family
-                  Rooms
-                </li>
-                <li>
-                  <strong>Shared Facilities:</strong> Common lounge, kitchen
-                </li>
-                <li>
-                  <strong>Free Services:</strong> Wi-Fi, linen, breakfast
-                </li>
-                <li>
-                  <strong>Paid Services:</strong> Laundry, airport transfers
-                </li>
-              </ul>
+              
+              {hostel?.amenities?.length > 0 && (
+  <>
+    <h2 className="text-xl font-bold">Key Amenities</h2>
+    <ul className="list-disc pl-6 text-gray-700">
+      {hostel.amenities.map((amenity, index) => (
+        <li key={index}>{amenity}</li>
+      ))}
+    </ul>
+  </>
+)}
+
             </div>
 
             {/* Right Side */}
@@ -421,7 +417,7 @@ const Details = () => {
                   <span>
                      <div className="flex justify-center items-center gap-2 mt-2">
                                     
-                                      <img src={Profile.im} alt="image" className="w-5 h-5 rounded-4xl bg-gray-300  sm:w-10 sm:h-10" />
+                                      <img src={Profile.img} alt="image" className="w-5 h-5 rounded-4xl bg-gray-300  sm:w-10 sm:h-10" />
                                      <p className="mt-2 text-gray-600">
                     - {feedbackList[0]?.userName}
                   </p>

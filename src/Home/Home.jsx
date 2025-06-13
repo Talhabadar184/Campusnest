@@ -21,47 +21,22 @@ function Home() {
   const [institution, setInstitution] = useState("");
   const [radius, setRadius] = useState("");
   const [location, setLocation] = useState("");
-    const [filteredHostels, setFilteredHostels] = useState([]);
+    const [filteredHostels,   ] = useState([]);
 
 
-  const hostels = [
-    {
-      id: 1,
-      name: "Hostel 1",
-      image: "/hostel1.png",
-      desc: "Luxury hostel near LUMS.",
-    },
-    {
-      id: 2,
-      name: "Hostel 2",
-      image: "/hostel2.png",
-      desc: "Affordable hostel in Model Town.",
-    },
-    {
-      id: 3,
-      name: "Hostel 3",
-      image: "/hostel3.png",
-      desc: "Premium stay near DHA.",
-    },
-    {
-      id: 4,
-      name: "Hostel 4",
-      image: "/hostel1.png",
-      desc: "Luxury hostel near LUMS.",
-    },
-    {
-      id: 5,
-      name: "Hostel 5",
-      image: "/hostel2.png",
-      desc: "Affordable hostel in Model Town.",
-    },
-    {
-      id: 6,
-      name: "Hostel 6",
-      image: "/hostel3.png",
-      desc: "Premium stay near DHA.",
-    },
-  ];
+  const [searchFilters, setSearchFilters] = useState({
+      institution: "",
+      location: "",
+      price: 50000,
+    });
+  
+    const applyFilters = () => {
+      setSearchFilters({
+        institution,
+        location,
+        price: priceRange,
+      });
+    };
 
   const swiperRef = useRef(null);
   const navigate = useNavigate();
