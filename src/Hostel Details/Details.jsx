@@ -268,9 +268,9 @@ const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; 
   return (
     <>
       <Navbar />
-        <div className="w-full bg-blue-900 text-white   text-xl pl-16 h-10">
-                        <p className="hover:cursor-pointer pt-1 ">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
-                      </div>
+          {/* <div className="w-full bg-blue-900 text-white   text-xl pl-16 h-10">
+                          <p className="hover:cursor-pointer pt-1 ">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
+                        </div> */}
 
       <div className="bg-gray-100 p-4">
         <div className="max-w-6xl mx-auto">
