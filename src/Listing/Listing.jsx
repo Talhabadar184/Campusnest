@@ -511,7 +511,6 @@
 // }
 
 // export default Listing;
-
 import React, { useState } from "react";
 import HomeNavbar from "../components/HomeNavbar";
 import { Link } from "react-router-dom";
@@ -519,19 +518,35 @@ import Footer from "../components/Footer";
 import Hostels from "../components/Hostels";
 import Comparison from "../components/Comparison";
 
-
 function Listing() {
   const [institution, setInstitution] = useState("");
-  const [radius, setRadius] = useState("");
   const [location, setLocation] = useState("");
+  const [priceRange, setPriceRange] = useState(50000);
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
-  const [searchFilters, setSearchFilters] = useState({
-  institution: '',
-  radius: '',
-  location: '',
-});
 
+  const [searchFilters, setSearchFilters] = useState({
+    institution: "",
+    location: "",
+    price: 50000,
+  });
+
+  const applyFilters = () => {
+    setSearchFilters({
+      institution,
+      location,
+      price: priceRange,
+    });
+  };
+  const handleAmenityChange = (name) => {
+     setTempFilters((prev) => ({
+       ...prev,
+       amenities: {
+         ...prev.amenities,
+         [name]: !prev.amenities[name],
+       },
+     }));
+   };
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -543,16 +558,16 @@ function Listing() {
             <button
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 text-2xl font-bold"
               onClick={() => setIsCompareOpen(false)}
-              aria-label="Close comparison modal"
             >
               ✖
             </button>
-<Comparison selectedHostels={selectedHostels} />          </div>
+            <Comparison selectedHostels={selectedHostels} />
+          </div>
         </div>
       )}
 
-      {/* Search Filters (Quick Filters) */}
-      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6  border border-blue-400">
+      {/* Top Filter Bar */}
+      <div className="flex flex-col items-center justify-center min-h-[10vh] max-w-[95vw] rounded-2xl mx-auto bg-blue-300 text-white p-6 mt-6 border border-blue-400">
         <div className="flex flex-wrap justify-center gap-4 rounded-lg shadow-lg">
           <select
             className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[220px]"
@@ -566,18 +581,7 @@ function Listing() {
           </select>
 
           <select
-            className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[180px]"
-            value={radius}
-            onChange={(e) => setRadius(e.target.value)}
-          >
-            <option value="">-- Select Radius --</option>
-            <option value="1000">1 km</option>
-            <option value="3000">3 km</option>
-            <option value="5000">5 km</option>
-          </select>
-
-          <select
-            className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[200px] font-semibold"
+            className="p-2 border rounded-lg text-gray-700 bg-[#f6f3fc] w-[200px]"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           >
@@ -585,36 +589,34 @@ function Listing() {
             <option value="Johar Town">Johar Town</option>
             <option value="Model Town">Model Town</option>
             <option value="DHA">DHA</option>
+            <option value="Reach Town">Reach Town</option>
           </select>
 
-         <button
-  className="bg-[#2d3e8e] hover:bg-[#1f2b6f] p-2 rounded-lg text-white w-[40px] flex items-center justify-center"
-  onClick={() =>
-    setSearchFilters({
-      institution,
-      radius,
-      location,
-    })
-  }
->
-  🔍
-</button>
+          <button
+            className="bg-[#2d3e8e] hover:bg-[#1f2b6f] p-2 rounded-lg text-white w-[40px] flex items-center justify-center"
+            onClick={applyFilters}
+          >
+            🔍
+          </button>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="flex flex-col lg:flex-row lg:justify-center  justify-center mt-7 gap-6 px-4 lg:px-8">
-        {/* Filter Column */}
-        <div className="flex flex-col mt-0 pt-0">
-        <div className="w-[300px] lg:w-[300px] mt-0 pt-0 bg-white p-4 rounded-lg shadow-lg">
+      {/* Main Body */}
+      <div className="flex flex-col lg:flex-row lg:justify-center  mt-7 gap-6 px-4 lg:px-8">
+        {/* Sidebar Filter */}
+        <div className="w-[300px] bg-white p-4 rounded-lg shadow-lg h-60%%">
           <h2 className="text-lg font-semibold mb-4 text-blue-600">Filters</h2>
 
-          {/* Location Filter */}
+          {/* Location */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Location:
             </label>
-            <select className="w-full p-2 border rounded-lg bg-gray-50" value={location} onChange={(e) => setLocation(e.target.value)}>
+            <select
+              className="w-full p-2 border rounded-lg bg-gray-50"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            >
               <option value="">Select Location</option>
               <option value="Reach Town">Reach Town</option>
               <option value="Model Town">Model Town</option>
@@ -623,121 +625,85 @@ function Listing() {
             </select>
           </div>
 
-          {/* Price Slider */}
+          {/* Price Range */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               Price Range:
             </label>
             <input
               type="range"
-              className="w-full cursor-pointer"
               min="5000"
               max="50000"
               step="1000"
+              value={priceRange}
+              onChange={(e) => setPriceRange(e.target.value)}
+              className="w-full"
             />
+            <p className="text-sm text-gray-600 mt-1">
+              Up to {priceRange} PKR
+            </p>
           </div>
 
           {/* Amenities */}
-          <div className="mb-4">
-            <h3 className="text-sm font-medium text-gray-700">Amenities</h3>
-            <div className="flex flex-col space-y-1 text-sm text-gray-600">
-              <label>
-                <input type="checkbox" className="mr-2" /> Air Conditioning
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Free Wi-Fi
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Kitchen
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" />Parking
-              </label>
-              {/* <label>
-                <input type="checkbox" className="mr-2" /> Luggage Storage
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Healthy & Organic Meals
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Kitchen Facilities
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> 24/7 Security
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> UPS
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Nearby Restaurants
-              </label>
-              <label>
-                <input type="checkbox" className="mr-2" /> Study Rooms
-              </label> */}
-            </div>
-          </div>
+           
+           <div className="mb-4">
+             <h3 className="text-sm font-medium text-gray-700">Amenities</h3>
+             <div className="flex flex-col space-y-1 text-sm text-gray-600">
+               <label>
+                 <input type="checkbox" className="mr-2" /> Air Conditioning
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Free Wi-Fi
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Kitchen
+                 Bathrooms
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Parking
+               </label>
+               {/* <label>
+                 <input type="checkbox" className="mr-2" /> Luggage Storage
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Healthy & Organic
+                 Meals
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Kitchen Facilities
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> 24/7 Security
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> UPS
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Nearby Restaurants
+               </label>
+               <label>
+                 <input type="checkbox" className="mr-2" /> Study Rooms
+               </label> */}
+             </div>
+           </div>
 
-          {/* Hostel Type
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Hostel Type:
-            </label>
-            <select className="w-full p-2 border rounded-lg bg-gray-50">
-              <option>Male Hostel</option>
-              <option>Female Hostel</option>
-              <option>Co-ed Hostel</option>
-            </select>
-          </div>
-
-          {/* Room Type */}
-          {/* <div className="mb-4">
-            <h3 className="text-sm font-medium text-gray-700">Room Type:</h3>
-            <div className="flex gap-4 text-sm text-gray-600">
-              <label>
-                <input type="radio" name="roomType" className="mr-2" /> Single
-              </label>
-              <label>
-                <input type="radio" name="roomType" className="mr-2" /> Shared
-              </label>
-            </div>
-          </div>  */}
-
-          {/* Radius Filter */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
-              Radius:
-            </label>
-            <select className="w-full p-2 border rounded-lg bg-gray-50" value={radius} onChange={(e) => setRadius(e.target.value)}>
-              <option value="">Select Radius</option>
-              <option value="1 km">1 km</option>
-              <option value="3 km">3 km</option>
-              <option value="5 km">5 km</option>
-            </select>
-          </div>
-
-          {/* Availability Checkbox */}
-          {/* <div className="mb-4">
-            <label className="flex items-center text-sm text-gray-700">
-              <input type="checkbox" className="mr-2" /> Only available hostels
-            </label>
-          </div> */}
-
-          <button className="w-full bg-blue-900 text-white py-2 rounded-lg hover:bg-blue-900 hover:cursor-pointer">
+          <button
+            onClick={applyFilters}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          >
             Apply Filters
           </button>
         </div>
-        </div>
 
-        {/* Hostels Section */}
+        {/* Hostels */}
         <div className="flex-1 w-full">
           <Hostels
-  selectedHostels={selectedHostels}
-  setSelectedHostels={setSelectedHostels}
-  isCompareOpen={isCompareOpen}
-  setIsCompareOpen={setIsCompareOpen}
-  filters={searchFilters}
-/>
-
+            selectedHostels={selectedHostels}
+            setSelectedHostels={setSelectedHostels}
+            isCompareOpen={isCompareOpen}
+            setIsCompareOpen={setIsCompareOpen}
+            filters={searchFilters}
+          />
         </div>
       </div>
 

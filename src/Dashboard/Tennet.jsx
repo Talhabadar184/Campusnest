@@ -42,9 +42,7 @@ function Tennet() {
   return (
     <>
       <Navbar />
-      <div className="w-full bg-blue-900 text-white pt-1  pl-28 h-9">
-        <p className="hover:cursor-pointer">Dashboard |  <Link to="/Myprofile" className="ml-2">My Profile</Link> |   <Link to={"/Notifications"}>Notifications</Link></p>
-      </div>
+     
       <div className="bg-gray-100 p-4 sm:p-6 min-h-screen">
         <div className="container mx-auto">
           <div ><h1 className="text-2xl  font-semibold mb-6 ml-20 text-blue-800 text-left">

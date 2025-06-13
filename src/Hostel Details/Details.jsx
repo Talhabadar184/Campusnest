@@ -221,17 +221,21 @@ import Footer from "../components/Footer";
 import Booking from "../Booking Forms/Booking";
 import BookingWrapper from "../BookingWrapper";
 import { fetchFeedbackByHostelId } from "../Features/ratingSlice";
+import Profile from "../Profile/Profile";
 const Details = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-    const user = useSelector((state) => state.auth.user);
-      const feedbackList = useSelector((state) => state.ratings?.feedbackList || []);
-      const totalReviews = useSelector((state) => state.ratings?.totalReviews || 0);
-const averageRating = useSelector((state) => state.ratings?.averageRating || 0);
-console.log(feedbackList,totalReviews,averageRating);
-    console.log("user",feedbackList)
-  
+  const user = useSelector((state) => state.auth.user);
+  const feedbackList = useSelector(
+    (state) => state.ratings?.feedbackList || []
+  );
+  const totalReviews = useSelector((state) => state.ratings?.totalReviews || 0);
+  const averageRating = useSelector(
+    (state) => state.ratings?.averageRating || 0
+  );
+  console.log(feedbackList, totalReviews, averageRating);
+  console.log("user", feedbackList);
 
   const {
     selectedHostel: hostel,
@@ -246,8 +250,9 @@ console.log(feedbackList,totalReviews,averageRating);
       dispatch(fetchFeedbackByHostelId(id));
     }
   }, [id, dispatch]);
-  
-const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; // Replace with actual virtual tour link
+
+  const virtual =
+    hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; // Replace with actual virtual tour link
   if (loading)
     return <p className="text-center mt-10">Loading hostel details...</p>;
   if (error)
@@ -255,20 +260,20 @@ const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; 
   if (!hostel) return <p className="text-center mt-10">No hostel found.</p>;
 
   const handleDashboardClick = () => {
-    if (user?.userType === 'owner') {
-      navigate('/Owner'); // adjust this path to your actual owner dashboard route
-      
-    } else if (user?.userType === 'tenant') {
-      navigate('/Tennet'); // adjust this path to your actual tenant dashboard route
+    if (user?.userType === "owner") {
+      navigate("/Owner"); // adjust this path to your actual owner dashboard route
+    } else if (user?.userType === "tenant") {
+      navigate("/Tennet"); // adjust this path to your actual tenant dashboard route
     } else {
-      navigate('/'); // fallback if userType is missing or unrecognized
+      navigate("/"); // fallback if userType is missing or unrecognized
     }
   };
 
   return (
     <>
       <Navbar />
-          {/* <div className="w-full bg-blue-900 text-white   text-xl pl-16 h-10">
+      {/* <div className="w-full bg-blue-900 text-white   text-xl pl-16 h-10">
+          
                           <p className="hover:cursor-pointer pt-1 ">   <Link to={"/Home"}>Home</Link> | <span onClick={handleDashboardClick} >Dashboard</span> |  <Link to="/Myprofile" className="ml-2">My Profile</Link> </p>
                         </div> */}
 
@@ -332,15 +337,14 @@ const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; 
                 >
                   Book Now
                 </button>
-               <Link
-  to={`/Inbox/${hostel._id}`} // or use `hostel.ownerId` if that's the ID needed
-  state={{
-    role: "tenant",
-    hostelName: hostel.name,
-    tenantName: hostel.tenantName || "Tenant",
-    ownerName: hostel.ownerName || "Owner",
-  }}
-
+                <Link
+                  to={`/Inbox/${hostel._id}`} // or use `hostel.ownerId` if that's the ID needed
+                  state={{
+                    role: "tenant",
+                    hostelName: hostel.name,
+                    tenantName: hostel.tenantName || "Tenant",
+                    ownerName: hostel.ownerName || "Owner",
+                  }}
                   className="bg-blue-900 text-white text-center px-4 py-2 rounded w-full sm:w-auto"
                 >
                   Chat with Owner
@@ -348,21 +352,22 @@ const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; 
               </div>
 
               {hostel?.virtualTour ? (
-  <video
-    controls
-    className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
-  >
-    <source src={hostel.virtualTour} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-) : (
-  <img
-    src={hostel.imageUrl || hostel.image || "/images/hostel-main.jpg"}
-    alt="Hostel"
-    className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
-  />
-)}
-
+                <video
+                  controls
+                  className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
+                >
+                  <source src={hostel.virtualTour} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={
+                    hostel.imageUrl || hostel.image || "/images/hostel-main.jpg"
+                  }
+                  alt="Hostel"
+                  className="w-full h-64 sm:h-72 md:h-80 bg-gray-400 lg:h-96 object-cover rounded-lg"
+                />
+              )}
             </div>
           </div>
 
@@ -403,23 +408,33 @@ const virtual=hostel?.virtualTour || "https://www.youtube.com/watch?v=example"; 
 
             {/* Amenities & Reviews */}
             <div className="justify-center flex flex-col mb-20 ">
-              
-
               <h2 className="text-xl text-blue-700 text-center font-bold mt-4">
                 User Reviews
               </h2>
               <p className="text-black text-center font-semibold">
-  {averageRating.toFixed(1)}/5 from {totalReviews} reviews
-</p>
+                {averageRating.toFixed(1)}/5 from {totalReviews} reviews
+              </p>
 
-{feedbackList.length > 0 ? (
-  <div className="border border-gray-300 sm:w-3xl align-m bg-white flex flex-col justify-center  p-4 mt-4 text-center rounded-lg">
-    <p className="text-gray-700">"{feedbackList[0]?.comment}"</p>
-    <p className="mt-2 text-gray-600">- {feedbackList[0]?.userName}</p>
-  </div>
-) : (
-  <p className="text-center text-gray-500 mt-2">No reviews yet.</p>
-)}
+              {feedbackList.length > 0 ? (
+                <div className="border border-gray-300 sm:w-3xl align-m bg-white flex flex-col justify-center  p-4 mt-4 text-center rounded-lg">
+                  <p className="text-gray-700">"{feedbackList[0]?.comment}"</p>
+                  <span>
+                     <div className="flex justify-center items-center gap-2 mt-2">
+                                    
+                                      <img src={Profile.im} alt="image" className="w-5 h-5 rounded-4xl bg-gray-300  sm:w-10 sm:h-10" />
+                                     <p className="mt-2 text-gray-600">
+                    - {feedbackList[0]?.userName}
+                  </p>
+                                  </div>
+                                 
+                  </span>
+                  
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 mt-2">
+                  No reviews yet.
+                </p>
+              )}
 
               <Link
                 key={hostel._id}

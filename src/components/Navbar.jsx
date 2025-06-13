@@ -97,7 +97,7 @@
 
 // export default Navbar;
 
-import React, { useState } from "react";
+import React, { useState } from "react";//updated
 import logo from "../assets/Signup/signuplogo.png";
 import hamburger from "../assets/Register/hamburgericon.png";
 import search from "../assets/Register/searchicon.png";
