@@ -52,15 +52,16 @@ function Home() {
 
    // 🔍 Search Logic
 const searchHostels = () => {
-  navigate("/listing", {
-    state: {
-      filters: {
-        institution,
-        location,
-        radius: parseInt(radius) || 5, // ensure it's a number
-      },
+  // Home.jsx  (inside searchHostels)
+navigate("/listing", {
+  state: {
+    filters: {
+      location,          // "Johar Town", "DHA" …
+      radius: parseInt(radius) || 5, // optional – Listing can ignore for now
     },
-  });
+  },
+});
+
 };
 
 

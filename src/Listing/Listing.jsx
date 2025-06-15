@@ -511,16 +511,21 @@
 // }
 
 // export default Listing;
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import HomeNavbar from "../components/HomeNavbar";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Hostels from "../components/Hostels";
 import Comparison from "../components/Comparison";
+import { useLocation } from "react-router-dom"; // ✅ 1. import useLocation
 
 function Listing() {
+
+   const { state } = useLocation(); // ✅ 2. get state from router
+  const initialFilters = state?.filters || {}; // ✅ 3. define safely
+
   const [institution, setInstitution] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(initialFilters.location || "");
   const [priceRange, setPriceRange] = useState(50000);
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -530,8 +535,9 @@ function Listing() {
   // const [filters, setFilters] = useState({});
 
   const [filters, setFilters] = useState({
+     location: initialFilters.location || "",
   institution: "",
-  location: "",
+  // location: "",
   price: 50000,
   amenities: [],
 });
@@ -560,6 +566,11 @@ function Listing() {
         : [...prev, amenity]
     );
   };
+   useEffect(() => {
+    if (initialFilters.location) {
+      setFilters((f) => ({ ...f, ...initialFilters }));
+    }
+  }, []);    
 
   return (
     <div className="bg-gray-100 min-h-screen">
