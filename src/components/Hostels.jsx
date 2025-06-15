@@ -468,13 +468,20 @@ function Hostels({
   const { hostels = [], loading, error } = useSelector((state) => state.hostel);
   const [currentPage, setCurrentPage] = useState(1);
 
+  
+
   useEffect(() => {
     dispatch(fetchAllHostels());
   }, [dispatch]);
 
   const hostelsPerPage = 5;
+  const canonical = (s = "") => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
 
   const filteredHostels = hostels.filter((hostel) => {
+
+    
+
     const matchesLocation =
       !filters.location ||
       hostel.location?.address?.toLowerCase().includes(filters.location.toLowerCase());
@@ -482,8 +489,23 @@ function Hostels({
     const matchesPrice =
       !filters.price ||
       parseInt(hostel.pricePerMonth || "0") <= parseInt(filters.price);
+    
+     const selectedAmenities = (filters.amenities || [])
+   
+   const hostelAmenities = (hostel.amenities || [])
+   
+ console.log("hostel amenties",hostelAmenities);
+ console.log("selectedAmenities",selectedAmenities);
   
-    return matchesLocation && matchesPrice;
+
+  const matchesAmenities =
+    selectedAmenities.length === 0 ||
+    selectedAmenities.every((a) => hostelAmenities.includes(a));
+
+    
+
+  
+    return matchesLocation && matchesPrice && matchesAmenities;
   });
   
   

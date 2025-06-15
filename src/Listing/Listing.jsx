@@ -524,29 +524,42 @@ function Listing() {
   const [priceRange, setPriceRange] = useState(50000);
   const [selectedHostels, setSelectedHostels] = useState([]);
   const [isCompareOpen, setIsCompareOpen] = useState(false);
+  const [amenities, setAmenities] = useState([]); // <-- NEW
 
-  const [searchFilters, setSearchFilters] = useState({
-    institution: "",
-    location: "",
-    price: 50000,
-  });
+  /* object that is actually sent to <Hostels /> */
+  // const [filters, setFilters] = useState({});
+
+  const [filters, setFilters] = useState({
+  institution: "",
+  location: "",
+  price: 50000,
+  amenities: [],
+});
 
   const applyFilters = () => {
-    setSearchFilters({
-      institution,
-      location,
-      price: priceRange,
-    });
+  setFilters({
+    institution,
+    location,
+    price: priceRange,
+    amenities,
+  });
+};
+
+
+  const AMENITIES = [
+  "AC",
+  "WiFi",
+  "Laundry",
+  "mess",
+  "parking",
+];
+   const handleAmenityChange = (amenity) => {
+    setAmenities((prev) =>
+      prev.includes(amenity)
+        ? prev.filter((a) => a !== amenity)
+        : [...prev, amenity]
+    );
   };
-  const handleAmenityChange = (name) => {
-     setTempFilters((prev) => ({
-       ...prev,
-       amenities: {
-         ...prev.amenities,
-         [name]: !prev.amenities[name],
-       },
-     }));
-   };
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -646,7 +659,7 @@ function Listing() {
 
           {/* Amenities */}
            
-           <div className="mb-4">
+           {/* <div className="mb-4">
              <h3 className="text-sm font-medium text-gray-700">Amenities</h3>
              <div className="flex flex-col space-y-1 text-sm text-gray-600">
                <label>
@@ -662,30 +675,25 @@ function Listing() {
                <label>
                  <input type="checkbox" className="mr-2" /> Parking
                </label>
-               {/* <label>
-                 <input type="checkbox" className="mr-2" /> Luggage Storage
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> Healthy & Organic
-                 Meals
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> Kitchen Facilities
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> 24/7 Security
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> UPS
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> Nearby Restaurants
-               </label>
-               <label>
-                 <input type="checkbox" className="mr-2" /> Study Rooms
-               </label> */}
+               
              </div>
-           </div>
+           </div> */}
+           <div className="mb-4">
+          <h3 className="text-sm font-medium text-gray-700">Amenities</h3>
+          <div className="flex flex-col space-y-1 text-sm text-gray-600">
+            {AMENITIES.map((amenity) => (
+              <label key={amenity} className="cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={amenities.includes(amenity)}
+                  onChange={() => handleAmenityChange(amenity)}
+                />
+                {amenity}
+              </label>
+            ))}
+          </div>
+        </div>
 
           <button
             onClick={applyFilters}
@@ -702,7 +710,8 @@ function Listing() {
             setSelectedHostels={setSelectedHostels}
             isCompareOpen={isCompareOpen}
             setIsCompareOpen={setIsCompareOpen}
-            filters={searchFilters}
+             //filters={searchFilters}
+            filters={filters}
           />
         </div>
       </div>
