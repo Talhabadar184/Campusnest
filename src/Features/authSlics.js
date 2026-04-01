@@ -767,7 +767,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = 'https://campus-nest-backend-x519.onrender.com/api';
 
 // Register User
 export const registerUser = createAsyncThunk(

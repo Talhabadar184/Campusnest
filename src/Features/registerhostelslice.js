@@ -75,7 +75,7 @@ export const registerHostel = createAsyncThunk(
   async ({ formData, token }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/register-hostel',
+        'https://campus-nest-backend-x519.onrender.com/api/register-hostel',
         formData,
         {
           headers: {

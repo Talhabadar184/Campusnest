@@ -104,7 +104,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api/chats';
+const API_URL = 'https://campus-nest-backend-x519.onrender.com/api/chats';
 
 // Thunk to get messages for a room
 export const getMessages = createAsyncThunk(

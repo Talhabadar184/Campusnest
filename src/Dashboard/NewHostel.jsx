@@ -270,7 +270,7 @@ const NewHostel = ({ onClose }) => {
     if (!validate()) return;
   
     try {
-      const geocodeRes = await axios.get(`http://localhost:8000/api/geocode`, {
+      const geocodeRes = await axios.get(`https://campus-nest-backend-x519.onrender.com:8000/api/geocode`, {
         params: { address: formData.location },
       });
   

@@ -106,7 +106,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://campus-nest-backend-x519.onrender.com/api';
 
 // Submit feedback thunk
 export const submitFeedback = createAsyncThunk(

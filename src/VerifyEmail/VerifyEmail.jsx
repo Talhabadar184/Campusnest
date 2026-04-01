@@ -12,7 +12,7 @@ const VerifyEmail = () => {
     const verifyToken = async () => {
       try {
         console.log("Sending verification request with token:", token);
-        const response = await axios.get(`http://localhost:8000/api/verify-email/${token}`);
+        const response = await axios.get(`https://campus-nest-backend-x519.onrender.com/api/verify-email/${token}`);
         console.log("Verification response:", response.data);
 
         setMessage(response.data.message);

@@ -48,7 +48,7 @@ export const fetchAllHostels = createAsyncThunk(
   'hostel/fetchAllHostels',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/hostel-profile/');
+      const response = await axios.get('https://campus-nest-backend-x519.onrender.com/api/hostel-profile/');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -61,7 +61,7 @@ export const fetchHostelById = createAsyncThunk(
   'hostel/fetchHostelById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/hostel-profile/${id}`);
+      const response = await axios.get(`https://campus-nest-backend-x519.onrender.com/api/hostel-profile/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
